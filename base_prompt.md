@@ -104,14 +104,29 @@ hair(line) visible beside it — exposed [하관 인간 부위], [표정 + 성�
 
 | 손님 | 동물(택1 확정) | 체형 키워드 | 표정/성격 | 개별 avoid 추가 |
 |---|---|---|---|---|
-| **A** 귀부인 (30대 후반) | PEACOCK 공작새 | matronly, plump, heavy-set, double chin, ample bust, corpulent | vain class-obsessed hauteur, chin lifted | `thin slim build` |
-| **B** 사업가 (50~60 신사) | BULLDOG 불독 | lean upright, silver hair | condescending smirk, quiet contempt | — |
-| **C** 여자아이 (10살) | CAT 고양이 | age 8–10, round cheeks, small head-body ratio, short | bratty entitled pout | `adult-proportioned child, mature adult face` |
+| **A** 귀부인 (30대 후반) | PEACOCK 공작새 ✅확정 | matronly, plump, heavy-set, double chin, ample bust, corpulent | vain class-obsessed hauteur, chin lifted | `thin slim build` |
+| **B** 사업가 (50~60 신사) | ⚠️ **미확정** (불독 후보) | lean upright, silver hair | condescending smirk, quiet contempt | — |
+| **C** 여자아이 (10살) | CAT 고양이 ✅확정 | age 8–10, round cheeks, small head-body ratio, short | bratty entitled pout | `adult-proportioned child, mature adult face` |
+
+> **B는 아직 최종 확정 아님.** 동물/체형/표정 재검토 대기.
 
 **동물 택일 근거:** A 공작새=허영/과시(돼지 대신 인간형 유지 용이) · C 고양이=도도(염소보다 "귀엽고 도도" 부합).
 
 ---
 
+## ⑥ 개별 확정 프롬포트 — 흰 토끼 가면 (귀 없는 버전)
+
+> 얼굴 전면 face-plate 마스크 타입(동물 반가면과 다른 계열). **귀는 후속 수정으로 추가 예정.**
+
+```
+[MEDIUM & STYLE] Stylized 3D animation in the LAIKA / Coraline tradition, modeled on the film's human characters (not the button-eyed doll), stylized-but-human proportions, defined cheekbones, naturalistic craft texture, normal human-sized eyes, cinematic.
+[CHARACTER] a human man in his mid-to-late 40s, slender, exaggerated inverted-triangle build with broad shoulders and narrow waist, tall and elegant, cold and composed. He wears a rigid smooth white mask that covers only the front of his face, forehead to chin, with round red eyes; the mask is a flat face-plate worn by a human, human hair, ears and neck visible behind its edges. Champagne-ivory three-piece suit, wine-red necktie, a wine-red pocket square folded to sharp corners in the breast pocket, white gloves. A wristwatch on his wrist, hand raised as if checking the time.
+[FORMAT] character concept sheet, full-body front view, neutral studio background, soft even lighting, controlled palette of ivory white and wine red.
+avoid: mascot head, fursuit, furry, anthropomorphic animal, full animal head, plush costume head, animal snout, animal ears on mask, puppet, doll, oversized anime eyes, chibi, caricature, glossy plastic skin, miniature diorama look
+```
+
+---
+
 ## 변경 이력
 
-- **v0901** — 초기 구조화. HUMAN+MASK 조건부 블록 신설(인간+가면 명확화, 동물 morphology 차단). 부자손님 A/B/C 슬롯 프리셋 확정. AVOID 베이스/가면 분리.
+- **v0901** — 초기 구조화. HUMAN+MASK 조건부 블록 신설(인간+가면 명확화, 동물 morphology 차단). 부자손님 A/C 프리셋 확정, B 미확정. AVOID 베이스/가면 분리. 흰 토끼 가면(귀 없는 버전) 개별 프롬포트 추가.
