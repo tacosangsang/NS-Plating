@@ -12,15 +12,20 @@
 ## 구조
 
 ```
-plating/
+NS-Plating/
 ├── prompts/                  # AI 이미지 생성 프롬프트
 │   ├── base_prompt.md        #   최신본 (항상 여기 참조)
 │   └── backups/              #   날짜별 스냅샷 base_prompt_MMDD.md
-├── resources/                # 리소스 파일
-│   ├── references/           #   레퍼런스 (참고 자료)
-│   ├── images/               #   이미지
+├── resources/                # 리소스 파일 (미디어)
+│   ├── references/           #   레퍼런스 (참고 자료, 스타일보드)
+│   ├── images/               #   이미지 (character/ 등)
 │   └── videos/               #   비디오
-└── docs/                     # 기획·문서
+└── docs/                     # 문서
+    ├── 운영측 전달 서류/       #   운영측 제출·수령 서류
+    │   ├── 양식·안내 서류/
+    │   └── 제출 서류/
+    ├── 리소스/                #   리소스 관련 문서
+    └── 기획/                  #   기획 문서
 ```
 
 ## 워크플로
