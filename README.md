@@ -28,6 +28,17 @@ NS-Plating/
     └── 기획/                  #   기획 문서
 ```
 
+## 미디어 관리 (팀 공유)
+
+**미디어(이미지·비디오·바이너리)는 GitHub가 아닌 Google Drive에서 공유.**
+GitHub는 프롬프트·문서(텍스트)만. 대용량 파일로 repo 무거워지는 것 방지.
+
+- **Google Drive 공유 폴더:** _(링크 추가 예정)_
+- Drive 폴더 구조는 이 repo `resources/`와 동일하게 유지:
+  `references/`, `images/` (하위 `character/` 등), `videos/`
+- repo의 `resources/**` 미디어는 `.gitignore` 처리 → 로컬 작업용, 커밋 안 됨.
+- 각 폴더의 `.gitkeep`은 구조 표시용.
+
 ## 워크플로
 
 **프롬프트 수정 시**
@@ -35,5 +46,8 @@ NS-Plating/
 2. `prompts/backups/base_prompt_MMDD.md`로 스냅샷 복사
 3. commit + push
 
-**리소스/문서 추가 시**
-- 해당 폴더에 파일 넣고 commit + push
+**문서 추가 시**
+- `docs/` 해당 폴더에 넣고 commit + push
+
+**미디어 추가 시**
+- Google Drive 공유 폴더의 해당 위치에 업로드 (GitHub 아님)
