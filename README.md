@@ -33,7 +33,7 @@ NS-Plating/
 **미디어(이미지·비디오·바이너리)는 GitHub가 아닌 Google Drive에서 공유.**
 GitHub는 프롬프트·문서(텍스트)만. 대용량 파일로 repo 무거워지는 것 방지.
 
-- **Google Drive 공유 폴더:** _(링크 추가 예정)_
+- **Google Drive 공유 폴더:** https://drive.google.com/drive/folders/1Hf2_Uk_XoeJj5vSQxn_sWSumUwsXV5kR
 - Drive 폴더 구조는 이 repo `resources/`와 동일하게 유지:
   `references/`, `images/` (하위 `character/` 등), `videos/`
 - repo의 `resources/**` 미디어는 `.gitignore` 처리 → 로컬 작업용, 커밋 안 됨.
