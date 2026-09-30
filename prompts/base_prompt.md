@@ -3,8 +3,8 @@
 > 코렐라인st LAIKA 스타일 3D AI 애니메이션 / 벌레식량 디스토피아 계급물
 > **최신본.** 날짜별 스냅샷은 `backups/base_prompt_MMDD.md`.
 
-**Version:** v0901
-**Updated:** 2026-09-01
+**Version:** v0930
+**Updated:** 2026-09-30
 
 ---
 
@@ -21,7 +21,7 @@
 ```
 
 **조립 순서:**
-`① STYLE` → `② HUMAN+MASK`(가면 캐릭터일 때만) → `[CHARACTER]`(④+⑤) → `[COMPOSITION]` → `① WORLD` → `① RENDER` → `③ AVOID`
+`① STYLE` → `② HUMAN+MASK`(가면 캐릭터일 때만) → `[CHARACTER]`(④) → `[COMPOSITION]` → `① WORLD` → `① RENDER` → `③ AVOID`
 
 ---
 
@@ -35,11 +35,10 @@ angular frames, long limbs, defined cheekbones, expressive naturalistic faces
 with normal human-sized eyes. Subtle skin pores and cloth-weave texture,
 cinematic craft feel.
 
-[WORLD & TONE] a dystopian fable where insects are the only food left; a
-class-divided society staged as a recurring contrast between a warm, grimy,
-lived-in underclass and a cold, sterile, over-clean elite world; food plated
-as art, people displayed behind glass; uncanny yet grounded, quiet unease,
-socially critical.
+[WORLD & TONE] a dystopian fable; a class-divided society staged as a
+recurring contrast between a warm, grimy, lived-in underclass and the elite
+world; food plated as art; uncanny yet grounded, quiet unease, socially
+critical.
 
 [RENDER & CAMERA] naturalistic cinematic lighting, high contrast, controlled
 palette, subtle shallow depth of field, volumetric haze and dust, filmic
@@ -90,7 +89,7 @@ hair(line) visible beside it — exposed [하관 인간 부위], [표정 + 성�
 **[COMPOSITION]** — 택1:
 
 ```
-단독:  single centered waist-up portrait, cold sterile over-clean elite setting behind glass.
+단독:  single centered waist-up portrait.
 
 몽타주: a montage triptych, three vertical panels of equal width divided by thin
        dark seams, each panel a waist-up portrait, unified cold lighting, matched eyeline.
@@ -98,35 +97,7 @@ hair(line) visible beside it — exposed [하관 인간 부위], [표정 + 성�
 
 ---
 
-## ⑤ 캐릭터 슬롯 프리셋 (부자손님 A/B/C — 확정본)
-
-부자손님 A/B/C: 진우가 최상층 레스토랑에서 만나는 손님들. 언제나 반가면 착용, 권력 최상층. 최하층 손님들과 대비. 소품 동물은 택1.
-
-| 손님 | 동물(택1 확정) | 체형 키워드 | 표정/성격 | 개별 avoid 추가 |
-|---|---|---|---|---|
-| **A** 귀부인 (30대 후반) | PEACOCK 공작새 ✅확정 | matronly, plump, heavy-set, double chin, ample bust, corpulent | vain class-obsessed hauteur, chin lifted | `thin slim build` |
-| **B** 사업가 (50~60 신사) | ⚠️ **미확정** (불독 후보) | lean upright, silver hair | condescending smirk, quiet contempt | — |
-| **C** 여자아이 (10살) | CAT 고양이 ✅확정 | age 8–10, round cheeks, small head-body ratio, short | bratty entitled pout | `adult-proportioned child, mature adult face` |
-
-> **B는 아직 최종 확정 아님.** 동물/체형/표정 재검토 대기.
-
-**동물 택일 근거:** A 공작새=허영/과시(돼지 대신 인간형 유지 용이) · C 고양이=도도(염소보다 "귀엽고 도도" 부합).
-
----
-
-## ⑥ 개별 확정 프롬포트 — 흰 토끼 가면 (귀 없는 버전)
-
-> 얼굴 전면 face-plate 마스크 타입(동물 반가면과 다른 계열). **귀는 후속 수정으로 추가 예정.**
-
-```
-[MEDIUM & STYLE] Stylized 3D animation in the LAIKA / Coraline tradition, modeled on the film's human characters (not the button-eyed doll), stylized-but-human proportions, defined cheekbones, naturalistic craft texture, normal human-sized eyes, cinematic.
-[CHARACTER] a human man in his mid-to-late 40s, slender, exaggerated inverted-triangle build with broad shoulders and narrow waist, tall and elegant, cold and composed. He wears a rigid smooth white mask that covers only the front of his face, forehead to chin, with round red eyes; the mask is a flat face-plate worn by a human, human hair, ears and neck visible behind its edges. Champagne-ivory three-piece suit, wine-red necktie, a wine-red pocket square folded to sharp corners in the breast pocket, white gloves. A wristwatch on his wrist, hand raised as if checking the time.
-[FORMAT] character concept sheet, full-body front view, neutral studio background, soft even lighting, controlled palette of ivory white and wine red.
-avoid: mascot head, fursuit, furry, anthropomorphic animal, full animal head, plush costume head, animal snout, animal ears on mask, puppet, doll, oversized anime eyes, chibi, caricature, glossy plastic skin, miniature diorama look
-```
-
----
-
 ## 변경 이력
 
 - **v0901** — 초기 구조화. HUMAN+MASK 조건부 블록 신설(인간+가면 명확화, 동물 morphology 차단). 부자손님 A/C 프리셋 확정, B 미확정. AVOID 베이스/가면 분리. 흰 토끼 가면(귀 없는 버전) 개별 프롬포트 추가.
+- **v0930** — 3-2차 시나리오 (수정본) 기준으로 옛 기획 삭제. [WORLD & TONE]의 "insects are the only food left", "cold, sterile, over-clean elite world", "people displayed behind glass" 삭제. [COMPOSITION] 단독의 유리 뒤 배경 삭제. ⑤ 부자손님 A/B/C 프리셋(공작/불독/고양이) 삭제. ⑥ 흰 토끼 가면 귀 없는 버전 삭제.
