@@ -21,7 +21,7 @@
 ```
 
 **조립 순서:**
-`① STYLE` → `② HUMAN+MASK`(가면 캐릭터일 때만) → `[CHARACTER]`(④+⑤ 또는 ⑥) → `[COMPOSITION]` → `① WORLD` → `① RENDER` → `③ AVOID`
+`① STYLE` → `② HUMAN+MASK`(조류 반가면 캐릭터일 때만, ⑥ 흰 토끼 제외) → `[CHARACTER]`(④+⑤ 또는 ⑥) → `[COMPOSITION]` → `① WORLD` → `① RENDER` → `③ AVOID`
 
 ---
 
@@ -49,7 +49,7 @@ composition, true monumental scale with atmospheric perspective.
 
 ---
 
-## ② 조건부 블록 — 가면 캐릭터일 때만 삽입
+## ② 조건부 블록 — 조류 반가면 캐릭터일 때만 삽입 (⑥ 흰 토끼 제외)
 
 ```
 [CRITICAL — HUMAN + MASK] UNMISTAKABLY A HUMAN BEING WEARING A DECORATIVE MASK.
@@ -70,7 +70,7 @@ avoid [BASE]: puppet, doll, toy figurine, felt/clay doll, visible stitching
 seams, oversized anime eyes, chibi, caricature, glossy plastic skin, miniature
 diorama look.
 
-avoid [MASK, 가면 캐릭터 추가]: full-face mask, mask covering the mouth, animal
+avoid [MASK, 조류 반가면 캐릭터 추가, ⑥ 흰 토끼 제외]: full-face mask, mask covering the mouth, animal
 snout on the face, fur on skin, animal ears growing from the head,
 furry/anthropomorphic hybrid, animal-human fusion.
 ```
@@ -110,6 +110,7 @@ hair(line) visible beside it — exposed [하관 인간 부위], [표정 + 성�
 ## ⑥ 흰 토끼 가면 (2026-09-29 최종 시트 기준)
 
 > 얼굴 전면 사각 가면(반가면과 다른 계열). ① 고정 블록 뒤에 [CHARACTER]로 넣는다.
+> ② HUMAN+MASK와 ③ 가면용 AVOID는 넣지 않는다. 이마부터 윗입술까지 덮는 가면이라 "upper face만 덮는 반가면", "full-face mask 금지"와 충돌한다. ③ 베이스 AVOID만 붙인다.
 
 ```
 [CHARACTER] a tall, slender man in a tailored champagne-white suit, white shirt,
@@ -129,3 +130,4 @@ upright, elegant and menacing, cold
 - **v0901** — 초기 구조화. HUMAN+MASK 조건부 블록 신설(인간+가면 명확화, 동물 morphology 차단). 부자손님 A/C 프리셋 확정, B 미확정. AVOID 베이스/가면 분리. 흰 토끼 가면(귀 없는 버전) 개별 프롬포트 추가.
 - **v0930** — 3-2차 시나리오 (수정본) 기준으로 옛 기획 삭제. [WORLD & TONE]의 "insects are the only food left", "cold, sterile, over-clean elite world", "people displayed behind glass" 삭제. [COMPOSITION] 단독의 유리 뒤 배경 삭제. ⑤ 부자손님 A/B/C 프리셋(공작/불독/고양이) 삭제. ⑥ 흰 토끼 가면 귀 없는 버전 삭제.
   이어서 [WORLD & TONE]을 확정 공간 기준 문구로 채움, [RENDER & CAMERA]에 거대 스케일 한 줄 추가, ⑤ 귀족 익명 군중 설정, ⑥ 흰 토끼 최종 시트 버전 추가.
+  흰 토끼는 ② HUMAN+MASK와 ③ 가면용 AVOID 적용 대상에서 제외.
