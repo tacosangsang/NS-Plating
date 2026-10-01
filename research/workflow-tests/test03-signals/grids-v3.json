@@ -1,0 +1,2001 @@
+[
+  {
+    "id": "SC01_GRID01",
+    "scene_id": "SC01",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:40, 해 질 무렵",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH01_P01",
+        "pose": "벽의 사진을 잡은 이나",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH01",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC01_SH01_P02",
+        "pose": "빈 사각형과 상자",
+        "at_sec": 7.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH01",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC01_SH02_P01",
+        "pose": "상자 앞 이나",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH02",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH02_P02",
+        "pose": "창틀 앞 이나",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH02",
+        "camera_id": "B",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC01_GRID02",
+    "scene_id": "SC01",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:40, 해 질 무렵",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH03_P01",
+        "pose": "해질녘의 먼 배. 창틀이 앞에 남는다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH03",
+        "camera_id": "F",
+        "size": "WS"
+      },
+      {
+        "id": "SC01_SH04_P01",
+        "pose": "켜진 다락",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "on",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH04_P02",
+        "pose": "어두워진 다락",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH05_P01",
+        "pose": "서랍의 천 아래 빨간 손전등과 흰 흠집.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "attic_drawer",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "발견 순간은 서랍 안, 종료 시점에는 이나가 든다.",
+        "shot_id": "SC01_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC01_GRID03",
+    "scene_id": "SC01",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:40, 해 질 무렵",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH06_P01",
+        "pose": "이나의 엄지가 흠집을 문지르고 손잡이 앞에 멈춘다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC01_SH06",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC02_GRID01",
+    "scene_id": "SC02",
+    "location_id": "ATTIC",
+    "branch": "past",
+    "costume_version": "default",
+    "story_time": "20여 년 전 저녁, 기억",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH01_P01",
+        "pose": "과거 다락의 어린 이나·어머니·켜지는 빨간 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none"
+        },
+        "shot_id": "SC02_SH01",
+        "camera_id": "P",
+        "size": "WS"
+      },
+      {
+        "id": "SC02_SH02_P01",
+        "pose": "카펫 위 어린 이나와 어머니, 창밖 작은 준의 불빛.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none"
+        },
+        "shot_id": "SC02_SH02",
+        "camera_id": "P",
+        "size": "WS"
+      },
+      {
+        "id": "SC02_SH03_P01",
+        "pose": "세 손가락을 든 이나",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none"
+        },
+        "shot_id": "SC02_SH03",
+        "camera_id": "P",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH03_P02",
+        "pose": "손등에 닿은 어머니 손",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none"
+        },
+        "shot_id": "SC02_SH03",
+        "camera_id": "P",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC02_GRID02",
+    "scene_id": "SC02",
+    "location_id": "ATTIC",
+    "branch": "past",
+    "costume_version": "default",
+    "story_time": "20여 년 전 저녁, 기억",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH04_P01",
+        "pose": "창밖 어린 준의 흰 등 한 번이 켜진 순간",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none",
+          "distant_white_on": "yes"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC02_SH04",
+        "camera_id": "P",
+        "size": "WS"
+      },
+      {
+        "id": "SC02_SH04_P02",
+        "pose": "같은 구도에서 흰 등만 꺼진 순간",
+        "at_sec": 1,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none",
+          "distant_white_on": "no"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC02_SH04",
+        "camera_id": "P",
+        "size": "WS"
+      },
+      {
+        "id": "SC02_SH05_P01",
+        "pose": "어머니 손에 든 빨간 등과 스위치에 닿은 어린 이나의 손가락",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "yes",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "none"
+        },
+        "shot_id": "SC02_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC02_SH05_P02",
+        "pose": "흰 흠집이 생긴 옆면",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "no",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC02_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC02_GRID03",
+    "scene_id": "SC02",
+    "location_id": "ATTIC",
+    "branch": "past",
+    "costume_version": "default",
+    "story_time": "20여 년 전 저녁, 기억",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH06_P01",
+        "pose": "등을 건네는 어머니",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "mother_hand",
+          "red_on": "no",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC02_SH06",
+        "camera_id": "P",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH06_P02",
+        "pose": "등을 안은 어린 이나",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "ina_location": "attic",
+          "jun_location": "garden",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC02_SH06",
+        "camera_id": "P",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC03_GRID01",
+    "scene_id": "SC03",
+    "location_id": "BOAT_CABIN",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:43, 다락과 같은 저녁",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH01_P01",
+        "pose": "객실 창에 비친 준이 반응 없는 휴대전화를 누른다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_hand",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH01",
+        "camera_id": "D",
+        "size": "MS"
+      },
+      {
+        "id": "SC03_SH02_P01",
+        "pose": "준이 전화를 오른 주머니에 넣는다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC03_SH03_P01",
+        "pose": "가방 속 흰 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "꺼내기 전 가방 속을 보여주는 순간.",
+        "shot_id": "SC03_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC03_SH03_P02",
+        "pose": "준 왼손의 흰 등",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC03_GRID02",
+    "scene_id": "SC03",
+    "location_id": "BOAT_CABIN",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:43, 다락과 같은 저녁",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH04_P01",
+        "pose": "정전 뒤 어두워진 언덕 집",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH04",
+        "camera_id": "G",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH05_P01",
+        "pose": "일어서는 준",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH05",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH05_P02",
+        "pose": "문 앞 준",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH05",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      4
+    ]
+  },
+  {
+    "id": "SC03_GRID03",
+    "scene_id": "SC03",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:43, 다락과 같은 저녁",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH06_P01",
+        "pose": "문 안의 준",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH06",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC03_SH06_P02",
+        "pose": "난간 앞 준",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC03_SH06",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC04_GRID01",
+    "scene_id": "SC04",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH01_P01",
+        "pose": "손잡이를 돌리는 성인 이나",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH01",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH01_P02",
+        "pose": "바닥에 생긴 빛",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH01",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH02_P01",
+        "pose": "아직 멀리 있는 배.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH02",
+        "camera_id": "F",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH03_P01",
+        "pose": "유리에 비친 이나 얼굴 위로 빛이 번진다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC04_GRID02",
+    "scene_id": "SC04",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH04_P01",
+        "pose": "흔들리는 커튼",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH04",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH04_P02",
+        "pose": "묶인 커튼과 오른손 등",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH04",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH05_P01",
+        "pose": "창밖으로 길게 켜 둔 등을 유지하며 기다린다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH05",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH06_P01",
+        "pose": "꺼진 빨간 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "이미 끈 뒤 충전 손잡이를 펴는 순간.",
+        "shot_id": "SC04_SH06",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC04_GRID03",
+    "scene_id": "SC04",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH06_P02",
+        "pose": "돌아가는 손잡이",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC04_SH06",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC05_GRID01",
+    "scene_id": "SC05",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44, 같은 호출을 받는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH01_P01",
+        "pose": "어깨의 가방",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH01_P02",
+        "pose": "발 사이의 가방",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH02_P01",
+        "pose": "집 불빛이 잠깐 켜졌다 사라진다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH02",
+        "camera_id": "G",
+        "size": "WS"
+      },
+      {
+        "id": "SC05_SH03_P01",
+        "pose": "켜진 흰 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "등을 켠 뒤 빛이 난간에 걸리기 직전.",
+        "shot_id": "SC05_SH03",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC05_GRID02",
+    "scene_id": "SC05",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44, 같은 호출을 받는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH03_P02",
+        "pose": "난간에 닿은 빛",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH03",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH04_P01",
+        "pose": "가방을 피해 가는 다리",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH04",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH04_P02",
+        "pose": "준의 발 가까이 가방",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH04",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH05_P01",
+        "pose": "같은 집에서 다시 길게 켜지는 빛.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH05",
+        "camera_id": "G",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC05_GRID03",
+    "scene_id": "SC05",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:44, 같은 호출을 받는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH06_P01",
+        "pose": "꺼진 흰 등과 손",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "꺼진 등 위에서 손가락으로 연습하는 순간.",
+        "shot_id": "SC05_SH06",
+        "camera_id": "E",
+        "size": "MCU"
+      },
+      {
+        "id": "SC05_SH06_P02",
+        "pose": "스위치를 기억하는 손가락",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC05_SH06",
+        "camera_id": "E",
+        "size": "MCU"
+      }
+    ],
+    "empty_slots": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC06_GRID01",
+    "scene_id": "SC06",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH01_P01",
+        "pose": "떨리는 손목을 창틀에 대고 배를 따라 등 방향을 옮긴다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH01",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH02_P01",
+        "pose": "창을 향한 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH02",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH02_P02",
+        "pose": "천장으로 향한 빛",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH02",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH03_P01",
+        "pose": "발 앞 상자",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH03",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC06_GRID02",
+    "scene_id": "SC06",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH03_P02",
+        "pose": "창 아래 앉은 이나",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH03",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC06_SH04_P01",
+        "pose": "기울어진 사진을 그대로 두고 등 손잡이를 쥔다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH04",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC06_SH05_P01",
+        "pose": "팔을 고정해 길게 비추며 기다린다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH05",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH06_PRE",
+        "pose": "아래를 보며 손잡이를 돌리는 이나. 배의 응답은 아직 없다.",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC06_SH06",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC06_GRID03",
+    "scene_id": "SC06",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH06_P01",
+        "pose": "충전 중인 이나 뒤로 배의 첫 흰빛이 켜진 순간",
+        "at_sec": 10,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC06_SH06",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH06_P02",
+        "pose": "같은 구도에서 먼 배의 흰빛이 꺼진 순간",
+        "at_sec": 11,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC06_SH06",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC07_GRID01",
+    "scene_id": "SC07",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45, 첫 응답 직후",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC07_SH01_P01",
+        "pose": "준의 손에 든 흰 등이 켜진 두 번째 점멸 순간",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC07_SH01",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC07_SH01_P02",
+        "pose": "같은 흰 등이 꺼진 간격",
+        "at_sec": 1,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "none",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC07_SH01",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC07_SH02_P01",
+        "pose": "준의 흰 등이 켜진 세 번째 점멸 순간",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "first_complete",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC07_SH02",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC07_SH02_P02",
+        "pose": "점멸이 끝나 꺼진 흰 등을 든 준",
+        "at_sec": 1,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "first_complete",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC07_SH02",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC07_GRID02",
+    "scene_id": "SC07",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45, 첫 응답 직후",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC07_SH03_P01",
+        "pose": "아직 어두운 집의 창.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "first_complete",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC07_SH03",
+        "camera_id": "G",
+        "size": "WS"
+      },
+      {
+        "id": "SC07_SH04_P01",
+        "pose": "등을 흔들려다 멈추고 가방 손잡이에 발을 댄다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "first_complete",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC07_SH04",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC07_SH05_P01",
+        "pose": "꺼진 흰 등 스위치 위의 손가락",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "second_armed",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC07_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC07_SH06_P01",
+        "pose": "준이 팔을 완전히 내리고 창을 바라본다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "second_complete",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC07_SH06",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC08_GRID01",
+    "scene_id": "SC08",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45, 두 번째 세 번을 보는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC08_SH01_P01",
+        "pose": "이나의 시점에서 먼 배의 흰빛이 켜진 순간",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "yes",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "second_complete",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC08_SH01",
+        "camera_id": "F",
+        "size": "WS"
+      },
+      {
+        "id": "SC08_SH01_P02",
+        "pose": "같은 배의 흰빛이 꺼진 순간",
+        "at_sec": 1,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "second_complete",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC08_SH01",
+        "camera_id": "F",
+        "size": "WS"
+      },
+      {
+        "id": "SC08_SH02_P01",
+        "pose": "이나가 시선을 고정하고 손잡이를 멈춘다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "second_complete",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC08_SH02",
+        "camera_id": "B",
+        "size": "MCU"
+      },
+      {
+        "id": "SC08_SH03_P01",
+        "pose": "이나의 빨간 등이 켜진 순간",
+        "at_sec": 0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "yes",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 켜짐 대표 그림. 반복 횟수는 timed_cues에만 기록.",
+        "shot_id": "SC08_SH03",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC08_GRID02",
+    "scene_id": "SC08",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45, 두 번째 세 번을 보는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC08_SH03_P02",
+        "pose": "같은 빨간 등이 꺼진 순간",
+        "at_sec": 1,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "점멸의 꺼짐 대표 그림. 같은 샷 안에서 재사용할 수 있음.",
+        "shot_id": "SC08_SH03",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC08_SH04_P01",
+        "pose": "이나가 웃고 꺼진 천장등을 잠깐 올려다본다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC08_SH04",
+        "camera_id": "B",
+        "size": "MCU"
+      },
+      {
+        "id": "SC08_SH05_P01",
+        "pose": "덮이기 전 상자",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC08_SH05",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC08_SH05_P02",
+        "pose": "옆으로 접힌 뚜껑",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "ina_hand",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC08_SH05",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC08_GRID03",
+    "scene_id": "SC08",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재 18:45, 두 번째 세 번을 보는 쪽",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC08_SH06_P01",
+        "pose": "의자를 놓는 이나",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "state_note": "등을 창틀에 놓은 뒤 의자를 옮기는 중간 순간.",
+        "shot_id": "SC08_SH06",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC08_SH06_P02",
+        "pose": "빈 의자 옆에 앉은 이나",
+        "at_sec": 6.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC08_SH06",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC09_GRID01",
+    "scene_id": "SC09",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재, 배가 섬에 더 가까워진 뒤",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC09_SH01_P01",
+        "pose": "응답이 끝난 뒤 어둠 속 준의 얼굴",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH01",
+        "camera_id": "E",
+        "size": "MCU"
+      },
+      {
+        "id": "SC09_SH02_P01",
+        "pose": "손바닥을 향한 꺼진 흰 등",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_left_hand",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC09_SH02_P02",
+        "pose": "가방 안의 흰 등",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC09_SH03_P01",
+        "pose": "도착 안내를 듣고 가방을 메며 객실로 향한다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH03",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC09_GRID02",
+    "scene_id": "SC09",
+    "location_id": "BOAT_DECK",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재, 배가 섬에 더 가까워진 뒤",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC09_SH04_P01",
+        "pose": "어두운 언덕 집 창을 다시 본다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH04",
+        "camera_id": "G",
+        "size": "WS"
+      },
+      {
+        "id": "SC09_SH05_P01",
+        "pose": "문 앞 준",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "deck",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH05",
+        "camera_id": "E",
+        "size": "WS"
+      },
+      {
+        "id": "SC09_SH05_P02",
+        "pose": "빈 갑판",
+        "at_sec": 5.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH05",
+        "camera_id": "E",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      4
+    ]
+  },
+  {
+    "id": "SC09_GRID03",
+    "scene_id": "SC09",
+    "location_id": "ATTIC",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "현재, 배가 섬에 더 가까워진 뒤",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC09_SH06_P01",
+        "pose": "이나와 빈 의자, 창틀의 빨간 등. 모두 조용히 남는다.",
+        "at_sec": 0.0,
+        "state": {
+          "red_torch": "window_sill",
+          "red_on": "no",
+          "white_torch": "jun_bag",
+          "white_on": "no",
+          "phone": "jun_right_pocket",
+          "house_power": "off",
+          "ina_location": "attic",
+          "jun_location": "cabin",
+          "reply": "acknowledged",
+          "torch_scratch": "white_mark"
+        },
+        "shot_id": "SC09_SH06",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  }
+]

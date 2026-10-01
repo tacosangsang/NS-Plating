@@ -1,0 +1,1937 @@
+[
+  {
+    "id": "SC01_GRID01",
+    "scene_id": "SC01",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "오후, 폐쇄 온실",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH01_P01",
+        "pose": "볼트를 집은 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH01",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC01_SH01_P02",
+        "pose": "정리통 위의 집게",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH01",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC01_SH02_P01",
+        "pose": "꺼지기 직전 눈등",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH02",
+        "camera_id": "B",
+        "size": "CU"
+      },
+      {
+        "id": "SC01_SH02_P02",
+        "pose": "열린 집게와 꺼진 눈등",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "off",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "open"
+        },
+        "shot_id": "SC01_SH02",
+        "camera_id": "B",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC01_GRID02",
+    "scene_id": "SC01",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "오후, 폐쇄 온실",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH03_P01",
+        "pose": "약간 빠진 배터리",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "off",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "open"
+        },
+        "shot_id": "SC01_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC01_SH03_P02",
+        "pose": "몸 안에 고정된 배터리",
+        "at_sec": 6.5,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC01_SH04_P01",
+        "pose": "닫힌 오른 집게",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH04_P02",
+        "pose": "화분 앞에 선 핍",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC01_GRID03",
+    "scene_id": "SC01",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "오후, 폐쇄 온실",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH05_P01",
+        "pose": "잎 두 장 위 작은 빛이 사라진다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC01_SH06_P01",
+        "pose": "잎 앞에서 멈춘 집게",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH06",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH06_P02",
+        "pose": "화분 바닥을 받친 집게",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH06",
+        "camera_id": "B",
+        "size": "MS"
+      },
+      {
+        "id": "SC01_SH07_P01",
+        "pose": "화분을 안은 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "대표 시작 그림은 화분을 이미 들어 올린 순간.",
+        "shot_id": "SC01_SH07",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC01_GRID04",
+    "scene_id": "SC01",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "오후, 폐쇄 온실",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC01_SH07_P02",
+        "pose": "동쪽을 향한 핍",
+        "at_sec": 4.5,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC01_SH07",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC02_GRID01",
+    "scene_id": "SC02",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 통로 중간",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH01_P01",
+        "pose": "평평하게 든 화분",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH01",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH01_P02",
+        "pose": "테두리까지 기운 흙",
+        "at_sec": 6.5,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH01",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH02_P01",
+        "pose": "화분을 바닥에 내리고 흙 한 톨이 깨진 테두리 옆으로 떨어진다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC02_SH03_P01",
+        "pose": "벽에서 당긴 판자",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "pip_hands",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "벽에서 떼어 든 중간 상태.",
+        "shot_id": "SC02_SH03",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC02_GRID02",
+    "scene_id": "SC02",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 통로 중간",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH03_P02",
+        "pose": "턱 위 비스듬한 판자",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_unstable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH03",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC02_SH04_P01",
+        "pose": "한 바퀴가 오른 판자",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_unstable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH04_P02",
+        "pose": "돌아간 판자와 물러난 핍",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_unstable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH04",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH05_P01",
+        "pose": "틈에 걸린 판자",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_stable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "판자를 틈에 고정한 뒤 시험하기 직전.",
+        "shot_id": "SC02_SH05",
+        "camera_id": "A",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC02_GRID03",
+    "scene_id": "SC02",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 통로 중간",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH05_P02",
+        "pose": "빈손으로 턱 위 핍",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_before_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_stable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH05",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH06_P01",
+        "pose": "판자 아래 화분을 든 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_stable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "집어 든 뒤 경사로를 오르기 전.",
+        "shot_id": "SC02_SH06",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH06_P02",
+        "pose": "턱 위의 핍과 화분",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "step_stable",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH06",
+        "camera_id": "A",
+        "size": "MS"
+      },
+      {
+        "id": "SC02_SH07_P01",
+        "pose": "턱 위 바닥 화분과 판자를 든 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "hall_after_step",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "pip_hands",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "운반 후 화분을 내려놓고 판자를 회수하는 중간 상태.",
+        "shot_id": "SC02_SH07",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC02_GRID04",
+    "scene_id": "SC02",
+    "location_id": "HALL",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 통로 중간",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC02_SH07_P02",
+        "pose": "다시 화분을 안은 핍",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC02_SH07",
+        "camera_id": "A",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC03_GRID01",
+    "scene_id": "SC03",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "작업실 문 앞과 안, 연속",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH01_P01",
+        "pose": "반쯤 열린 문과 화분",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH01",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH01_P02",
+        "pose": "문을 미는 핍",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "door_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "문을 밀기 위해 화분을 바닥에 둔 상태.",
+        "shot_id": "SC03_SH01",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH02_P01",
+        "pose": "문을 버티는 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "door_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH02",
+        "camera_id": "D",
+        "size": "MS"
+      },
+      {
+        "id": "SC03_SH02_P02",
+        "pose": "화분에 닿지 않는 집게",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "door_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH02",
+        "camera_id": "D",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC03_GRID02",
+    "scene_id": "SC03",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "작업실 문 앞과 안, 연속",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH03_P01",
+        "pose": "바퀴 앞의 걸쇠",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "door_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "ajar",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC03_SH03_P02",
+        "pose": "내려간 걸쇠",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "door_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC03_SH04_P01",
+        "pose": "문 안으로 향한 화분",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "화분을 다시 들어 통과하기 시작한 순간.",
+        "shot_id": "SC03_SH04",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH04_P02",
+        "pose": "작업실 안 핍",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH04",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC03_GRID03",
+    "scene_id": "SC03",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "작업실 문 앞과 안, 연속",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH05_P01",
+        "pose": "바닥 화분",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "under_shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "이미 내려놓은 화분. 이후 시선만 창으로 이동.",
+        "shot_id": "SC03_SH05",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH05_P02",
+        "pose": "창을 올려다보는 핍",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "under_shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH05",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC03_SH06_P01",
+        "pose": "작업등의 빈 수직 도크.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "under_shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH06",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC03_SH07_P01",
+        "pose": "빈 도크와 왼쪽 배터리",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "under_shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH07",
+        "camera_id": "B",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC03_GRID04",
+    "scene_id": "SC03",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "작업실 문 앞과 안, 연속",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC03_SH07_P02",
+        "pose": "다시 고정된 배터리",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "under_shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "workshop_floor",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC03_SH07",
+        "camera_id": "B",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC04_GRID01",
+    "scene_id": "SC04",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 빛을 찾는 마지막 시도",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH01_P01",
+        "pose": "받침 위 화분",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "on_cart",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "받침에 올렸다가 되돌리기 전의 중간 상태.",
+        "shot_id": "SC04_SH01",
+        "camera_id": "D",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH01_P02",
+        "pose": "받침 옆 바닥 화분",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH01",
+        "camera_id": "D",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH02_P01",
+        "pose": "한 바퀴를 올린 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH02",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH02_P02",
+        "pose": "앞으로 밀린 받침",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH02",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC04_GRID02",
+    "scene_id": "SC04",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 빛을 찾는 마지막 시도",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH03_P01",
+        "pose": "바퀴 앞 조각",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC04_SH03_P02",
+        "pose": "바퀴에 끼운 조각",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC04_SH04_P01",
+        "pose": "빈손으로 받침에 오른 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH04",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH04_P02",
+        "pose": "바닥에 돌아온 핍",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf_floor",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH04",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC04_GRID03",
+    "scene_id": "SC04",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 빛을 찾는 마지막 시도",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH04B_P01",
+        "pose": "바닥 화분을 든 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "pip_both_hands",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "두 손으로 집어 든 순간.",
+        "shot_id": "SC04_SH04B",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH04B_P02",
+        "pose": "선반에 놓인 화분",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH04B",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH05_P01",
+        "pose": "손잡이를 미는 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH05",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH05_P02",
+        "pose": "회색빛 속 화분",
+        "at_sec": 5.5,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH05",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC04_GRID04",
+    "scene_id": "SC04",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "잠시 후, 빛을 찾는 마지막 시도",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC04_SH06_P01",
+        "pose": "차광판 아래 손",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH06",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH06_P02",
+        "pose": "안쪽으로 당겨진 화분",
+        "at_sec": 6.5,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "workshop_shelf",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH06",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC04_SH07_P01",
+        "pose": "작업등을 든 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "pip_both_hands",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "state_note": "램프를 옮기는 중간 상태.",
+        "shot_id": "SC04_SH07",
+        "camera_id": "D",
+        "size": "WS"
+      },
+      {
+        "id": "SC04_SH07_P02",
+        "pose": "화분 옆 작업등",
+        "at_sec": 8.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC04_SH07",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC05_GRID01",
+    "scene_id": "SC05",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 선반 앞 준비",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH01_P01",
+        "pose": "화분 쪽으로 도는 갓",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH01_P02",
+        "pose": "몸 왼쪽 슬롯 아래 도크",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH02_P01",
+        "pose": "몸 앞을 가로지른 오른 집게",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH02",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC05_SH02_P02",
+        "pose": "집게 바로 아래 도크",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH02",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC05_GRID02",
+    "scene_id": "SC05",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 선반 앞 준비",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH03_P01",
+        "pose": "집게가 도크 가장자리에 닿아 멈춘다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC05_SH04_P01",
+        "pose": "도크 위 볼트",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH04",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC05_SH04_P02",
+        "pose": "도크 안 볼트",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH04",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC05_SH05_P01",
+        "pose": "흙을 모은 집게",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC05_GRID03",
+    "scene_id": "SC05",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 선반 앞 준비",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC05_SH05_P02",
+        "pose": "잎 옆 빈 집게",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH05",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC05_SH06_P01",
+        "pose": "약해진 눈등",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH06",
+        "camera_id": "B",
+        "size": "MCU"
+      },
+      {
+        "id": "SC05_SH06_P02",
+        "pose": "배터리를 누른 왼손",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH06",
+        "camera_id": "B",
+        "size": "MCU"
+      },
+      {
+        "id": "SC05_SH07_P01",
+        "pose": "슬롯·오른손·아래 도크가 함께 보이는 준비 자세",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC05_SH07",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC06_GRID01",
+    "scene_id": "SC06",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 전원 전환",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH01_P01",
+        "pose": "오른손이 잡은 배터리와 아래의 도크",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC06_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH01_P02",
+        "pose": "접점이 아직 닿아 있는 분리 직전",
+        "at_sec": 6.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC06_SH01",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH02_P01",
+        "pose": "접점 끝의 배터리",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "pip_left_body",
+          "power": "on",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "closed_when_powered"
+        },
+        "shot_id": "SC06_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC06_SH02_P02",
+        "pose": "벌어진 집게",
+        "at_sec": 4.0,
+        "state": {
+          "battery": "falling",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH02",
+        "camera_id": "C",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC06_GRID02",
+    "scene_id": "SC06",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 전원 전환",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH03_P01",
+        "pose": "도크 위 떨어지는 배터리",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "falling",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC06_SH03_P02",
+        "pose": "도크에 앉은 배터리",
+        "at_sec": 4.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH03",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC06_SH04_P01",
+        "pose": "꺼진 램프와 정지한 핍",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "no",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH04",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC06_SH04_P02",
+        "pose": "켜진 램프·꺼진 핍·변하지 않은 화분",
+        "at_sec": 5.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH04",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC06_GRID03",
+    "scene_id": "SC06",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "연속, 전원 전환",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC06_SH05_P01",
+        "pose": "잎 그림자가 꺼진 눈등을 가로지른다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC06_SH05",
+        "camera_id": "B",
+        "size": "CU"
+      }
+    ],
+    "empty_slots": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "SC07_GRID01",
+    "scene_id": "SC07",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "몇 분 뒤, 같은 저녁",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC07_SH01_P01",
+        "pose": "창 아래 물방울이 바닥에서 작은 길을 만든다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH01",
+        "camera_id": "C",
+        "size": "CU"
+      },
+      {
+        "id": "SC07_SH02_P01",
+        "pose": "도크의 배터리와 램프, 정지한 핍을 한 화면에 둔다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH02",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC07_SH03_P01",
+        "pose": "벽에 돌려놓은 판자와 어두운 통로.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH03",
+        "camera_id": "A",
+        "size": "WS"
+      },
+      {
+        "id": "SC07_SH04_P01",
+        "pose": "열린 문 너머 작은 선반의 빛.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH04",
+        "camera_id": "D",
+        "size": "WS"
+      }
+    ],
+    "empty_slots": []
+  },
+  {
+    "id": "SC07_GRID02",
+    "scene_id": "SC07",
+    "location_id": "WORKSHOP",
+    "branch": "present",
+    "costume_version": "default",
+    "story_time": "몇 분 뒤, 같은 저녁",
+    "rows": 2,
+    "columns": 2,
+    "slots": [
+      {
+        "id": "SC07_SH05_P01",
+        "pose": "잎 그림자가 정지한 팔에 걸린다.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH05",
+        "camera_id": "B",
+        "size": "CU"
+      },
+      {
+        "id": "SC07_SH06_P01",
+        "pose": "창에서 본 핍·화분·램프의 실루엣.",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH06",
+        "camera_id": "F",
+        "size": "WS"
+      },
+      {
+        "id": "SC07_SH07_P01",
+        "pose": "머리에 닿은 잎",
+        "at_sec": 0.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH07",
+        "camera_id": "E",
+        "size": "MS"
+      },
+      {
+        "id": "SC07_SH07_P02",
+        "pose": "떨어진 잎과 정지한 핍",
+        "at_sec": 7.0,
+        "state": {
+          "battery": "lamp_dock",
+          "power": "off",
+          "plant": "shelf",
+          "lamp": "shelf_next_to_plant",
+          "lamp_on": "yes",
+          "door": "latched_open",
+          "ramp": "wall_after_step",
+          "cart": "chocked_shelf_front",
+          "grip": "open"
+        },
+        "shot_id": "SC07_SH07",
+        "camera_id": "E",
+        "size": "MS"
+      }
+    ],
+    "empty_slots": []
+  }
+]

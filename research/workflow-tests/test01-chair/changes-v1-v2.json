@@ -1,0 +1,2503 @@
+[
+  {
+    "shot_id": "SC01_SH01",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH01_P01",
+            "pose": "테이프 끝을 잡은 윤",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH01_P02",
+            "pose": "테이프가 사라진 벽과 윤",
+            "at_sec": 8.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH01_P01",
+            "pose": "테이프 끝을 잡은 윤",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "closed",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH01_P02",
+            "pose": "테이프가 사라진 벽과 윤",
+            "at_sec": 8.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "closed",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH02_P01",
+            "pose": "문 밖에 선 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH02_P02",
+            "pose": "문 안으로 들어온 하",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH02_P01",
+            "pose": "문 밖에 선 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "closed",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH02_P02",
+            "pose": "문 안으로 들어온 하",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH03",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH03_P01",
+            "pose": "윤은 테이프를 보며 하의 주차 위치를 지적한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH03_P01",
+            "pose": "윤은 테이프를 보며 하의 주차 위치를 지적한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH04",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH04_P01",
+            "pose": "가방과 등받이 사이 공간",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH04_P02",
+            "pose": "윤의 손에 막힌 가방",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH04_P01",
+            "pose": "가방과 등받이 사이 공간",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH04_P02",
+            "pose": "윤의 손에 막힌 가방",
+            "at_sec": 7.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH05",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH05_P01",
+            "pose": "하의 가방 손잡이",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH05_P02",
+            "pose": "작업대 위 가방",
+            "at_sec": 4.5
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH05_P01",
+            "pose": "하의 가방 손잡이",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH05_P02",
+            "pose": "작업대 위 가방",
+            "at_sec": 4.5,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH06",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH06_P01",
+            "pose": "상자 안에 들어간 손",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH06_P02",
+            "pose": "같은 봉투로 돌아간 단추",
+            "at_sec": 7.5
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH06_P01",
+            "pose": "상자 안에 들어간 손",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH06_P02",
+            "pose": "같은 봉투로 돌아간 단추",
+            "at_sec": 7.5,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH07_P01",
+            "pose": "하는 의자를 향해 시선을 내리며 집에 책상이 생겼다고 말한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH07_P01",
+            "pose": "하는 의자를 향해 시선을 내리며 집에 책상이 생겼다고 말한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC01_SH08",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC01_SH08_P01",
+            "pose": "테이프가 붙은 손",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC01_SH08_P02",
+            "pose": "테이프를 떼는 윤",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC01_SH08_P01",
+            "pose": "테이프가 붙은 손",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC01_SH08_P02",
+            "pose": "테이프를 떼는 윤",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH01",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH01_P01",
+            "pose": "가방을 펼친 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC02_SH01_P02",
+            "pose": "보조의자를 내민 윤",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH01_P01",
+            "pose": "가방을 펼친 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "folded_wall",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC02_SH01_P02",
+            "pose": "보조의자를 내민 윤",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "yun_hand",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH02_P01",
+            "pose": "윤이 보조의자를 내밀지만 하는 손을 내리지 않는다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH02_P01",
+            "pose": "윤이 보조의자를 내밀지만 하는 손을 내리지 않는다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "yun_hand",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH03",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 8
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH03_P01",
+            "pose": "하는 윤을 똑바로 보며 말을 꺼낸다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH03_P01",
+            "pose": "하는 윤을 똑바로 보며 말을 꺼낸다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "yun_hand",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH04",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH04_P01",
+            "pose": "반쯤 접힌 보조의자",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC02_SH04_P02",
+            "pose": "바닥에 닫힌 보조의자",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH04_P01",
+            "pose": "반쯤 접힌 보조의자",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "yun_hand",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC02_SH04_P02",
+            "pose": "바닥에 닫힌 보조의자",
+            "at_sec": 7.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH05",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH05_P01",
+            "pose": "좌판을 잡은 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC02_SH05_P02",
+            "pose": "문 쪽으로 든 의자",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH05_P01",
+            "pose": "좌판을 잡은 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC02_SH05_P02",
+            "pose": "문 쪽으로 든 의자",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "ha_hands",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH06",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH06_P01",
+            "pose": "윤의 손이 좌판 밑으로 들어감",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC02_SH06_P02",
+            "pose": "두 사람 사이 기울어진 의자",
+            "at_sec": 8.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH06_P01",
+            "pose": "윤의 손이 좌판 밑으로 들어감",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "ha_hands",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC02_SH06_P02",
+            "pose": "두 사람 사이 기울어진 의자",
+            "at_sec": 8.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH07_P01",
+            "pose": "의자 다리의 벌어진 이음새와 떨어지는 나무 가루.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH07_P01",
+            "pose": "의자 다리의 벌어진 이음새와 떨어지는 나무 가루.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC02_SH08",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC02_SH08_P01",
+            "pose": "함께 내리는 의자",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC02_SH08_P02",
+            "pose": "옆으로 누운 의자",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC02_SH08_P01",
+            "pose": "함께 내리는 의자",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC02_SH08_P02",
+            "pose": "옆으로 누운 의자",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "drawer",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH01",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH01_P01",
+            "pose": "서랍이 열리고 금속판과 나사가 보인다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH01_P01",
+            "pose": "서랍이 열리고 금속판과 나사가 보인다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH02_P01",
+            "pose": "다리 옆의 종이",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC03_SH02_P02",
+            "pose": "다리와 맞닿은 종이",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH02_P01",
+            "pose": "다리 옆의 종이",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC03_SH02_P02",
+            "pose": "다리와 맞닿은 종이",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH03",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH03_P01",
+            "pose": "윤은 나사 머리에 묻은 먼지를 닦으며 어제 일을 말한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH03_P01",
+            "pose": "윤은 나사 머리에 묻은 먼지를 닦으며 어제 일을 말한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH04",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH04_P01",
+            "pose": "하가 의자를 보고 윤이 하를 보는 시선이 엇갈린다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH04_P01",
+            "pose": "하가 의자를 보고 윤이 하를 보는 시선이 엇갈린다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH05",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH05_P01",
+            "pose": "하의 손이 좌판의 매끈한 부분을 쓸어 본다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH05_P01",
+            "pose": "하의 손이 좌판의 매끈한 부분을 쓸어 본다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH06",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 9
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH06_P01",
+            "pose": "윤은 나사를 하나씩 정렬하며 짧게 말한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH06_P01",
+            "pose": "윤은 나사를 하나씩 정렬하며 짧게 말한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH07_P01",
+            "pose": "닫힌 창 앞 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC03_SH07_P02",
+            "pose": "틈이 생긴 창",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH07_P01",
+            "pose": "닫힌 창 앞 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC03_SH07_P02",
+            "pose": "틈이 생긴 창",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH08",
+    "kind": "changed",
+    "fields": {
+      "action": {
+        "before": "코트를 벗은 하가 윤 옆으로 쪼그려 앉는다.",
+        "after": "하가 황토 코트를 벗어 접고 회색 니트 차림으로 윤 옆에 앉는다. 둘은 의자를 올릴 준비를 한다."
+      },
+      "changes": {
+        "before": {
+          "chair": "workbench_side"
+        },
+        "after": {
+          "chair": "floor_side",
+          "ha_wardrobe": "gray_knit"
+        }
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC03_SH08_P01",
+            "pose": "코트를 접는 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC03_SH08_P02",
+            "pose": "같은 높이로 앉은 자매",
+            "at_sec": 6.5
+          }
+        ],
+        "after": [
+          {
+            "id": "SC03_SH08_P01",
+            "pose": "코트를 벗어 접는 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "ochre_coat"
+            }
+          },
+          {
+            "id": "SC03_SH08_P02",
+            "pose": "회색 니트 차림으로 의자 옆에 앉은 하",
+            "at_sec": 6.5,
+            "state": {
+              "chair": "floor_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC03_SH08B",
+    "kind": "added",
+    "after": {
+      "duration_sec": 8,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "윤이 좌판을, 하가 등받이를 잡아 바닥의 의자를 작업대 위로 올린다.",
+      "purpose": "수리 위치로 이동하는 공동 행동",
+      "audio": "나무가 작업대에 닿는 소리",
+      "changes": {
+        "chair": "workbench_side"
+      },
+      "requires_known": [],
+      "id": "SC03_SH08B",
+      "scene_id": "SC03",
+      "location_id": "SHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC04"
+      ],
+      "beat_id": "SC03_BEAT04",
+      "edit_order": 25,
+      "timeline_in": 281,
+      "timeline_out": 289,
+      "state_in": {
+        "chair": "floor_side",
+        "chair_integrity": "cracked",
+        "brace": "table",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "floor_folded",
+        "ha_wardrobe": "gray_knit"
+      },
+      "state_out": {
+        "chair": "workbench_side",
+        "chair_integrity": "cracked",
+        "brace": "table",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "floor_folded",
+        "ha_wardrobe": "gray_knit"
+      },
+      "audience_before": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "audience_after": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH08B_P01",
+          "pose": "바닥의 의자를 나눠 잡은 자매",
+          "at_sec": 0.0,
+          "state": {
+            "chair": "floor_side",
+            "chair_integrity": "cracked",
+            "brace": "table",
+            "bag": "table",
+            "door": "open",
+            "ownership": "undecided",
+            "stool": "floor_folded",
+            "ha_wardrobe": "gray_knit"
+          }
+        },
+        {
+          "id": "SC03_SH08B_P02",
+          "pose": "작업대에 옆으로 놓인 의자",
+          "at_sec": 4.0,
+          "state": {
+            "chair": "workbench_side",
+            "chair_integrity": "cracked",
+            "brace": "table",
+            "bag": "table",
+            "door": "open",
+            "ownership": "undecided",
+            "stool": "floor_folded",
+            "ha_wardrobe": "gray_knit"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH01",
+      "cut_reason": "작업대 위 의자가 안정된 뒤 도구를 잡는 동작으로",
+      "requires_state": {},
+      "reveals": [],
+      "costume_version": "gray_knit",
+      "visible_assets": [
+        "YUN",
+        "HA_SHIRT",
+        "CHAIR"
+      ]
+    }
+  },
+  {
+    "shot_id": "SC04_SH01",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 8
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH01_P01",
+            "pose": "작업대 전체와 누운 의자, 역할이 나뉜 두 사람.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH01_P01",
+            "pose": "작업대 전체와 누운 의자, 역할이 나뉜 두 사람.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH02_P01",
+            "pose": "작업대 끝의 나사",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC04_SH02_P02",
+            "pose": "빈 끝과 바닥 나사",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH02_P01",
+            "pose": "작업대 끝의 나사",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC04_SH02_P02",
+            "pose": "빈 끝과 바닥 나사",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH03",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH03_P01",
+            "pose": "동시에 숙인 자매",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC04_SH03_P02",
+            "pose": "나사를 든 윤",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH03_P01",
+            "pose": "동시에 숙인 자매",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC04_SH03_P02",
+            "pose": "나사를 든 윤",
+            "at_sec": 7.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH04",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH04_P01",
+            "pose": "드라이버를 가리는 손",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC04_SH04_P02",
+            "pose": "서로 겹치지 않는 손과 도구",
+            "at_sec": 8.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH04_P01",
+            "pose": "드라이버를 가리는 손",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC04_SH04_P02",
+            "pose": "서로 겹치지 않는 손과 도구",
+            "at_sec": 8.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "cracked",
+              "brace": "table",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH05",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH05_P01",
+            "pose": "첫 나사가 보강판을 잡는다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH05_P01",
+            "pose": "첫 나사가 보강판을 잡는다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "one_screw",
+              "brace": "chair_partial",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH06",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH06_P01",
+            "pose": "윤이 손목을 멈추고 하를 본다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH06_P01",
+            "pose": "윤이 손목을 멈추고 하를 본다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "one_screw",
+              "brace": "chair_partial",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH07_P01",
+            "pose": "윤이 도구를 내밈",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC04_SH07_P02",
+            "pose": "하가 도구를 잡음",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH07_P01",
+            "pose": "윤이 도구를 내밈",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "one_screw",
+              "brace": "chair_partial",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC04_SH07_P02",
+            "pose": "하가 도구를 잡음",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "one_screw",
+              "brace": "chair_partial",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH08",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 14,
+        "after": 10
+      },
+      "action": {
+        "before": "남은 나사를 고정하고 둘이 의자를 세운다.",
+        "after": "작업 시간이 생략된 뒤, 이미 세 나사가 들어간 보강판의 마지막 나사를 하가 조인다. 윤의 충분하다는 손짓에 멈춘다."
+      },
+      "camera_id": {
+        "before": "A",
+        "after": "D"
+      },
+      "audio": {
+        "before": "네 다리 닿는 소리",
+        "after": "시간 생략 후 마지막 나사의 마찰"
+      },
+      "changes": {
+        "before": {
+          "chair_integrity": "braced_four_screws",
+          "brace": "chair_fixed",
+          "chair": "floor"
+        },
+        "after": {
+          "chair_integrity": "braced_four_screws",
+          "brace": "chair_fixed"
+        }
+      },
+      "cut_reason": {
+        "before": "다음 정보로 전환: 기능 시험이 감정의 허락으로",
+        "after": "드라이버가 멈춘 뒤 둘이 의자를 드는 넓은 화면으로"
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC04_SH08_P01",
+            "pose": "하의 손이 멈춘 마지막 나사",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC04_SH08_P02",
+            "pose": "바닥에 세운 의자",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC04_SH08_P01",
+            "pose": "세 나사가 고정된 보강판과 마지막 나사",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "one_screw",
+              "brace": "chair_partial",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC04_SH08_P02",
+            "pose": "네 나사가 고정된 보강판",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "workbench_side",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC04_SH08B",
+    "kind": "added",
+    "after": {
+      "duration_sec": 8,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "둘이 수리한 의자를 작업대에서 들어 바닥에 세운다.",
+      "purpose": "수리 완료와 다음 착석의 공간 연결",
+      "audio": "네 다리가 바닥에 닿는 소리",
+      "changes": {
+        "chair": "floor"
+      },
+      "id": "SC04_SH08B",
+      "scene_id": "SC04",
+      "location_id": "SHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC04"
+      ],
+      "beat_id": "SC04_BEAT04",
+      "edit_order": 34,
+      "timeline_in": 381,
+      "timeline_out": 389,
+      "state_in": {
+        "chair": "workbench_side",
+        "chair_integrity": "braced_four_screws",
+        "brace": "chair_fixed",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "floor_folded",
+        "ha_wardrobe": "gray_knit"
+      },
+      "state_out": {
+        "chair": "floor",
+        "chair_integrity": "braced_four_screws",
+        "brace": "chair_fixed",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "floor_folded",
+        "ha_wardrobe": "gray_knit"
+      },
+      "audience_before": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "audience_after": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH08B_P01",
+          "pose": "작업대 위 의자를 든 두 사람",
+          "at_sec": 0.0,
+          "state": {
+            "chair": "workbench_side",
+            "chair_integrity": "braced_four_screws",
+            "brace": "chair_fixed",
+            "bag": "table",
+            "door": "open",
+            "ownership": "undecided",
+            "stool": "floor_folded",
+            "ha_wardrobe": "gray_knit"
+          }
+        },
+        {
+          "id": "SC04_SH08B_P02",
+          "pose": "바닥에 바로 선 의자",
+          "at_sec": 4.0,
+          "state": {
+            "chair": "floor",
+            "chair_integrity": "braced_four_screws",
+            "brace": "chair_fixed",
+            "bag": "table",
+            "door": "open",
+            "ownership": "undecided",
+            "stool": "floor_folded",
+            "ha_wardrobe": "gray_knit"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH01",
+      "cut_reason": "네 다리가 닿는 소리를 읽은 뒤 착석 시험으로",
+      "continuity_exception": "앞 샷 뒤 나사 작업 일부가 생략됨. 마지막 나사의 동작은 실제 연속.",
+      "requires_state": {},
+      "requires_known": [],
+      "reveals": [],
+      "costume_version": "gray_knit",
+      "visible_assets": [
+        "YUN",
+        "HA_SHIRT",
+        "CHAIR"
+      ]
+    }
+  },
+  {
+    "shot_id": "SC05_SH01",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH01_P01",
+            "pose": "의자를 누르는 윤",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC05_SH01_P02",
+            "pose": "앉기 직전 윤",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH01_P01",
+            "pose": "의자를 누르는 윤",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC05_SH01_P02",
+            "pose": "앉기 직전 윤",
+            "at_sec": 7.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH02_P01",
+            "pose": "앉은 윤",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC05_SH02_P02",
+            "pose": "허공에서 멈춘 발",
+            "at_sec": 8.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH02_P01",
+            "pose": "앉은 윤",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC05_SH02_P02",
+            "pose": "허공에서 멈춘 발",
+            "at_sec": 8.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH03",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH03_P01",
+            "pose": "펼치는 보조의자",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC05_SH03_P02",
+            "pose": "나란히 앉은 자매",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH03_P01",
+            "pose": "펼치는 보조의자",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "floor_folded",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC05_SH03_P02",
+            "pose": "나란히 앉은 자매",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH04",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 6
+      },
+      "action": {
+        "before": "하의 발끝 박자 다음 윤의 손가락 박자.",
+        "after": "하의 발끝이 바닥에 두 박자를 친다."
+      },
+      "camera_id": {
+        "before": "D",
+        "after": "DF"
+      },
+      "audio": {
+        "before": "같은 두 박자",
+        "after": "바닥 두 박자"
+      },
+      "cut_reason": {
+        "before": "다음 정보로 전환: 구체적인 관계 회복",
+        "after": "두 박자 소리를 받아 윤의 손가락으로 컷"
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH04_P01",
+            "pose": "바닥을 두드리는 하의 발",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC05_SH04_P02",
+            "pose": "작업대 위 윤의 두 손가락",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH04_P01",
+            "pose": "바닥을 두드리는 하의 발",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH04B",
+    "kind": "added",
+    "after": {
+      "duration_sec": 6,
+      "size": "CU",
+      "camera_id": "D",
+      "action": "윤의 손가락이 작업대에서 같은 두 박자를 돌려준다.",
+      "purpose": "소리를 주고받는 공통 기억",
+      "audio": "나무 위 같은 두 박자",
+      "id": "SC05_SH04B",
+      "scene_id": "SC05",
+      "location_id": "SHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC02"
+      ],
+      "beat_id": "SC05_BEAT02",
+      "edit_order": 39,
+      "timeline_in": 435,
+      "timeline_out": 441,
+      "state_in": {
+        "chair": "floor",
+        "chair_integrity": "braced_four_screws",
+        "brace": "chair_fixed",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "open_next_to_chair",
+        "ha_wardrobe": "gray_knit"
+      },
+      "state_out": {
+        "chair": "floor",
+        "chair_integrity": "braced_four_screws",
+        "brace": "chair_fixed",
+        "bag": "table",
+        "door": "open",
+        "ownership": "undecided",
+        "stool": "open_next_to_chair",
+        "ha_wardrobe": "gray_knit"
+      },
+      "audience_before": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "audience_after": [
+        "chair_cracked",
+        "chair_dispute",
+        "repair_prepared"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH04B_P01",
+          "pose": "작업대를 두드리는 윤의 두 손가락",
+          "at_sec": 0.0,
+          "state": {
+            "chair": "floor",
+            "chair_integrity": "braced_four_screws",
+            "brace": "chair_fixed",
+            "bag": "table",
+            "door": "open",
+            "ownership": "undecided",
+            "stool": "open_next_to_chair",
+            "ha_wardrobe": "gray_knit"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH05",
+      "cut_reason": "박자가 끝난 뒤 하의 식사 질문으로",
+      "changes": {},
+      "requires_state": {},
+      "requires_known": [],
+      "reveals": [],
+      "costume_version": "gray_knit",
+      "visible_assets": [
+        "YUN",
+        "HA_SHIRT",
+        "CHAIR"
+      ]
+    }
+  },
+  {
+    "shot_id": "SC05_SH05",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH05_P01",
+            "pose": "하가 윤에게 오늘의 식사를 묻는다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH05_P01",
+            "pose": "하가 윤에게 오늘의 식사를 묻는다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH06",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH06_P01",
+            "pose": "윤은 시간을 확인하려던 시선을 하에게 돌린다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH06_P01",
+            "pose": "윤은 시간을 확인하려던 시선을 하에게 돌린다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH07_P01",
+            "pose": "가방에 들어가는 장갑",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC05_SH07_P02",
+            "pose": "하 쪽으로 밀린 손잡이",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH07_P01",
+            "pose": "가방에 들어가는 장갑",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "table",
+              "door": "open",
+              "ownership": "undecided",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC05_SH07_P02",
+            "pose": "하 쪽으로 밀린 손잡이",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC05_SH08",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 8
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC05_SH08_P01",
+            "pose": "하의 마지막 질문에 윤이 고개를 들고 대답한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC05_SH08_P01",
+            "pose": "하의 마지막 질문에 윤이 고개를 들고 대답한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH01",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH01_P01",
+            "pose": "서로 다른 쪽을 잡은 손",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC06_SH01_P02",
+            "pose": "같이 든 의자",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH01_P01",
+            "pose": "서로 다른 쪽을 잡은 손",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "floor",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH01_P02",
+            "pose": "같이 든 의자",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH02",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH02_P01",
+            "pose": "문 앞의 가로 의자",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC06_SH02_P02",
+            "pose": "문틀 안 세로 의자",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH02_P01",
+            "pose": "문 앞의 가로 의자",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH02_P02",
+            "pose": "문틀 안 세로 의자",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH03",
+    "kind": "changed",
+    "fields": {
+      "duration_sec": {
+        "before": 12,
+        "after": 8
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH03_P01",
+            "pose": "윤이 빈 작업대를 마지막으로 본다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH03_P01",
+            "pose": "윤이 빈 작업대를 마지막으로 본다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH04",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH04_P01",
+            "pose": "혼자 당기지 않는 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC06_SH04_P02",
+            "pose": "윤의 손이 돌아온 의자",
+            "at_sec": 5.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH04_P01",
+            "pose": "혼자 당기지 않는 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH04_P02",
+            "pose": "윤의 손이 돌아온 의자",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "both_hands",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH05",
+    "kind": "changed",
+    "fields": {
+      "location_id": {
+        "before": "ENTRANCE",
+        "after": "SHOP_EXTERIOR"
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH05_P01",
+            "pose": "문밖에서 의자 양쪽 높이를 맞추고 골목으로 향한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH05_P01",
+            "pose": "문밖에서 의자 양쪽 높이를 맞추고 골목으로 향한다.",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_outside",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH06",
+    "kind": "changed",
+    "fields": {
+      "action": {
+        "before": "가게 옆에 의자를 잠시 놓으며 식사값을 두고 말한다.",
+        "after": "문밖 바닥에 의자를 내려놓고 윤이 등받이를 받친다. 하가 문으로 돌아갈 공간이 생긴다."
+      },
+      "location_id": {
+        "before": "ENTRANCE",
+        "after": "SHOP_EXTERIOR"
+      },
+      "changes": {
+        "before": {
+          "chair": "yun_outside"
+        },
+        "after": {
+          "chair": "outside_ground_supported_by_yun"
+        }
+      },
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH06_P01",
+            "pose": "가게 옆에 의자를 잠시 놓으며 식사값을 두고 말한다.",
+            "at_sec": 0.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH06_P01",
+            "pose": "문밖 바닥에 내려놓는 의자",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "both_outside",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH06_P02",
+            "pose": "의자를 받친 윤과 문으로 돌아서는 하",
+            "at_sec": 5.0,
+            "state": {
+              "chair": "outside_ground_supported_by_yun",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH07",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH07_P01",
+            "pose": "열린 빈 출입구",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC06_SH07_P02",
+            "pose": "지퍼를 보는 하",
+            "at_sec": 6.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH07_P01",
+            "pose": "열린 빈 출입구",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "outside_ground_supported_by_yun",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH07_P02",
+            "pose": "지퍼를 보는 하",
+            "at_sec": 6.0,
+            "state": {
+              "chair": "outside_ground_supported_by_yun",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "shot_id": "SC06_SH08",
+    "kind": "changed",
+    "fields": {
+      "panels": {
+        "before": [
+          {
+            "id": "SC06_SH08_P01",
+            "pose": "열린 가방의 하",
+            "at_sec": 0.0
+          },
+          {
+            "id": "SC06_SH08_P02",
+            "pose": "닫힌 문 유리 너머 두 자매",
+            "at_sec": 7.0
+          }
+        ],
+        "after": [
+          {
+            "id": "SC06_SH08_P01",
+            "pose": "열린 가방의 하",
+            "at_sec": 0.0,
+            "state": {
+              "chair": "outside_ground_supported_by_yun",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "open",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          },
+          {
+            "id": "SC06_SH08_P02",
+            "pose": "닫힌 문 유리 너머 두 자매",
+            "at_sec": 7.0,
+            "state": {
+              "chair": "outside_ground_supported_by_yun",
+              "chair_integrity": "braced_four_screws",
+              "brace": "chair_fixed",
+              "bag": "ha",
+              "door": "closed",
+              "ownership": "ha",
+              "stool": "open_next_to_chair",
+              "ha_wardrobe": "gray_knit"
+            }
+          }
+        ]
+      }
+    }
+  }
+]

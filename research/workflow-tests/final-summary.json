@@ -1,0 +1,35 @@
+[
+  {
+    "case": "test01-chair",
+    "title": "의자 하나",
+    "runtime_sec": 573,
+    "total_sec": 585,
+    "shots": 51,
+    "panels": 82,
+    "grids": 25,
+    "checks": 1711,
+    "errors": 0
+  },
+  {
+    "case": "test02-light",
+    "title": "빛 배달",
+    "runtime_sec": 538,
+    "total_sec": 550,
+    "shots": 48,
+    "panels": 84,
+    "grids": 24,
+    "checks": 1409,
+    "errors": 0
+  },
+  {
+    "case": "test03-signals",
+    "title": "세 번의 불빛",
+    "runtime_sec": 571,
+    "total_sec": 583,
+    "shots": 54,
+    "panels": 83,
+    "grids": 26,
+    "checks": 1617,
+    "errors": 0
+  }
+]

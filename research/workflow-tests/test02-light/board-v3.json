@@ -1,0 +1,4401 @@
+{
+  "id": "test02-light",
+  "title": "빛 배달",
+  "format": "무성 3D 애니메이션",
+  "credits_sec": 12,
+  "runtime_min": 540,
+  "runtime_max": 660,
+  "logline": "폐쇄된 온실의 작은 관리 로봇이 마지막 화분을 빛으로 옮기려다, 자신의 전원이 그 빛의 마지막 재료임을 발견한다.",
+  "bible": "작은 청록색 로봇 핍: 바퀴 두 개, 짧은 집게 팔 두 개, 눈 역할의 흰 표시등 하나. 몸 왼쪽에 주황색 배터리 한 개. 배터리가 빠지면 구동·눈등은 즉시 멎고 집게는 무전원 열린 상태로 돌아간다. 움직임이 멎은 뒤의 낙하는 중력·스프링만 가능. 붉은 화분은 테두리 한 곳이 깨졌고 잎 두 장. 새 잎·개화는 생기지 않는다. 주 통로는 서→동, 작업실은 동쪽, 창가 선반은 작업실 북쪽. 폭풍의 회색빛. 작업등은 주황 배터리와 같은 규격의 수직 도크 하나.",
+  "assets": {
+    "PIP": "청록 로봇, 바퀴2·팔2·눈등1",
+    "BATTERY": "주황 배터리 한 개, 몸 왼쪽 장착",
+    "PLANT": "붉은 이 빠진 화분·잎2",
+    "HALL": "서쪽 출발→동쪽 작업실 문",
+    "WORKSHOP": "남쪽 문·북쪽 창가·서쪽 공구대",
+    "LAMP": "배터리 수직 도크·흰색 갓",
+    "RAMP": "직사각 나무 판자",
+    "CART": "낮은 바퀴 받침",
+    "BOLT": "작은 시험용 볼트"
+  },
+  "cameras": {
+    "A": "온실 통로 남쪽 고정. 진행은 화면 왼쪽→오른쪽.",
+    "B": "로봇 오른쪽 앞 사선 고정. 몸 왼쪽 배터리 위치는 세계 기준으로 유지.",
+    "C": "피사체 앞 높은 사선 고정 인서트. 손·접촉 위치를 읽을 수 있게 한다.",
+    "D": "작업실 남쪽에서 북쪽 창을 보는 고정 카메라. 창가 선반은 배경 중앙.",
+    "E": "선반 동쪽에서 서쪽을 보는 고정 카메라. 램프 도크와 로봇 오른손을 함께 볼 수 있다.",
+    "F": "창 안쪽에서 실내를 보는 역방향 카메라. 전환 전에 공간 관계를 다시 설정한다."
+  },
+  "initial_states": {
+    "present": {
+      "battery": "pip_left_body",
+      "power": "on",
+      "plant": "hall_floor",
+      "lamp": "workshop_shelf",
+      "lamp_on": "no",
+      "door": "ajar",
+      "ramp": "wall",
+      "cart": "workshop_floor",
+      "grip": "closed_when_powered"
+    }
+  },
+  "scenes": [
+    {
+      "id": "SC01",
+      "location_id": "HALL",
+      "story_time": "오후, 폐쇄 온실",
+      "branch": "present",
+      "sources": [
+        "회색 유리 지붕 아래 비가 흐른다. 빈 화분들이 번호표만 남긴 채 줄지어 있다. 핍은 떨어진 작은 볼트를 집어 정리통에 넣는 일을 반복한다. 집게를 들던 중 눈등이 꺼지고 볼트가 떨어진다. 집게는 저절로 벌어진다. 핍의 바퀴는 그대로 멈춘다.",
+        "몸 왼쪽에서 느슨하게 튀어나온 주황 배터리가 진동으로 다시 접점에 닿는다. 눈등이 돌아온다. 핍은 왼손으로 배터리를 끝까지 밀고, 오른손 집게를 닫았다 펴 본다. 바닥에 떨어진 볼트는 굴러 붉은 화분 아래 멈춘다.",
+        "핍이 화분 쪽으로 가 볼트를 찾는다. 붉은 화분 속에는 잎 두 장이 달린 모종이 있다. 지붕 틈의 작은 햇빛이 잎 끝에서 사라진다. 핍은 잎을 집으려다 손을 멈추고 대신 화분 밑 흙을 턴다. 잎이 집게 끝에 가볍게 닿는다.",
+        "핍은 두 집게로 화분 양쪽을 잡아 들어 올린다. 어둠이 짙어지는 통로 동쪽에는 창가를 뜻하는 오래된 해 모양 표식이 있다. 핍은 그쪽으로 몸을 돌린다. 화분의 깨진 테두리는 진행 방향 기준 왼쪽을 향한다."
+      ],
+      "source_ids": [
+        "SC01_SRC01",
+        "SC01_SRC02",
+        "SC01_SRC03",
+        "SC01_SRC04"
+      ]
+    },
+    {
+      "id": "SC02",
+      "location_id": "HALL",
+      "story_time": "잠시 후, 통로 중간",
+      "branch": "present",
+      "sources": [
+        "바닥 타일 하나가 들떠 있다. 핍은 화분을 든 채 작은 턱을 넘으려다 바퀴가 헛돈다. 흙이 테두리까지 기운다. 핍은 뒤로 물러나 화분을 평평한 바닥에 내려놓는다. 화분의 깨진 부분에서 흙 한 톨이 굴러 나간다.",
+        "통로 옆에 기대어진 판자가 있다. 핍은 판자를 잡아 턱 위에 올리지만 비스듬해 한쪽이 뜬다. 한 손으로 누르고 한 바퀴로 시험한다. 판자가 돌아가며 몸이 기운다. 핍은 바퀴를 빼고 다시 바닥에서 판자 방향을 돌린다.",
+        "판자 끝을 타일 틈에 걸자 이번에는 움직이지 않는다. 핍은 빈손으로 올라갔다 내려와 시험한다. 그 뒤 화분을 들어 판자 중앙으로 천천히 이동한다. 화분에 가린 바퀴가 판자 가장자리 쪽으로 간다. 핍이 몸을 조금 돌려 중심을 맞춘다.",
+        "턱을 넘은 핍은 화분을 평지에 내려놓고 돌아와 판자를 치운다. 뒤를 보는 핍의 앞에 빈 화분 줄이 남아 있다. 핍은 판자를 벽에 기대 놓은 뒤 붉은 화분을 다시 들어 올린다."
+      ],
+      "source_ids": [
+        "SC02_SRC01",
+        "SC02_SRC02",
+        "SC02_SRC03",
+        "SC02_SRC04"
+      ]
+    },
+    {
+      "id": "SC03",
+      "location_id": "WORKSHOP",
+      "story_time": "작업실 문 앞과 안, 연속",
+      "branch": "present",
+      "sources": [
+        "남쪽 문은 반쯤 열렸지만 화분을 든 핍이 지나갈 만큼 넓지 않다. 핍은 화분을 바닥에 두고 문을 민다. 문은 열린 뒤 스프링 때문에 돌아온다. 핍은 문을 잡고 화분을 향해 손을 뻗지만 닿지 않는다.",
+        "문 밑에는 발로 눌러 고정하는 작은 걸쇠가 있다. 핍은 문을 밀어 둔 채 바퀴로 걸쇠를 누른다. 문이 멈춘다. 핍이 화분을 들어 통과한다. 화분은 여전히 잎 두 장이고 깨진 테두리는 몸 왼쪽이다.",
+        "작업실 북쪽에는 창이 있지만 외부 차광판이 닫혀 있다. 핍은 선반 아래에 화분을 놓고 창 쪽으로 눈등을 올린다. 구름 그림자가 차광판 틈에서 완전히 사라진다. 서쪽 작업대 위에는 꺼진 작업등과 빈 배터리 도크가 있다.",
+        "핍이 작업등 도크에 손을 넣어 본다. 몸 왼쪽 배터리와 같은 주황색 홈과 접점이 있다. 핍은 배터리를 살짝 당기다 눈등이 약해지자 즉시 밀어 넣는다. 도크 앞에서 움직이지 않던 핍이 다시 화분을 본다."
+      ],
+      "source_ids": [
+        "SC03_SRC01",
+        "SC03_SRC02",
+        "SC03_SRC03",
+        "SC03_SRC04"
+      ]
+    },
+    {
+      "id": "SC04",
+      "location_id": "WORKSHOP",
+      "story_time": "잠시 후, 빛을 찾는 마지막 시도",
+      "branch": "present",
+      "sources": [
+        "핍은 도크에서 물러나 선반 위로 화분을 옮길 방법을 찾는다. 선반 아래 낮은 바퀴 받침을 끌어낸다. 화분을 받침 위에 올리면 자신의 몸을 높일 수 없다. 핍은 화분을 다시 바닥에 내려놓고 받침을 선반 앞에 댄다.",
+        "받침이 바퀴 때문에 움직인다. 핍은 바닥의 작은 나무 조각을 바퀴 밑에 끼운다. 빈손으로 올라가 선반에 손을 대 보고 다시 내려온다. 화분을 들고 받침 위에 올라 북쪽 선반에 놓는다. 깨진 테두리가 실내 쪽을 향한다.",
+        "핍은 차광판 아래의 손잡이를 밀어 본다. 틈이 잠깐 벌어져 회색빛이 화분을 비추지만 손을 놓으면 닫힌다. 창밖에서는 비가 더 굵어진다. 핍은 손잡이를 놓고 화분을 자기 쪽으로 당긴다. 잎 끝의 빗물 반사만 남는다.",
+        "화분을 보던 눈등이 작업등으로 향한다. 핍은 더 이상 창을 올려다보지 않는다. 선반에서 내려와 작업등을 양손으로 들어, 화분 옆에 올려놓는다."
+      ],
+      "source_ids": [
+        "SC04_SRC01",
+        "SC04_SRC02",
+        "SC04_SRC03",
+        "SC04_SRC04"
+      ]
+    },
+    {
+      "id": "SC05",
+      "location_id": "WORKSHOP",
+      "story_time": "연속, 선반 앞 준비",
+      "branch": "present",
+      "sources": [
+        "핍은 작업등의 갓을 화분 쪽으로 돌린다. 빈 도크는 위로 열려 있다. 핍은 선반 앞 받침에 올라서 자기 오른손이 도크 바로 위에 오는지 살핀다. 도크를 몸 왼쪽 배터리 슬롯의 바로 아래로 옮긴다. 오른손으로 몸 앞을 가로질러 배터리를 잡고 수평 이동 없이 떨어뜨릴 수 있는지 빈손으로 맞춰 본다.",
+        "빈손 집게가 도크 옆 벽에 부딪힌다. 핍은 작업등을 조금 밀고 다시 팔을 움직인다. 이번에는 배터리 슬롯 바로 아래에 도크 중심이 온다. 핍은 시험용 볼트를 집어 도크 위에서 떨어뜨린다. 볼트는 옆으로 튀지 않고 안에 떨어진다. 핍은 다시 볼트를 꺼낸다.",
+        "화분을 옮길 때 흘린 흙이 선반 위에 남아 있다. 핍은 흙을 화분 안에 넣고 잎을 피해 손을 뺀다. 눈등이 잠깐 또 약해진다. 몸을 일으키던 핍이 멈추고 배터리를 한 번 더 눌러 접점을 붙인다.",
+        "핍은 바퀴가 미끄러지지 않게 받침 위에 자세를 고정한다. 왼손은 선반을 가볍게 짚고 오른손은 몸 왼쪽 배터리를 잡는다. 화분과 작업등은 움직이지 않는다. 긴 빗소리 사이로 핍의 구동음만 남는다."
+      ],
+      "source_ids": [
+        "SC05_SRC01",
+        "SC05_SRC02",
+        "SC05_SRC03",
+        "SC05_SRC04"
+      ]
+    },
+    {
+      "id": "SC06",
+      "location_id": "WORKSHOP",
+      "story_time": "연속, 전원 전환",
+      "branch": "present",
+      "sources": [
+        "핍은 고개 대신 눈등의 빛을 화분으로 향한다. 오른손이 배터리를 몸 왼쪽에서 당긴다. 배터리가 접점에서 빠지는 순간 구동음과 눈등이 멎는다. 전원이 사라진 오른 집게는 벌어진다. 더 이상 능동적인 움직임은 없다.",
+        "열린 집게에서 배터리가 아래의 도크로 떨어진다. 한 번 튕긴 뒤 홈에 들어간다. 램프가 약하게 켜졌다가 일정한 빛을 낸다. 선반 위 화분과 멈춘 핍이 동시에 드러난다. 켜진 것은 램프 하나이고 핍의 눈은 꺼진 채다.",
+        "바람이 창 틈으로 들어와 잎을 흔든다. 잎의 그림자가 핍의 꺼진 눈등을 스친다. 핍은 이를 따라 움직이지 않는다. 선반을 짚은 왼 집게도 열린 채 걸려 있다. 움직임은 잎과 빛의 반사에만 있다.",
+        "램프의 갓 안쪽에는 핍의 청록색 몸이 작게 비친다. 화분의 깨진 테두리와 흙은 그대로다. 빛이 있다고 식물이 갑자기 자라지는 않는다. 밖의 비는 계속 내리고, 안에서는 작은 램프의 전기음이 들린다."
+      ],
+      "source_ids": [
+        "SC06_SRC01",
+        "SC06_SRC02",
+        "SC06_SRC03",
+        "SC06_SRC04"
+      ]
+    },
+    {
+      "id": "SC07",
+      "location_id": "WORKSHOP",
+      "story_time": "몇 분 뒤, 같은 저녁",
+      "branch": "present",
+      "sources": [
+        "창가 바닥에 고인 작은 물방울이 천천히 길을 만든다. 물은 선반에 닿지 않는다. 선반 위 램프는 켜져 있고 배터리는 도크에 그대로 있다. 핍은 같은 자세다. 두 장의 잎은 가끔 바람에 흔들린다.",
+        "프레임은 빈 화분이 늘어선 어두운 통로를 지나 다시 작업실의 밝은 작은 사각형으로 돌아온다. 닫히지 않은 문은 걸쇠에 고정되어 있다. 핍이 치워 둔 판자도 벽에 남아 있다. 지나온 길에는 새로 생긴 장애물이 없다.",
+        "잎 그림자가 핍의 팔을 덮는다. 빗소리의 간격이 조금 넓어진다. 핍의 바퀴나 눈등은 다시 켜지지 않는다. 일을 하는 기계 대신, 곁에 남아 있는 물체의 시간이 이어진다.",
+        "마지막 화면은 화분과 핍을 함께 담는다. 램프의 빛이 둘을 같은 범위 안에 놓는다. 잎 두 장 중 하나가 흔들려 핍의 머리에 살짝 닿았다 떨어진다. 화면은 이 움직임이 끝난 뒤 닫힌다."
+      ],
+      "source_ids": [
+        "SC07_SRC01",
+        "SC07_SRC02",
+        "SC07_SRC03",
+        "SC07_SRC04"
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "빈 화분 사이에서 볼트를 분류하는 핍.",
+      "purpose": "작은 반복과 텅 빈 세계",
+      "audio": "빗소리·볼트 금속음",
+      "id": "SC01_SH01",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC01"
+      ],
+      "beat_id": "SC01_BEAT01",
+      "edit_order": 1,
+      "timeline_in": 0,
+      "timeline_out": 12,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [],
+      "audience_after": [],
+      "panels": [
+        {
+          "id": "SC01_SH01_P01",
+          "pose": "볼트를 집은 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC01_SH01_P02",
+          "pose": "정리통 위의 집게",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH02",
+      "cut_reason": "다음 정보로 전환: 전원 상실의 물성 제시",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "B",
+      "action": "눈등이 꺼지고 집게가 벌어져 볼트가 떨어진다.",
+      "purpose": "전원 상실의 물성 제시",
+      "audio": "모터 정지·볼트 낙하",
+      "reveals": [
+        "power_loss_opens_grip"
+      ],
+      "id": "SC01_SH02",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC01"
+      ],
+      "beat_id": "SC01_BEAT01",
+      "edit_order": 2,
+      "timeline_in": 12,
+      "timeline_out": 22,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "off",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "open"
+      },
+      "audience_before": [],
+      "audience_after": [
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH02_P01",
+          "pose": "꺼지기 직전 눈등",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC01_SH02_P02",
+          "pose": "열린 집게와 꺼진 눈등",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "off",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH03",
+      "cut_reason": "다음 정보로 전환: 전원과 운동의 인과",
+      "changes": {
+        "power": "off",
+        "grip": "open"
+      },
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 13,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "왼쪽 배터리 접점이 닿아 눈등이 켜지고 왼손이 배터리를 밀어 넣는다.",
+      "purpose": "전원과 운동의 인과",
+      "audio": "접점의 작은 딸깍",
+      "id": "SC01_SH03",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC02"
+      ],
+      "beat_id": "SC01_BEAT02",
+      "edit_order": 3,
+      "timeline_in": 22,
+      "timeline_out": 35,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "off",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH03_P01",
+          "pose": "약간 빠진 배터리",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "off",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "open"
+          }
+        },
+        {
+          "id": "SC01_SH03_P02",
+          "pose": "몸 안에 고정된 배터리",
+          "at_sec": 6.5,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH04",
+      "cut_reason": "다음 정보로 전환: 목표물 발견의 동기",
+      "changes": {
+        "power": "on",
+        "grip": "closed_when_powered"
+      },
+      "power_restored_within_shot": true,
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "오른손을 시험한 뒤 굴러간 볼트를 따라간다.",
+      "purpose": "목표물 발견의 동기",
+      "audio": "바퀴·짧은 서보음",
+      "id": "SC01_SH04",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC02"
+      ],
+      "beat_id": "SC01_BEAT02",
+      "edit_order": 4,
+      "timeline_in": 35,
+      "timeline_out": 47,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH04_P01",
+          "pose": "닫힌 오른 집게",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC01_SH04_P02",
+          "pose": "화분 앞에 선 핍",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH05",
+      "cut_reason": "다음 정보로 전환: 식물에 필요한 것",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "잎 두 장 위 작은 빛이 사라진다.",
+      "purpose": "식물에 필요한 것",
+      "audio": "빗소리",
+      "reveals": [
+        "plant_needs_light"
+      ],
+      "id": "SC01_SH05",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC03"
+      ],
+      "beat_id": "SC01_BEAT03",
+      "edit_order": 5,
+      "timeline_in": 47,
+      "timeline_out": 57,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH05_P01",
+          "pose": "잎 두 장 위 작은 빛이 사라진다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH06",
+      "cut_reason": "다음 정보로 전환: 사물을 다루는 방식의 변화",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "MS",
+      "camera_id": "B",
+      "action": "잎을 집으려던 손이 멈추고 화분 바닥의 흙을 턴다.",
+      "purpose": "사물을 다루는 방식의 변화",
+      "audio": "흙 가루·잎 스침",
+      "id": "SC01_SH06",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC03"
+      ],
+      "beat_id": "SC01_BEAT03",
+      "edit_order": 6,
+      "timeline_in": 57,
+      "timeline_out": 71,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH06_P01",
+          "pose": "잎 앞에서 멈춘 집게",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC01_SH06_P02",
+          "pose": "화분 바닥을 받친 집게",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC01_SH07",
+      "cut_reason": "다음 정보로 전환: 여정 시작",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 9,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "화분을 두 손으로 든 핍이 동쪽 표식을 향한다.",
+      "purpose": "여정 시작",
+      "audio": "바퀴음",
+      "changes": {
+        "plant": "pip_both_hands"
+      },
+      "id": "SC01_SH07",
+      "scene_id": "SC01",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC01_SRC04"
+      ],
+      "beat_id": "SC01_BEAT04",
+      "edit_order": 7,
+      "timeline_in": 71,
+      "timeline_out": 80,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC01_SH07_P01",
+          "pose": "화분을 안은 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "대표 시작 그림은 화분을 이미 들어 올린 순간."
+        },
+        {
+          "id": "SC01_SH07_P02",
+          "pose": "동쪽을 향한 핍",
+          "at_sec": 4.5,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH01",
+      "cut_reason": "다음 정보로 전환: 첫 장애물",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 13,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "턱 앞에서 바퀴가 헛돌고 화분이 기운다.",
+      "purpose": "첫 장애물",
+      "audio": "헛도는 모터",
+      "id": "SC02_SH01",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC01"
+      ],
+      "beat_id": "SC02_BEAT01",
+      "edit_order": 8,
+      "timeline_in": 80,
+      "timeline_out": 93,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH01_P01",
+          "pose": "평평하게 든 화분",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC02_SH01_P02",
+          "pose": "테두리까지 기운 흙",
+          "at_sec": 6.5,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH02",
+      "cut_reason": "다음 정보로 전환: 취약성 확인",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 11,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "화분을 바닥에 내리고 흙 한 톨이 깨진 테두리 옆으로 떨어진다.",
+      "purpose": "취약성 확인",
+      "audio": "작은 흙 소리",
+      "changes": {
+        "plant": "hall_before_step"
+      },
+      "id": "SC02_SH02",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC01"
+      ],
+      "beat_id": "SC02_BEAT01",
+      "edit_order": 9,
+      "timeline_in": 93,
+      "timeline_out": 104,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH02_P01",
+          "pose": "화분을 바닥에 내리고 흙 한 톨이 깨진 테두리 옆으로 떨어진다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH03",
+      "cut_reason": "다음 정보로 전환: 도구 사용",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "핍이 벽의 판자를 옮겨 턱 위에 놓는다.",
+      "purpose": "도구 사용",
+      "audio": "나무 마찰",
+      "changes": {
+        "ramp": "step_unstable"
+      },
+      "id": "SC02_SH03",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC02"
+      ],
+      "beat_id": "SC02_BEAT02",
+      "edit_order": 10,
+      "timeline_in": 104,
+      "timeline_out": 116,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_unstable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH03_P01",
+          "pose": "벽에서 당긴 판자",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "pip_hands",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "벽에서 떼어 든 중간 상태."
+        },
+        {
+          "id": "SC02_SH03_P02",
+          "pose": "턱 위 비스듬한 판자",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_unstable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH04",
+      "cut_reason": "다음 정보로 전환: 시험 실패",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "한 바퀴를 올리자 판자가 돌아가고 핍이 물러선다.",
+      "purpose": "시험 실패",
+      "audio": "판자 퉁기는 소리",
+      "id": "SC02_SH04",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC02"
+      ],
+      "beat_id": "SC02_BEAT02",
+      "edit_order": 11,
+      "timeline_in": 116,
+      "timeline_out": 126,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_unstable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_unstable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH04_P01",
+          "pose": "한 바퀴가 오른 판자",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_unstable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC02_SH04_P02",
+          "pose": "돌아간 판자와 물러난 핍",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_unstable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH05",
+      "cut_reason": "다음 정보로 전환: 해결책 검증",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "판자를 틈에 걸고 빈손으로 오르내린다.",
+      "purpose": "해결책 검증",
+      "audio": "나무·바퀴",
+      "changes": {
+        "ramp": "step_stable"
+      },
+      "id": "SC02_SH05",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC03"
+      ],
+      "beat_id": "SC02_BEAT03",
+      "edit_order": 12,
+      "timeline_in": 126,
+      "timeline_out": 140,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_unstable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_stable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH05_P01",
+          "pose": "틈에 걸린 판자",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_stable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "판자를 틈에 고정한 뒤 시험하기 직전."
+        },
+        {
+          "id": "SC02_SH05_P02",
+          "pose": "빈손으로 턱 위 핍",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_before_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_stable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH06",
+      "cut_reason": "다음 정보로 전환: 해결책 적용",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "A",
+      "action": "화분을 들고 중앙으로 올라 중심을 조정한다.",
+      "purpose": "해결책 적용",
+      "audio": "모터 부하",
+      "changes": {
+        "plant": "pip_both_hands"
+      },
+      "requires_state": {
+        "ramp": "step_stable"
+      },
+      "id": "SC02_SH06",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC03"
+      ],
+      "beat_id": "SC02_BEAT03",
+      "edit_order": 13,
+      "timeline_in": 140,
+      "timeline_out": 152,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "hall_before_step",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_stable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_stable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH06_P01",
+          "pose": "판자 아래 화분을 든 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_stable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "집어 든 뒤 경사로를 오르기 전."
+        },
+        {
+          "id": "SC02_SH06_P02",
+          "pose": "턱 위의 핍과 화분",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "step_stable",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC02_SH07",
+      "cut_reason": "다음 정보로 전환: 운반 이후 작은 책임",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "화분을 내려둔 핍이 판자를 벽에 돌려놓고 다시 화분을 든다.",
+      "purpose": "운반 이후 작은 책임",
+      "audio": "나무 기대는 소리",
+      "changes": {
+        "ramp": "wall_after_step"
+      },
+      "id": "SC02_SH07",
+      "scene_id": "SC02",
+      "location_id": "HALL",
+      "branch": "present",
+      "source_refs": [
+        "SC02_SRC04"
+      ],
+      "beat_id": "SC02_BEAT04",
+      "edit_order": 14,
+      "timeline_in": 152,
+      "timeline_out": 162,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "step_stable",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC02_SH07_P01",
+          "pose": "턱 위 바닥 화분과 판자를 든 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "hall_after_step",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "pip_hands",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "운반 후 화분을 내려놓고 판자를 회수하는 중간 상태."
+        },
+        {
+          "id": "SC02_SH07_P02",
+          "pose": "다시 화분을 안은 핍",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH01",
+      "cut_reason": "다음 정보로 전환: 새 공간과 장애물",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "문밖의 핍이 화분을 내려놓고 문을 민다.",
+      "purpose": "새 공간과 장애물",
+      "audio": "문 경첩",
+      "changes": {
+        "plant": "door_floor"
+      },
+      "id": "SC03_SH01",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC01"
+      ],
+      "beat_id": "SC03_BEAT01",
+      "edit_order": 15,
+      "timeline_in": 162,
+      "timeline_out": 174,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH01_P01",
+          "pose": "반쯤 열린 문과 화분",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC03_SH01_P02",
+          "pose": "문을 미는 핍",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "door_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "문을 밀기 위해 화분을 바닥에 둔 상태."
+        }
+      ],
+      "next_shot": "SC03_SH02",
+      "cut_reason": "다음 정보로 전환: 손이 부족한 문제",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "D",
+      "action": "문이 돌아오자 한 손으로 버티며 화분에 손을 뻗는다.",
+      "purpose": "손이 부족한 문제",
+      "audio": "스프링 삐걱임",
+      "id": "SC03_SH02",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC01"
+      ],
+      "beat_id": "SC03_BEAT01",
+      "edit_order": 16,
+      "timeline_in": 174,
+      "timeline_out": 186,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH02_P01",
+          "pose": "문을 버티는 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "door_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC03_SH02_P02",
+          "pose": "화분에 닿지 않는 집게",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "door_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH03",
+      "cut_reason": "다음 정보로 전환: 기계적 해결",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "바퀴가 걸쇠를 누르고 문이 고정된다.",
+      "purpose": "기계적 해결",
+      "audio": "걸쇠 딸깍",
+      "changes": {
+        "door": "latched_open"
+      },
+      "id": "SC03_SH03",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC02"
+      ],
+      "beat_id": "SC03_BEAT02",
+      "edit_order": 17,
+      "timeline_in": 186,
+      "timeline_out": 196,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "ajar",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH03_P01",
+          "pose": "바퀴 앞의 걸쇠",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "door_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "ajar",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC03_SH03_P02",
+          "pose": "내려간 걸쇠",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "door_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH04",
+      "cut_reason": "다음 정보로 전환: 연속 동선과 물체 수",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "두 손으로 화분을 들어 작업실로 들어온다.",
+      "purpose": "연속 동선과 물체 수",
+      "audio": "바퀴음",
+      "changes": {
+        "plant": "pip_both_hands"
+      },
+      "id": "SC03_SH04",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC02"
+      ],
+      "beat_id": "SC03_BEAT02",
+      "edit_order": 18,
+      "timeline_in": 196,
+      "timeline_out": 208,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "door_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH04_P01",
+          "pose": "문 안으로 향한 화분",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "화분을 다시 들어 통과하기 시작한 순간."
+        },
+        {
+          "id": "SC03_SH04_P02",
+          "pose": "작업실 안 핍",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH05",
+      "cut_reason": "다음 정보로 전환: 목표 실패와 대안의 공간",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "화분을 선반 아래 내려놓고 닫힌 차광판을 본다.",
+      "purpose": "목표 실패와 대안의 공간",
+      "audio": "바람·차광판 떨림",
+      "changes": {
+        "plant": "under_shelf"
+      },
+      "id": "SC03_SH05",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC03"
+      ],
+      "beat_id": "SC03_BEAT03",
+      "edit_order": 19,
+      "timeline_in": 208,
+      "timeline_out": 222,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "pip_both_hands",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH05_P01",
+          "pose": "바닥 화분",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "under_shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "이미 내려놓은 화분. 이후 시선만 창으로 이동."
+        },
+        {
+          "id": "SC03_SH05_P02",
+          "pose": "창을 올려다보는 핍",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "under_shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH06",
+      "cut_reason": "다음 정보로 전환: 대안의 구체적 조건",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "작업등의 빈 수직 도크.",
+      "purpose": "대안의 구체적 조건",
+      "audio": "방의 환경음",
+      "reveals": [
+        "lamp_socket"
+      ],
+      "id": "SC03_SH06",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC03"
+      ],
+      "beat_id": "SC03_BEAT03",
+      "edit_order": 20,
+      "timeline_in": 222,
+      "timeline_out": 232,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH06_P01",
+          "pose": "작업등의 빈 수직 도크.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "under_shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC03_SH07",
+      "cut_reason": "다음 정보로 전환: 대안의 대가",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "MS",
+      "camera_id": "B",
+      "action": "배터리 홈을 비교하고 살짝 당겼다가 다시 넣은 뒤 화분을 본다.",
+      "purpose": "대안의 대가",
+      "audio": "눈등 약화음·접점음",
+      "reveals": [
+        "battery_fits_lamp"
+      ],
+      "id": "SC03_SH07",
+      "scene_id": "SC03",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC03_SRC04"
+      ],
+      "beat_id": "SC03_BEAT04",
+      "edit_order": 21,
+      "timeline_in": 232,
+      "timeline_out": 246,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC03_SH07_P01",
+          "pose": "빈 도크와 왼쪽 배터리",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "under_shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC03_SH07_P02",
+          "pose": "다시 고정된 배터리",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "under_shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "workshop_floor",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH01",
+      "cut_reason": "다음 정보로 전환: 높이 문제를 행동으로 설명",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "MS",
+      "camera_id": "D",
+      "action": "화분을 받침에 놓았다가 들어 바닥으로 되돌린다.",
+      "purpose": "높이 문제를 행동으로 설명",
+      "audio": "도기 닿는 소리",
+      "changes": {
+        "plant": "shelf_floor",
+        "cart": "shelf_front"
+      },
+      "id": "SC04_SH01",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC01"
+      ],
+      "beat_id": "SC04_BEAT01",
+      "edit_order": 22,
+      "timeline_in": 246,
+      "timeline_out": 256,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "under_shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "workshop_floor",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH01_P01",
+          "pose": "받침 위 화분",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "on_cart",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "shelf_front",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "받침에 올렸다가 되돌리기 전의 중간 상태."
+        },
+        {
+          "id": "SC04_SH01_P02",
+          "pose": "받침 옆 바닥 화분",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH02",
+      "cut_reason": "다음 정보로 전환: 불안정한 발판",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "빈 받침 위로 올라가려는 핍 앞에서 받침이 밀린다.",
+      "purpose": "불안정한 발판",
+      "audio": "바퀴 구름",
+      "id": "SC04_SH02",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC01"
+      ],
+      "beat_id": "SC04_BEAT01",
+      "edit_order": 23,
+      "timeline_in": 256,
+      "timeline_out": 268,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH02_P01",
+          "pose": "한 바퀴를 올린 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC04_SH02_P02",
+          "pose": "앞으로 밀린 받침",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH03",
+      "cut_reason": "다음 정보로 전환: 안정화",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "나무 조각을 받침 바퀴 밑에 끼운다.",
+      "purpose": "안정화",
+      "audio": "나무 마찰",
+      "changes": {
+        "cart": "chocked_shelf_front"
+      },
+      "id": "SC04_SH03",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC02"
+      ],
+      "beat_id": "SC04_BEAT02",
+      "edit_order": 24,
+      "timeline_in": 268,
+      "timeline_out": 280,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH03_P01",
+          "pose": "바퀴 앞 조각",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC04_SH03_P02",
+          "pose": "바퀴에 끼운 조각",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH04",
+      "cut_reason": "다음 정보로 전환: 수단을 검증하고 목표 적용",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "고정한 받침에 빈손으로 올라 선반 높이를 확인하고 내려온다.",
+      "purpose": "수단을 검증하고 목표 적용",
+      "audio": "바퀴·도기",
+      "changes": {},
+      "requires_state": {
+        "cart": "chocked_shelf_front"
+      },
+      "id": "SC04_SH04",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC02"
+      ],
+      "beat_id": "SC04_BEAT02",
+      "edit_order": 25,
+      "timeline_in": 280,
+      "timeline_out": 292,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH04_P01",
+          "pose": "빈손으로 받침에 오른 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC04_SH04_P02",
+          "pose": "바닥에 돌아온 핍",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf_floor",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH04B",
+      "cut_reason": "발판이 흔들리지 않음을 확인한 뒤 실제 운반으로",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "바닥 화분을 두 손으로 들어 받침 중앙을 올라 선반에 놓는다.",
+      "purpose": "시험한 경로로 화분을 운반",
+      "audio": "바퀴 부하·도기 닿는 소리",
+      "changes": {
+        "plant": "shelf"
+      },
+      "requires_state": {
+        "cart": "chocked_shelf_front"
+      },
+      "id": "SC04_SH04B",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC02"
+      ],
+      "beat_id": "SC04_BEAT02",
+      "edit_order": 26,
+      "timeline_in": 292,
+      "timeline_out": 304,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf_floor",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH04B_P01",
+          "pose": "바닥 화분을 든 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "pip_both_hands",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "두 손으로 집어 든 순간."
+        },
+        {
+          "id": "SC04_SH04B_P02",
+          "pose": "선반에 놓인 화분",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH05",
+      "cut_reason": "화분이 안정된 뒤 차광판 손잡이로",
+      "requires_known": [],
+      "reveals": [],
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 11,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "차광판 손잡이를 밀어 잠깐 빛을 얻는다.",
+      "purpose": "작은 가능성",
+      "audio": "금속·바람",
+      "id": "SC04_SH05",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC03"
+      ],
+      "beat_id": "SC04_BEAT03",
+      "edit_order": 27,
+      "timeline_in": 304,
+      "timeline_out": 315,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH05_P01",
+          "pose": "손잡이를 미는 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC04_SH05_P02",
+          "pose": "회색빛 속 화분",
+          "at_sec": 5.5,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH06",
+      "cut_reason": "다음 정보로 전환: 포기할 대상을 선택",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 13,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "손을 놓자 차광판이 닫히고 핍이 화분을 안쪽으로 당긴다.",
+      "purpose": "포기할 대상을 선택",
+      "audio": "차광판 닫힘",
+      "id": "SC04_SH06",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC03"
+      ],
+      "beat_id": "SC04_BEAT03",
+      "edit_order": 28,
+      "timeline_in": 315,
+      "timeline_out": 328,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH06_P01",
+          "pose": "차광판 아래 손",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC04_SH06_P02",
+          "pose": "안쪽으로 당겨진 화분",
+          "at_sec": 6.5,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "workshop_shelf",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC04_SH07",
+      "cut_reason": "다음 정보로 전환: 새로운 결심을 행동으로",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 16,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "작업등을 들고 와 화분 옆 선반에 둔다.",
+      "purpose": "새로운 결심을 행동으로",
+      "audio": "작업등 금속 받침",
+      "changes": {
+        "lamp": "shelf_next_to_plant"
+      },
+      "requires_known": [
+        "battery_fits_lamp"
+      ],
+      "id": "SC04_SH07",
+      "scene_id": "SC04",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC04_SRC04"
+      ],
+      "beat_id": "SC04_BEAT04",
+      "edit_order": 29,
+      "timeline_in": 328,
+      "timeline_out": 344,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "workshop_shelf",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC04_SH07_P01",
+          "pose": "작업등을 든 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "pip_both_hands",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          },
+          "state_note": "램프를 옮기는 중간 상태."
+        },
+        {
+          "id": "SC04_SH07_P02",
+          "pose": "화분 옆 작업등",
+          "at_sec": 8.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH01",
+      "cut_reason": "다음 정보로 전환: 빛의 방향과 낙하 위치 준비",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "갓을 화분 쪽으로 돌리고 도크를 몸 왼쪽 배터리 슬롯의 바로 아래에 맞춘다.",
+      "purpose": "빛의 방향과 낙하 위치 준비",
+      "audio": "갓 경첩",
+      "id": "SC05_SH01",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC01"
+      ],
+      "beat_id": "SC05_BEAT01",
+      "edit_order": 30,
+      "timeline_in": 344,
+      "timeline_out": 356,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH01_P01",
+          "pose": "화분 쪽으로 도는 갓",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC05_SH01_P02",
+          "pose": "몸 왼쪽 슬롯 아래 도크",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH02",
+      "cut_reason": "다음 정보로 전환: 계획을 관객에게 전달",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "오른손으로 몸 앞을 가로질러 왼쪽 배터리 슬롯을 잡는 자세를 연습한다. 배터리가 빠지는 자리 바로 아래 도크가 있다.",
+      "purpose": "계획을 관객에게 전달",
+      "audio": "작은 서보음",
+      "id": "SC05_SH02",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC01"
+      ],
+      "beat_id": "SC05_BEAT01",
+      "edit_order": 31,
+      "timeline_in": 356,
+      "timeline_out": 370,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH02_P01",
+          "pose": "몸 앞을 가로지른 오른 집게",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC05_SH02_P02",
+          "pose": "집게 바로 아래 도크",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH03",
+      "cut_reason": "집게와 도크 벽의 간섭이 생기는 지점으로",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "집게가 도크 가장자리에 닿아 멈춘다.",
+      "purpose": "계획의 작은 수정",
+      "audio": "가벼운 금속 접촉",
+      "id": "SC05_SH03",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC02"
+      ],
+      "beat_id": "SC05_BEAT02",
+      "edit_order": 32,
+      "timeline_in": 370,
+      "timeline_out": 380,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH03_P01",
+          "pose": "집게가 도크 가장자리에 닿아 멈춘다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH04",
+      "cut_reason": "다음 정보로 전환: 낙하 시험",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "램프를 옮기고 볼트를 도크 안에 떨어뜨린 뒤 꺼낸다.",
+      "purpose": "낙하 시험",
+      "audio": "볼트 딸깍",
+      "id": "SC05_SH04",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC02"
+      ],
+      "beat_id": "SC05_BEAT02",
+      "edit_order": 33,
+      "timeline_in": 380,
+      "timeline_out": 394,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH04_P01",
+          "pose": "도크 위 볼트",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC05_SH04_P02",
+          "pose": "도크 안 볼트",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH05",
+      "cut_reason": "다음 정보로 전환: 마지막 돌봄",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "흘린 흙을 화분으로 돌려놓고 잎을 피해 집게를 뺀다.",
+      "purpose": "마지막 돌봄",
+      "audio": "흙과 잎의 소리",
+      "id": "SC05_SH05",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC03"
+      ],
+      "beat_id": "SC05_BEAT03",
+      "edit_order": 34,
+      "timeline_in": 394,
+      "timeline_out": 406,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH05_P01",
+          "pose": "흙을 모은 집게",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC05_SH05_P02",
+          "pose": "잎 옆 빈 집게",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH06",
+      "cut_reason": "다음 정보로 전환: 남은 시간의 체감",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "MCU",
+      "camera_id": "B",
+      "action": "눈등이 약해지고 배터리를 눌러 다시 켠다.",
+      "purpose": "남은 시간의 체감",
+      "audio": "모터 낮아짐",
+      "id": "SC05_SH06",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC03"
+      ],
+      "beat_id": "SC05_BEAT03",
+      "edit_order": 35,
+      "timeline_in": 406,
+      "timeline_out": 416,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH06_P01",
+          "pose": "약해진 눈등",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC05_SH06_P02",
+          "pose": "배터리를 누른 왼손",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC05_SH07",
+      "cut_reason": "다음 정보로 전환: 결정 직전의 자세",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "왼손으로 선반을 짚고 오른손으로 몸 왼쪽 배터리를 잡는다. 도크는 배터리 바로 아래에 고정되어 있다.",
+      "purpose": "결정 직전의 자세",
+      "audio": "일정한 구동음",
+      "requires_known": [
+        "power_loss_opens_grip",
+        "battery_fits_lamp"
+      ],
+      "id": "SC05_SH07",
+      "scene_id": "SC05",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC05_SRC04"
+      ],
+      "beat_id": "SC05_BEAT04",
+      "edit_order": 36,
+      "timeline_in": 416,
+      "timeline_out": 428,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC05_SH07_P01",
+          "pose": "슬롯·오른손·아래 도크가 함께 보이는 준비 자세",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC06_SH01",
+      "cut_reason": "다음 정보로 전환: 마지막 선택",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 12,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "배터리 슬롯·오른손·아래 도크를 한 화면에 유지한다. 핍이 배터리를 당기고 접점이 끊어지기 직전에 컷.",
+      "purpose": "마지막 선택",
+      "audio": "구동음",
+      "id": "SC06_SH01",
+      "scene_id": "SC06",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC06_SRC01"
+      ],
+      "beat_id": "SC06_BEAT01",
+      "edit_order": 37,
+      "timeline_in": 428,
+      "timeline_out": 440,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC06_SH01_P01",
+          "pose": "오른손이 잡은 배터리와 아래의 도크",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC06_SH01_P02",
+          "pose": "접점이 아직 닿아 있는 분리 직전",
+          "at_sec": 6.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        }
+      ],
+      "next_shot": "SC06_SH02",
+      "cut_reason": "접점이 끊기는 순간의 수동적 집게 열림으로 연결",
+      "powered_motion": true,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "접점이 끊기고 집게가 벌어진다.",
+      "purpose": "물성 규칙 회수",
+      "audio": "모터음 즉시 정지",
+      "changes": {
+        "power": "off",
+        "battery": "falling",
+        "grip": "open"
+      },
+      "requires_state": {
+        "power": "on"
+      },
+      "id": "SC06_SH02",
+      "scene_id": "SC06",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC06_SRC01"
+      ],
+      "beat_id": "SC06_BEAT01",
+      "edit_order": 38,
+      "timeline_in": 440,
+      "timeline_out": 448,
+      "state_in": {
+        "battery": "pip_left_body",
+        "power": "on",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "closed_when_powered"
+      },
+      "state_out": {
+        "battery": "falling",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC06_SH02_P01",
+          "pose": "접점 끝의 배터리",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "pip_left_body",
+            "power": "on",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "closed_when_powered"
+          }
+        },
+        {
+          "id": "SC06_SH02_P02",
+          "pose": "벌어진 집게",
+          "at_sec": 4.0,
+          "state": {
+            "battery": "falling",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC06_SH03",
+      "cut_reason": "집게에서 떨어진 배터리의 낙하를 같은 위치에서 이어받음",
+      "powered_motion": false,
+      "passive_motion": "무전원 스프링으로 집게가 열림",
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "배터리가 도크 안으로 떨어져 안착한다.",
+      "purpose": "낙하의 결과",
+      "audio": "한 번의 금속음",
+      "changes": {
+        "battery": "lamp_dock"
+      },
+      "requires_state": {
+        "power": "off"
+      },
+      "id": "SC06_SH03",
+      "scene_id": "SC06",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC06_SRC02"
+      ],
+      "beat_id": "SC06_BEAT02",
+      "edit_order": 39,
+      "timeline_in": 448,
+      "timeline_out": 456,
+      "state_in": {
+        "battery": "falling",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "panels": [
+        {
+          "id": "SC06_SH03_P01",
+          "pose": "도크 위 떨어지는 배터리",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "falling",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        },
+        {
+          "id": "SC06_SH03_P02",
+          "pose": "도크에 앉은 배터리",
+          "at_sec": 4.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC06_SH04",
+      "cut_reason": "다음 정보로 전환: 힘의 이전",
+      "powered_motion": false,
+      "passive_motion": "중력 낙하",
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "켜진 램프가 화분·멈춘 핍·열린 집게·고정된 바퀴를 함께 비춘다. 깨진 테두리와 잎 두 장은 그대로다.",
+      "purpose": "힘의 이전",
+      "audio": "램프 전기음",
+      "changes": {
+        "lamp_on": "yes"
+      },
+      "reveals": [
+        "sacrifice_complete"
+      ],
+      "id": "SC06_SH04",
+      "scene_id": "SC06",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC06_SRC02",
+        "SC06_SRC04"
+      ],
+      "beat_id": "SC06_BEAT02",
+      "edit_order": 40,
+      "timeline_in": 456,
+      "timeline_out": 466,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "no",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC06_SH04_P01",
+          "pose": "꺼진 램프와 정지한 핍",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "no",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        },
+        {
+          "id": "SC06_SH04_P02",
+          "pose": "켜진 램프·꺼진 핍·변하지 않은 화분",
+          "at_sec": 5.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC06_SH05",
+      "cut_reason": "다음 정보로 전환: 행동 없는 응답",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "CU",
+      "camera_id": "B",
+      "action": "잎 그림자가 꺼진 눈등을 가로지른다.",
+      "purpose": "행동 없는 응답",
+      "audio": "빗소리·잎 스침",
+      "id": "SC06_SH05",
+      "scene_id": "SC06",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC06_SRC03"
+      ],
+      "beat_id": "SC06_BEAT03",
+      "edit_order": 41,
+      "timeline_in": 466,
+      "timeline_out": 474,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC06_SH05_P01",
+          "pose": "잎 그림자가 꺼진 눈등을 가로지른다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH01",
+      "cut_reason": "다음 정보로 전환: 정지 상태 확인",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 6,
+      "size": "CU",
+      "camera_id": "C",
+      "action": "창 아래 물방울이 바닥에서 작은 길을 만든다.",
+      "purpose": "시간 경과",
+      "audio": "물방울",
+      "id": "SC07_SH01",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC01"
+      ],
+      "beat_id": "SC07_BEAT01",
+      "edit_order": 42,
+      "timeline_in": 474,
+      "timeline_out": 480,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH01_P01",
+          "pose": "창 아래 물방울이 바닥에서 작은 길을 만든다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH02",
+      "cut_reason": "다음 정보로 전환: 상태 유지",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "도크의 배터리와 램프, 정지한 핍을 한 화면에 둔다.",
+      "purpose": "상태 유지",
+      "audio": "램프음",
+      "id": "SC07_SH02",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC01"
+      ],
+      "beat_id": "SC07_BEAT01",
+      "edit_order": 43,
+      "timeline_in": 480,
+      "timeline_out": 488,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH02_P01",
+          "pose": "도크의 배터리와 램프, 정지한 핍을 한 화면에 둔다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH03",
+      "cut_reason": "다음 정보로 전환: 여정의 흔적",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "WS",
+      "camera_id": "A",
+      "action": "벽에 돌려놓은 판자와 어두운 통로.",
+      "purpose": "여정의 흔적",
+      "audio": "멀리 빗소리",
+      "id": "SC07_SH03",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC02"
+      ],
+      "beat_id": "SC07_BEAT02",
+      "edit_order": 44,
+      "timeline_in": 488,
+      "timeline_out": 496,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH03_P01",
+          "pose": "벽에 돌려놓은 판자와 어두운 통로.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH04",
+      "cut_reason": "다음 정보로 전환: 공간 속 결과",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "WS",
+      "camera_id": "D",
+      "action": "열린 문 너머 작은 선반의 빛.",
+      "purpose": "공간 속 결과",
+      "audio": "바람",
+      "requires_state": {
+        "door": "latched_open"
+      },
+      "id": "SC07_SH04",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC02"
+      ],
+      "beat_id": "SC07_BEAT02",
+      "edit_order": 45,
+      "timeline_in": 496,
+      "timeline_out": 506,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH04_P01",
+          "pose": "열린 문 너머 작은 선반의 빛.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH05",
+      "cut_reason": "다음 정보로 전환: 정지와 생명의 대비",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 10,
+      "size": "CU",
+      "camera_id": "B",
+      "action": "잎 그림자가 정지한 팔에 걸린다.",
+      "purpose": "정지와 생명의 대비",
+      "audio": "잎 스침",
+      "id": "SC07_SH05",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC03"
+      ],
+      "beat_id": "SC07_BEAT03",
+      "edit_order": 46,
+      "timeline_in": 506,
+      "timeline_out": 516,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH05_P01",
+          "pose": "잎 그림자가 정지한 팔에 걸린다.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH06",
+      "cut_reason": "다음 정보로 전환: 장면의 관계를 넓게 유지",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 8,
+      "size": "WS",
+      "camera_id": "F",
+      "action": "창에서 본 핍·화분·램프의 실루엣.",
+      "purpose": "장면의 관계를 넓게 유지",
+      "audio": "비의 간격",
+      "id": "SC07_SH06",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC03"
+      ],
+      "beat_id": "SC07_BEAT03",
+      "edit_order": 47,
+      "timeline_in": 516,
+      "timeline_out": 524,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH06_P01",
+          "pose": "창에서 본 핍·화분·램프의 실루엣.",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": "SC07_SH07",
+      "cut_reason": "다음 정보로 전환: 작은 응답으로 끝냄",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    },
+    {
+      "duration_sec": 14,
+      "size": "MS",
+      "camera_id": "E",
+      "action": "잎이 핍의 머리에 닿았다 떨어지고 둘이 함께 남는다.",
+      "purpose": "작은 응답으로 끝냄",
+      "audio": "잎 접촉 후 환경음",
+      "requires_state": {
+        "power": "off",
+        "lamp_on": "yes",
+        "battery": "lamp_dock"
+      },
+      "id": "SC07_SH07",
+      "scene_id": "SC07",
+      "location_id": "WORKSHOP",
+      "branch": "present",
+      "source_refs": [
+        "SC07_SRC04"
+      ],
+      "beat_id": "SC07_BEAT04",
+      "edit_order": 48,
+      "timeline_in": 524,
+      "timeline_out": 538,
+      "state_in": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "state_out": {
+        "battery": "lamp_dock",
+        "power": "off",
+        "plant": "shelf",
+        "lamp": "shelf_next_to_plant",
+        "lamp_on": "yes",
+        "door": "latched_open",
+        "ramp": "wall_after_step",
+        "cart": "chocked_shelf_front",
+        "grip": "open"
+      },
+      "audience_before": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "audience_after": [
+        "battery_fits_lamp",
+        "lamp_socket",
+        "plant_needs_light",
+        "power_loss_opens_grip",
+        "sacrifice_complete"
+      ],
+      "panels": [
+        {
+          "id": "SC07_SH07_P01",
+          "pose": "머리에 닿은 잎",
+          "at_sec": 0.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        },
+        {
+          "id": "SC07_SH07_P02",
+          "pose": "떨어진 잎과 정지한 핍",
+          "at_sec": 7.0,
+          "state": {
+            "battery": "lamp_dock",
+            "power": "off",
+            "plant": "shelf",
+            "lamp": "shelf_next_to_plant",
+            "lamp_on": "yes",
+            "door": "latched_open",
+            "ramp": "wall_after_step",
+            "cart": "chocked_shelf_front",
+            "grip": "open"
+          }
+        }
+      ],
+      "next_shot": null,
+      "cut_reason": "행동의 결과를 읽은 뒤 크레딧",
+      "powered_motion": false,
+      "panel_constraints": "배터리·화분 각각 하나. 잎 두 장. power=off이면 로봇의 표정·팔·바퀴는 능동적으로 움직이지 않는다. 도크 정렬은 배터리 전달 구간 SC05 후반~SC07에만 적용한다."
+    }
+  ],
+  "runtime_sec": 538,
+  "total_sec": 550,
+  "render_bible": "작은 청록색 로봇 핍: 바퀴 두 개, 짧은 집게 팔 두 개, 눈 역할의 흰 표시등 하나. 몸 왼쪽에 주황색 배터리 한 개. 배터리가 빠지면 구동·눈등은 즉시 멎고 집게는 무전원 열린 상태로 돌아간다. 움직임이 멎은 뒤의 낙하는 중력·스프링만 가능. 붉은 화분은 테두리 한 곳이 깨졌고 잎 두 장. 새 잎·개화는 생기지 않는다. 주 통로는 서→동, 작업실은 동쪽, 창가 선반은 작업실 북쪽. 폭풍의 회색빛. 작업등은 주황 배터리와 같은 규격의 수직 도크 하나. 배터리 전달 구간 SC05 후반~SC07에서만 도크를 몸 왼쪽 슬롯 바로 아래에 정렬한다. 앞선 통로 구간에 도크를 추가하지 않는다. 분리 이후 배터리를 옆으로 옮기는 능동 동작은 없다.",
+  "revision": "v3",
+  "review_method": "동일 작성자의 후속 자기검토. 독립 심사·관객 시험 아님.",
+  "integration_review": "패널의 중간 상태와 샷 경계 상태를 재대조. 불빛 큐와 대표 패널 분리."
+}

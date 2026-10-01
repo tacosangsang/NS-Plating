@@ -1,15 +1,20 @@
 .DS_Store
+__pycache__/
+*.pyc
 
-# 미디어 = Google Drive 관리 (GitHub는 텍스트 전용)
-resources/**/*.jpg
-resources/**/*.jpeg
-resources/**/*.png
-resources/**/*.gif
-resources/**/*.webp
-resources/**/*.mp4
-resources/**/*.mov
-resources/**/*.avi
-resources/**/*.acp
-resources/**/*.psd
-resources/**/*.ai
-resources/**/*.pdf
+# 미디어·바이너리 = Google Drive 관리 (GitHub는 텍스트 전용)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mp4
+*.mov
+*.avi
+*.acp
+*.psd
+*.ai
+*.pdf
+*.hwp
+*.xlsx
+*.zip

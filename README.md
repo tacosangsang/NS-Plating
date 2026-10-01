@@ -16,16 +16,17 @@ NS-Plating/
 ├── prompts/                  # AI 이미지 생성 프롬프트
 │   ├── base_prompt.md        #   최신본 (항상 여기 참조)
 │   └── backups/              #   날짜별 스냅샷 base_prompt_MMDD.md
-├── resources/                # 리소스 파일 (미디어)
-│   ├── references/           #   레퍼런스 (참고 자료, 스타일보드)
-│   ├── images/               #   이미지 (character/ 등)
+├── 00 resources/             # 리소스 파일 (미디어, 커밋 안 됨)
+│   ├── 00 reference/         #   레퍼런스 (참고 자료, 스타일보드)
+│   ├── 00 image/             #   이미지 (캐릭터 시트 등)
 │   └── videos/               #   비디오
-└── docs/                     # 문서
-    ├── 운영측 전달 서류/       #   운영측 제출·수령 서류
-    │   ├── 양식·안내 서류/
-    │   └── 제출 서류/
-    ├── 리소스/                #   리소스 관련 문서
-    └── 기획/                  #   기획 문서
+├── 01 docs/                  # 문서 (hwp·pdf 등 바이너리는 Drive)
+│   ├── 운영측 전달 서류/       #   운영측 제출·수령 서류
+│   │   ├── 양식·안내 서류/
+│   │   └── 제출 서류/
+│   ├── 리소스/                #   리소스 관련 문서
+│   └── 기획/                  #   기획 문서
+└── research/                 # 스토리보드 워크플로 리서치·테스트
 ```
 
 ## 미디어 관리 (팀 공유)
@@ -34,9 +35,9 @@ NS-Plating/
 GitHub는 프롬프트·문서(텍스트)만. 대용량 파일로 repo 무거워지는 것 방지.
 
 - **Google Drive 공유 폴더:** https://drive.google.com/drive/folders/1Hf2_Uk_XoeJj5vSQxn_sWSumUwsXV5kR
-- Drive 폴더 구조는 이 repo `resources/`와 동일하게 유지:
-  `references/`, `images/` (하위 `character/` 등), `videos/`
-- repo의 `resources/**` 미디어는 `.gitignore` 처리 → 로컬 작업용, 커밋 안 됨.
+- Drive 폴더 구조는 이 repo `00 resources/`와 동일하게 유지:
+  `00 reference/`, `00 image/`, `videos/`
+- 이미지·영상·pdf·hwp 등 바이너리는 `.gitignore` 처리 → 로컬 작업용, 커밋 안 됨.
 - 각 폴더의 `.gitkeep`은 구조 표시용.
 
 ## 워크플로
@@ -47,7 +48,7 @@ GitHub는 프롬프트·문서(텍스트)만. 대용량 파일로 repo 무거워
 3. commit + push
 
 **문서 추가 시**
-- `docs/` 해당 폴더에 넣고 commit + push
+- `01 docs/` 해당 폴더에 넣고 commit + push (바이너리는 Drive)
 
 **미디어 추가 시**
 - Google Drive 공유 폴더의 해당 위치에 업로드 (GitHub 아님)
