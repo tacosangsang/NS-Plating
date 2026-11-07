@@ -33,11 +33,80 @@ def parser() -> argparse.ArgumentParser:
         command.add_argument("--clip")
         command.add_argument("--out", type=Path)
         command.add_argument("--cuts-json" if name == "skeleton" else "--prompt", type=Path, required=True)
+    gate = groups.add_parser("gate").add_subparsers(dest="command", required=True)
+    cost = gate.add_parser("cost")
+    for name in ("model", "mode", "resolution", "seconds"):
+        cost.add_argument("--" + name)
+    cost.add_argument("--out", type=Path)
+    check = gate.add_parser("check")
+    check.add_argument("--gate", type=Path, required=True)
+    check.add_argument("--prompt", type=Path, required=True)
+    check.add_argument("--require-approval", action="store_true")
+    check.add_argument("--out", type=Path)
+    for name in ("cuts-json", "check-json", "refs-json"):
+        check.add_argument("--" + name, type=Path)
+    for command in (cost, check):
+        command.add_argument("--plan", type=Path)
+        command.add_argument("--clip")
     return root
 
 
 def execute(args, argv: list[str]):
     cfg = load_config(args.config)
+    if args.group == "gate":
+        from .docs import WorkflowDir
+        from .gate.cost import cost_for, read_cost_table
+        from .prompt.plan import ClipPlan, load_plan, number
+        from .textio import read_document, read_json
+        from .model import Unknown
+        store = WorkflowDir(cfg.workflow_dir, cfg.declared_commit)
+        table = read_cost_table(store)
+        plan = load_plan(args.plan, args.clip)
+        if args.command == "cost":
+            if plan is not None and any(getattr(args, field) is not None for field in ("model", "mode", "resolution", "seconds")):
+                raise InputError("계획과 직접 비용 인자를 함께 지정할 수 없음")
+            if plan is None:
+                if not all((args.model, args.mode, args.resolution, args.seconds)) or args.mode not in {"new", "edit", "code"}:
+                    raise InputError("--model --mode --resolution --seconds 또는 --plan 필요")
+                unknown = Unknown("직접 비용 인자에 없음")
+                seconds = number(args.seconds, "seconds")
+                plan = ClipPlan("cost", "video", (), unknown, seconds if args.mode == "new" else unknown, args.mode,
+                                args.model, args.resolution, seconds if args.mode == "edit" else unknown, unknown, (), {}, unknown, unknown, ())
+            result = cost_for(plan, table)
+            code = int(bool(result.findings))
+            target = None
+            if args.out:
+                inputs = tuple(Path(d.fingerprint.path) for d in store.used.values()) + ((args.plan,) if args.plan else ())
+                with RunDir(args.out, cfg.policy(inputs)) as run:
+                    run.write_json("cost.json", result)
+                    run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256, "docs": table.doc_versions, "exit_code": code, "status": "검수 대기"})
+                target = str(args.out.resolve())
+            return {"command": "gate cost", "exit_code": code, "status": "검수 대기", "output": target, "cost": result}
+        from .gate.checklist import GateContext, evaluate_gate, gate_md, load_gate, machine_findings, read_gate_rules
+        rules = read_gate_rules(store)
+        prompt = read_document(args.prompt, "prompt")
+        inputs, approval = load_gate(args.gate)
+        cuts = read_json(args.cuts_json) if args.cuts_json else None
+        check = read_json(args.check_json) if args.check_json else None
+        refs = read_json(args.refs_json) if args.refs_json else None
+        current = read_document(cfg.cuts_input, "F") if cfg.cuts_input else None
+        machine, fresh = machine_findings(plan, cuts, check, refs, current.fingerprint.sha256 if current else None, prompt.fingerprint.sha256)
+        cost = cost_for(plan, table) if plan else None
+        if cost is not None:
+            machine[8] = (*machine.get(8, ()), *cost.findings)
+        context = GateContext(prompt.fingerprint.sha256, rules.approval_words, machine, cost, fresh)
+        result = evaluate_gate(rules.lines, inputs, context, approval)
+        code = int(not result.checklist_complete or (args.require_approval and result.approval.status != "승인 기록 있음"))
+        target = args.out or new_target(cfg.output_root, "gate-check", args.clip or "unplanned")
+        paths = tuple(p for p in (args.gate, args.prompt, args.plan, args.cuts_json, args.check_json, args.refs_json, cfg.cuts_input) if p)
+        paths += tuple(Path(d.fingerprint.path) for d in store.used.values())
+        with RunDir(target, cfg.policy(paths)) as run:
+            run.write_json("gate.json", result)
+            run.write_text("gate.md", gate_md(result, prompt.text))
+            run.write_json("cost.json", cost if cost else Unknown("계획 없음"))
+            run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256, "docs": [d.fingerprint for d in store.used.values()],
+                        "inputs": [read_document(p, "input").fingerprint for p in paths if p not in tuple(Path(d.fingerprint.path) for d in store.used.values())], "exit_code": code, "status": result.label})
+        return {"command": "gate check", "exit_code": code, "status": result.label, "output": str(target.resolve())}
     if args.group == "prompt":
         from .docs import WorkflowDir
         from .prompt.rules import read_rules

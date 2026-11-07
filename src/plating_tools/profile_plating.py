@@ -45,4 +45,11 @@ ANCHOR_SPECS: Final = {
     "image_limit": ("W05", ("2. 프롬프트 블록 구조", "글자 수"), "lines", 1),
     "checklist": ("W02", ("4. 크레딧 쓰기 전 점검 8줄",), "numbered", 8),
     "settings": ("W11", ("5. 최상층(연회장)",), "lines", 1),
+    "cost": ("W07", ("1. 비용표 (Crons / 크레딧)",), "lines", 1),
+    "edit_billing": ("W06", ("2. video_edit 특성 (AICRON 웹앱, 11-04 실사용)",), "lines", 1),
+    "topaz": ("W06", ("4. 업스케일", "설정 (Higgsfield 웹앱 Topaz Video, 11-04 확정) `[예외: 사용 서비스]`"), "lines", 1),
+    "approval": ("W02", ("2. 소통·결과물 규칙", "승인 어휘 (크레딧이 드는 일)"), "lines", 1),
 }
+RATE_NEW_PATTERN: Final = r"^\| 영상 본 생성 \| (?P<model>.+?) (?P<low>\d+p) / (?P<high>\d+p) \| (?P<low_rate>\d+(?:\.\d+)?) / (?P<high_rate>\d+(?:\.\d+)?) per 초, 최소 (?P<minimum>\d+(?:\.\d+)?)초 \|$"
+RATE_EDIT_PATTERN: Final = r"^\| 영상 edit \| (?P<model>.+?) video_edit (?P<resolution>\d+p) \| 입력 길이 초 올림 × (?P<rate>\d+(?:\.\d+)?)\([^|]+\) \|$"
+APPROVAL_PATTERNS: Final = (r'^- "([^"]+)", "([^"]+)": 생성 승인\.$', r'^- "([^"]+)": 그 씬 한 바퀴 생성은 승인된 것')
