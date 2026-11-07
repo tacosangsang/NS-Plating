@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -32,23 +33,50 @@ class IndependenceTests(NetworkBlockedCase):
         cutfile = source / "SYNTH.md"
         cutfile.write_text('### S#01\n<table header-row="true"><tr><td>컷</td><td>TC</td><td>길이</td></tr><tr><td>S#01-C001</td><td>00:00–00:04</td><td>4s</td></tr></table>\n', encoding="utf-8")
         cfg = self.root / "plating.toml"
-        cfg.write_text(f"[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='{workflow}'\n[cuts]\ninput='{cutfile}'\n", encoding="utf-8")
+        cfg.write_text(f"[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='{workflow}'\n[cuts]\ninput='{cutfile}'\n[qc]\ntimeout_s='SYNTH 미확인'\n[network]\nmax_bytes='SYNTH 미확인'\n[tools]\nffmpeg_path=[]\n", encoding="utf-8")
         copied = self.root / "src" / "plating_tools"
         shutil.copytree(REPO / "src" / "plating_tools", copied, ignore=shutil.ignore_patterns("refs", "versions", "qc.py", "__pycache__"))
+        for name in ("refs", "versions", "qc.py"):
+            self.assertFalse((copied / name).exists())
+        (copied.parent / "sitecustomize.py").write_text(
+            'import atexit, json, os, socket, sys\n'
+            'from pathlib import Path\n'
+            'attempts = 0\n'
+            'def reject(*args, **kwargs):\n'
+            '    global attempts\n'
+            '    attempts += 1\n'
+            '    raise AssertionError("SYNTH P0 network forbidden")\n'
+            'socket.create_connection = reject\n'
+            'socket.socket.connect = reject\n'
+            'def record():\n'
+            '    loaded = [n for n in sys.modules if n == "plating_qc" or n.startswith(("plating_qc.", "plating_tools.refs", "plating_tools.versions", "plating_tools.qc"))]\n'
+            '    Path(os.environ["PLATING_TEST_NETWORK_AUDIT"]).write_text(json.dumps({"attempts": attempts, "loaded": loaded}), encoding="utf-8")\n'
+            'atexit.register(record)\n', encoding="utf-8")
         env = {**os.environ, "PYTHONPATH": str(copied.parent), "PYTHONDONTWRITEBYTECODE": "1", "PYTHONIOENCODING": "utf-8"}
         def run(*args):
-            return subprocess.run([sys.executable, "-m", "plating_tools", *args], cwd=self.root, env=env, capture_output=True, text=True, encoding="utf-8", timeout=30, check=False)
+            audit = self.root / f"network-{uuid4().hex}.json"
+            result = subprocess.run([sys.executable, "-m", "plating_tools", *args], cwd=self.root, env={**env, "PLATING_TEST_NETWORK_AUDIT": str(audit)}, capture_output=True, text=True, encoding="utf-8", timeout=30, check=False)
+            self.assertEqual(json.loads(audit.read_text(encoding="utf-8")), {"attempts": 0, "loaded": []})
+            return result
         self.assertEqual(run("--help").returncode, 0)
+        for group in ("refs", "versions", "qc"):
+            self.assertEqual(run(group, "--help").returncode, 0)
+        inventory = run("cuts", "inventory")
+        self.assertEqual(inventory.returncode, 0, inventory.stderr)
         result = run("cuts", "extract", "--scene", "01")
         self.assertEqual(result.returncode, 0, result.stderr)
         cuts = Path(json.loads(result.stdout)["output"]) / "cuts.json"
         skeleton = run("prompt", "skeleton", "--cuts-json", str(cuts), "--kind", "video")
         self.assertEqual(skeleton.returncode, 1, skeleton.stderr)
         output = Path(json.loads(skeleton.stdout)["output"])
+        check = run("prompt", "check", "--prompt", str(output / "skeleton.md"), "--kind", "video")
+        self.assertEqual(check.returncode, 1, check.stderr)
         gate = run("gate", "check", "--gate", str(output / "gate.toml"), "--prompt", str(cutfile))
         self.assertEqual(gate.returncode, 1, gate.stderr)
         self.assertEqual(run("gate", "cost", "--model", "Seedance 2.5", "--mode", "new", "--resolution", "480p", "--seconds", "4").returncode, 0)
         self.assertEqual(run("refs", "check", "--list", str(cutfile)).returncode, 4)
+        self.assertEqual(run("versions", "check", "--spec", str(cutfile)).returncode, 4)
+        self.assertEqual(run("qc", "probe", str(cutfile)).returncode, 4)
 
     def test_S8_p0_imports_only_standard_library_and_p0(self):
         forbidden = {"refs", "versions", "qc", "plating_qc"}
@@ -86,3 +114,6 @@ class IndependenceTests(NetworkBlockedCase):
         self.assertEqual(len(result), 1)
         process.assert_not_called()
         opened.assert_not_called()
+
+    def test_S9_default_test_temp_directory_stays_in_repository(self):
+        self.assertTrue(Path(tempfile.gettempdir()).resolve().is_relative_to(REPO / "out" / "pt-tests"))
