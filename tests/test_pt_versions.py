@@ -58,23 +58,23 @@ class VersionTests(NetworkBlockedCase):
 
     def test_V4_pin_only_applies_inside_scope(self):
         self.add_version("v58")
-        pin = self.model.Pin(self.family.name, "v50", ("S#10",), "W04", 135, "S#10은 v50 유지", "ts")
-        self.assertEqual(self.evaluate(self.render("v50", "S#10"), (pin,)).verdict, self.model.Verdict.PINNED)
-        self.assertEqual(self.evaluate(self.render("v50", "S#11"), (pin,)).verdict, self.model.Verdict.STALE)
-        self.assertEqual(self.evaluate(self.render("v49", "S#10"), (pin,)).verdict, self.model.Verdict.PIN_MISMATCH)
+        pin = self.model.Pin(self.family.name, "v50", ("S#98",), "W04", 2, "S#98은 v50 유지", "ts")
+        self.assertEqual(self.evaluate(self.render("v50", "S#98"), (pin,)).verdict, self.model.Verdict.PINNED)
+        self.assertEqual(self.evaluate(self.render("v50", "S#99"), (pin,)).verdict, self.model.Verdict.STALE)
+        self.assertEqual(self.evaluate(self.render("v49", "S#98"), (pin,)).verdict, self.model.Verdict.PIN_MISMATCH)
 
     def test_V5_pin_basis_is_required_and_must_match_line(self):
         docs = importlib.import_module("plating_tools.docs")
         textio = importlib.import_module("plating_tools.textio")
         path = self.root / "SYNTH-W04.md"
-        path.write_text("SYNTH\nS#10은 v50 유지\n", encoding="utf-8")
+        path.write_text("SYNTH\nS#98은 v50 유지\n", encoding="utf-8")
         class FakeStore(docs.DocStore):
             def load(inner, key): return textio.read_document(path, key)
         for basis in ("", "SYNTH 없는 근거"):
-            pin = self.model.Pin(self.family.name, "v50", ("S#10",), "W04", 2, basis, "ts")
+            pin = self.model.Pin(self.family.name, "v50", ("S#98",), "W04", 2, basis, "ts")
             with self.assertRaises(self.errors.InputError):
                 self.check.validate_pins((pin,), FakeStore())
-        pin = self.model.Pin(self.family.name, "v50", ("S#10",), "W04", 2, "S#10은 v50 유지", "ts")
+        pin = self.model.Pin(self.family.name, "v50", ("S#98",), "W04", 2, "S#98은 v50 유지", "ts")
         self.check.validate_pins((pin,), FakeStore())
 
     def test_V6_suffix_order_requires_explicit_order(self):
@@ -142,15 +142,19 @@ class VersionTests(NetworkBlockedCase):
         self.root.mkdir()
         self.family = replace(self.family, root=self.root)
         self.add_version("v58")
-        render = self.render("v50", "S#10")
+        render = self.render("v50", "S#98")
         cfg = workspace / "plating.toml"
         inputs = workspace / "inputs"
         inputs.mkdir()
-        cfg.write_text("[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='C:\\Users\\uicus\\Dev\\NS-Plating\\workflow'\n", encoding="utf-8")
+        workflow = workspace / "workflow"
+        workflow.mkdir()
+        profile = importlib.import_module("plating_tools.profile_plating")
+        (workflow / profile.DOC_FILES["W04"]).write_text("SYNTH\nS#98은 v50 유지\n", encoding="utf-8")
+        cfg.write_text(f"[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='{workflow}'\n", encoding="utf-8")
         spec = inputs / "versions.toml"
-        spec.write_text(f"[[family]]\nname='SYNTH-day'\nroot='{self.root}'\n[[render]]\nfamily='SYNTH-day'\npath='{render.path}'\nscene='S#10'\n", encoding="utf-8")
+        spec.write_text(f"[[family]]\nname='SYNTH-day'\nroot='{self.root}'\n[[render]]\nfamily='SYNTH-day'\npath='{render.path}'\nscene='S#98'\n", encoding="utf-8")
         pins = inputs / "pins.toml"
-        pins.write_text("[[pin]]\nfamily='SYNTH-day'\nversion='v50'\nscope=['S#10']\nbasis_doc='W04'\nbasis_line=135\nbasis_contains='S#10은 v50 유지'\napproved_by='ts'\n", encoding="utf-8")
+        pins.write_text("[[pin]]\nfamily='SYNTH-day'\nversion='v50'\nscope=['S#98']\nbasis_doc='W04'\nbasis_line=2\nbasis_contains='S#98은 v50 유지'\napproved_by='ts'\n", encoding="utf-8")
         cli = importlib.import_module("plating_tools.cli")
         stdout = io.StringIO()
         with patch("sys.stdout", stdout):
