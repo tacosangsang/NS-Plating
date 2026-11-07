@@ -16,6 +16,7 @@ def is_cut_table_header(header: tuple[str, ...], *, in_scene: bool) -> bool:
 
 
 DOC_FILES: Final = {
+    "W04": "04_블록아웃_연출설계.md",
     "W02": "02_작업규칙과_의사결정.md", "W05": "05_영상_생성_워크플로우.md",
     "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",
     "W10": "10_고정_프롬프트_블록.md", "W11": "11_설정_고정값.md",
