@@ -1,3 +1,17 @@
+# STATE (갱신 2026-11-07 19:35 KST)
+
+다음 행동: Codex/Python의 임시 디렉터리 접근 문제를 해결한 뒤 `python -m unittest discover -s tests -v`로 기존 66건 통과부터 확인한다. 이후 12번 P0 1단계 공통 모듈과 S1~S6를 구현한다. 전체 테스트 반복은 환경 해결 이후로 보류한다.
+
+현재 단계: 설계·검수 결정·기존 Claude 사용 기록을 첫 커밋 `e9bfaee`에 보존했다. P0 1~6단계 구현은 미착수. 기존 66건 테스트에서 56개 테스트에 오류, 정리 중복 포함 오류 기록 62건, 통과 10건. Python 3.12.10 tempfile 폴더가 저장소 안에 생성된 직후 접근 거부됨. 일반 폴더 쓰기·읽기는 정상이다. 사용자 설정 누락이나 제품 코드 결함으로 단정하지 않는다.
+
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 런타임 독립 확인과 현재 주간 잔여는 미확인.
+
+보고서: `handoff/REPORT_1935_P0.md`. 전체 로그: `handoff/logs/win_e9bfaee_20261107_193403_baseline.txt`. 환경 진단: `handoff/logs/win_e9bfaee_20261107_193508_temp_diagnostic.txt`. 설계 변경 제안 0건.
+
+이번 네트워크·push·API·설치·권한 변경 없음. `src/plating_qc/`, 루트 `config.toml`, 기존 미추적 REPORT_1536과 과거 미추적 로그는 보존했다. 접근 불가 테스트 폴더와 진단 파일은 로컬 `out/test-tmp/`에 남아 있으며 Git 제외다. 과거 Claude 사용 원장은 내용을 바꾸지 않았다.
+
+## 이전 세션 기록 (이하 과거 상태)
+
 # STATE (갱신 2026-11-07 18:35 KST)
 
 다음 행동: 클로드 프로젝트가 11번을 반영한 `design/requests/plating-tools.md`(커밋 `bb4a99a`)와 `handoff/REPLY_1835_11.md`를 검수한 뒤 샌드박스 밖에서 push·설계 API 호출을 직접 수행한다. dot는 호출·push하지 않는다.
