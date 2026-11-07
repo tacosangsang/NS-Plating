@@ -53,6 +53,7 @@ class ApprovalResult:
     vocabulary_hits: tuple[str, ...]
     bound_to_prompt: bool
     evidence: ApprovalEvidence | None
+    how_to_approve: str = ""  # 승인이 아닐 때 사용자에게 그대로 보여 줄 승인 문장 안내
 
 
 @dataclass(frozen=True, slots=True)
@@ -164,9 +165,12 @@ def evaluate_gate(lines, inputs, context: GateContext, approval: ApprovalEvidenc
     approval_status = "승인 기록 없음"
     if approval is not None:
         approval_status = "승인 기록 있음" if all((approval.quote, approval.where, approval.by, approval.at, approval.prompt_sha256)) and bound and hits else "승인 기록 불일치" if not bound else "어휘 불명확"
+    how = "" if approval_status == "승인 기록 있음" else (
+        "승인하려면 문장을 " + " / ".join(f'"{w}"' for w in context.approval_words)
+        + f' 중 하나로 끝내 말하세요(예: "이 프롬프트로 {context.approval_words[0]}"). 안·말고·하지 마가 들어가면 승인이 아닙니다.')
     complete = all(item.status == "완료" for item in results)
     label = "[점검 미완료]" if not complete else "[점검 완료·승인 기록 있음]" if approval_status == "승인 기록 있음" else "[점검 완료·승인 기록 없음]"
-    return GateResult(tuple(results), complete, ApprovalResult(approval_status, hits, bound, approval), context.cost, context.cuts_fresh, label)
+    return GateResult(tuple(results), complete, ApprovalResult(approval_status, hits, bound, approval, how), context.cost, context.cuts_fresh, label)
 
 
 def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_sha: str, *, max_seconds: Decimal | None = None):

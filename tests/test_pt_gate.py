@@ -170,3 +170,11 @@ class ApprovalWordingTests(NetworkBlockedCase):
         for quote in ("생성해도 안 돼", "돌려 말고 프롬프트만", "아직 생성해 하지 마", "안 돌려", "돌려보기 전에 보여줘"):
             with self.subTest(quote=quote):
                 self.assertEqual(self.status(quote), "어휘 불명확")
+
+    def test_unapproved_result_tells_how_to_approve(self):
+        proof = self.gate.ApprovalEvidence("돌려줘", "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        result = self.gate.evaluate_gate(self.lines, (), self.context, proof).approval
+        self.assertIn('"생성해"', result.how_to_approve)
+        self.assertIn('"돌려"', result.how_to_approve)
+        approved = self.gate.ApprovalEvidence("돌려", "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        self.assertEqual(self.gate.evaluate_gate(self.lines, (), self.context, approved).approval.how_to_approve, "")
