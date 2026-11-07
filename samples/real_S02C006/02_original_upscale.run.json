@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "command": [
+    "python",
+    "-m",
+    "plating_qc",
+    "--log",
+    "samples/real_S02C006/logs/02_original_upscale.json",
+    "compare",
+    "D:\\Plating\\video\\S02C006-v1.mp4",
+    "D:\\Plating\\video\\S02C006-2k-v1.mp4",
+    "--out",
+    "samples/real_S02C006/original_vs_upscale"
+  ],
+  "elapsed_seconds": 3.4623403
+}

@@ -1,0 +1,97 @@
+{
+  "started_utc": "2026-11-07T08:04:26.608347+00:00",
+  "duration_s": 2.594,
+  "cwd": "C:\\Users\\uicus\\Dev\\plating-qc-workflows",
+  "argv": [
+    "--log",
+    "samples/real_S02C006/logs/05_original_tiles.json",
+    "tiles",
+    "D:\\Plating\\video\\S02C006-v1.mp4",
+    "--out",
+    "samples/real_S02C006/original_tiles"
+  ],
+  "tools": {
+    "ffmpeg": "ffmpeg version N-128532-g5d85b7bfb2-20261106 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version N-128532-g5d85b7bfb2-20261106 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "source_sha256": {
+    "__init__.py": "c6a418443b02b01c6ed3b3c79d3a43925161087dd49197c06a4acd28611a446d",
+    "__main__.py": "8134dc71036ab6fef7cb605ec59b400b2864890fc00526f9763c447e2937e295",
+    "cli.py": "11f4f4c6b6864579961cca0bb3193ced6481df24621a75566fe2117e303674bc",
+    "compare.py": "06d7e55b01d68c3c043029e7d0b1ba617c7fa18e7743bff2fc6bd23d3dba75a9",
+    "config.py": "8d6d1eda0e58306625b2ccab7267a90710de40eb6473ed6b1c8a0bbfafacd308",
+    "core.py": "ac8490b824341e12e65305142b71e6b6ecf5cfb3ea84ef60c7dc1e9e2b1f0684",
+    "errors.py": "d042fa3dcafee8e969bb78f823e96484f5e872bcead42d5d3f29750bee1abe86",
+    "layout.py": "0813be26624d0e85eb500a5541eea247e3698fab77b80c120b62b8fbd9952c8a",
+    "model.py": "808407428fe06725f2e28975bae09b1a8fd6a7ae109253227f86e028dbfcf974",
+    "publish.py": "2a3912cd232c65e26cd93fb1a96c7c06bcb28d1d9ac8bbaabf7e7aaf72e6c919",
+    "review.py": "dc8becf37e6b34cd4a12e1bbc1636e0740b7880b7285fe505ed94457f2981ad2",
+    "runlog.py": "2b2fb72054a273f074eaea3d8ea2d7d0c1b3d9f2e36702e0aab1ebd783b43120",
+    "split.py": "d2b1613b2f975b2ee88dd8c4dca796695376388c875b9744affa25bd1bbdef9e"
+  },
+  "exit_code": 0,
+  "result": {
+    "input": "D:\\Plating\\video\\S02C006-v1.mp4",
+    "fps": 1,
+    "grid": [
+      5,
+      2
+    ],
+    "width": 320,
+    "cuts": [],
+    "cut_frames": {},
+    "around": 3,
+    "scene_threshold": 0.3,
+    "scene_candidates": [],
+    "files": [
+      "tiles_001.png",
+      "scene_candidates.txt"
+    ],
+    "samples": [
+      {
+        "frame": 0,
+        "pts": 0,
+        "time_base": "1/12288",
+        "seconds": 0.0,
+        "tile": "tiles_001.png",
+        "cell": 0
+      },
+      {
+        "frame": 24,
+        "pts": 12288,
+        "time_base": "1/12288",
+        "seconds": 1.0,
+        "tile": "tiles_001.png",
+        "cell": 1
+      },
+      {
+        "frame": 48,
+        "pts": 24576,
+        "time_base": "1/12288",
+        "seconds": 2.0,
+        "tile": "tiles_001.png",
+        "cell": 2
+      },
+      {
+        "frame": 72,
+        "pts": 36864,
+        "time_base": "1/12288",
+        "seconds": 3.0,
+        "tile": "tiles_001.png",
+        "cell": 3
+      },
+      {
+        "frame": 96,
+        "pts": 49152,
+        "time_base": "1/12288",
+        "seconds": 4.0,
+        "tile": "tiles_001.png",
+        "cell": 4
+      }
+    ],
+    "label_mode": "drawtext",
+    "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)",
+    "warnings": []
+  },
+  "error": null
+}
