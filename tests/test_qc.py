@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from plating_qc.core import QCError, convert, probe
@@ -145,6 +146,49 @@ class QCIntegration(unittest.TestCase):
         with self.assertRaises(QCError) as exc:
             tiles(source, self.raw / "review", {})
         self.assertEqual(exc.exception.code, 2)
+
+    def test_tiles_rejects_invalid_raw_config(self):
+        source = self.make_video("invalid_layout.mp4")
+        target = self.raw / "review"
+        with self.assertRaises(QCError) as exc:
+            tiles(source, target, {"layout": {"raw": "raw/"}})
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse(target.exists())
+        config = self.scene / "invalid_layout.toml"
+        config.write_text('[layout]\nraw = "raw/"\n', encoding="utf-8")
+        env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
+        result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "tiles", str(source), "--out", str(target)], env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertFalse(target.exists())
+
+    def test_tiles_percent_sign_in_output_path(self):
+        source = self.make_video("percent.mp4")
+        target = self.scene / "review%03d"
+        sibling = self.scene / "review001"
+        sibling.mkdir()
+        sentinel = sibling / "keep.txt"
+        sentinel.write_text("기존 파일", encoding="utf-8")
+        result = tiles(source, target, {}, cuts=[12], around=1)
+        self.assertTrue((target / "tiles_001.png").is_file())
+        self.assertTrue((target / "cut_000012_000011-000013.png").is_file())
+        self.assertIn("tiles_001.png", result["files"])
+        self.assertEqual(list(sibling.iterdir()), [sentinel])
+        self.assertEqual(sentinel.read_text(encoding="utf-8"), "기존 파일")
+
+    def test_tiles_encoder_failure_cleans_partial_output(self):
+        source = self.make_video("encoder.mp4")
+        target = self.scene / "failed%03d"
+        source_info = probe(source, {})
+        def fail_after_writing(args, cwd, **kwargs):
+            (Path(cwd) / "tiles_001.png").write_bytes(b"partial")
+            return subprocess.CompletedProcess(args, 1, "", "인코더 실패")
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=fail_after_writing):
+            with self.assertRaises(QCError) as exc:
+                tiles(source, target, {})
+        self.assertEqual(exc.exception.code, 5)
+        self.assertFalse(target.exists())
+        self.assertFalse((self.scene / "failed001").exists())
+        self.assertTrue(source.exists())
 
     def test_tiles_invalid_frame_does_not_create_folder(self):
         source = self.make_video("tile_bad.mp4")

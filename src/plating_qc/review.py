@@ -1,9 +1,11 @@
 """원본을 변경하지 않는 프레임 비교와 검수 타일."""
 import json
+import os
+import tempfile
 from pathlib import Path
 import subprocess
 
-from .core import QCError, executable, probe
+from .core import QCError, executable, layout_names, probe
 
 
 def frames(path, config, width, height, count):
@@ -89,9 +91,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
     if any(not isinstance(c, int) or c < 0 or c >= count for c in cuts):
         raise QCError(2, "컷 번호는 영상의 실제 프레임 범위 안에 있어야 합니다")
     dest = Path(out).resolve()
-    raw = config.get("layout", {}).get("raw", "raw") if isinstance(config.get("layout", {}), dict) else None
-    if not isinstance(raw, str):
-        raise QCError(2, "layout 설정이 올바르지 않습니다")
+    raw, _ = layout_names(config)
     if any(p.name.casefold() == raw.casefold() for p in (dest, *dest.parents)):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
     if not dest.parent.is_dir():
@@ -103,34 +103,49 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
         raise QCError(3, f"출력 폴더가 이미 있습니다: {dest}") from exc
     except OSError as exc:
         raise QCError(5, f"출력 폴더 생성 실패: {exc}") from exc
-    created = []
-    def invoke(args):
+    published = []
+    def invoke(args, workdir):
         try:
-            p = subprocess.run(args, capture_output=True, text=True, errors="replace")
+            p = subprocess.run(args, cwd=workdir, capture_output=True, text=True, errors="replace")
         except OSError as exc:
             raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
         if p.returncode:
             raise QCError(5, "타일 생성 실패: " + p.stderr[-2000:])
     try:
-        invoke([ffmpeg, "-v", "error", "-nostdin", "-i", info["path"], "-vf", f"fps={fps},scale={width}:-2,tile={columns}x{rows}", "-fps_mode", "passthrough", "-threads", "1", "-n", str(dest / "tiles_%03d.png")])
-        created = sorted(p.name for p in dest.glob("tiles_*.png"))
-        if not created:
-            raise QCError(5, "타일 이미지가 생성되지 않았습니다")
-        for cut in sorted(set(cuts)):
-            lo, hi = max(0,cut-around), min(count-1,cut+around)
-            target = dest / f"cut_{cut:06d}_{lo:06d}-{hi:06d}.png"
-            invoke([ffmpeg,"-v","error","-nostdin","-i",info["path"],"-vf",f"select=between(n\\,{lo}\\,{hi}),tile={hi-lo+1}x1","-frames:v","1","-threads","1","-n",str(target)])
-            if not target.is_file():
-                raise QCError(5, f"컷 {cut} 이미지를 만들지 못했습니다")
-            created.append(target.name)
-        report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "around": around, "files": created, "warnings": info["warnings"] + ["타일 칸에 프레임 번호와 타임코드는 표시되지 않습니다. 컷 이미지 파일명은 0부터 시작하는 원본 프레임 범위입니다."]}
-        (dest / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        # FFmpeg에는 경로 없이 고정 파일명만 전달한다. 폴더의 %를 패턴으로 해석하지 않는다.
+        with tempfile.TemporaryDirectory(prefix=".plating-qc-", dir=dest) as work:
+            stage = Path(work)
+            invoke([ffmpeg, "-v", "error", "-nostdin", "-i", info["path"], "-vf", f"fps={fps},scale={width}:-2,tile={columns}x{rows}", "-fps_mode", "passthrough", "-threads", "1", "-n", "tiles_%03d.png"], work)
+            created = sorted(p.name for p in stage.glob("tiles_*.png"))
+            if not created:
+                raise QCError(5, "타일 이미지가 생성되지 않았습니다")
+            for cut in sorted(set(cuts)):
+                lo, hi = max(0,cut-around), min(count-1,cut+around)
+                name = f"cut_{cut:06d}_{lo:06d}-{hi:06d}.png"
+                invoke([ffmpeg,"-v","error","-nostdin","-i",info["path"],"-vf",f"select=between(n\\,{lo}\\,{hi}),tile={hi-lo+1}x1","-frames:v","1","-threads","1","-n",name], work)
+                if not (stage / name).is_file():
+                    raise QCError(5, f"컷 {cut} 이미지를 만들지 못했습니다")
+                created.append(name)
+            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "around": around, "files": created, "warnings": info["warnings"] + ["타일 칸에 프레임 번호와 타임코드는 표시되지 않습니다. 컷 이미지 파일명은 0부터 시작하는 원본 프레임 범위입니다."]}
+            (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+            # 하드링크는 같은 이름의 기존 파일이 생겨도 덮어쓰지 않는다.
+            for name in [*created, "manifest.json"]:
+                target = dest / name
+                try:
+                    os.link(stage / name, target)
+                except FileExistsError as exc:
+                    raise QCError(3, f"출력 파일이 이미 있습니다: {target}") from exc
+                stat = target.stat()
+                published.append((target, stat.st_dev, stat.st_ino))
         return report
     except (QCError, OSError) as exc:
-        # 새로 만든 폴더의 생성물만 정리한다. 외부 파일은 지우지 않는다.
-        for name in created:
-            (dest / name).unlink(missing_ok=True)
-        (dest / "manifest.json").unlink(missing_ok=True)
+        for target, device, inode in published:
+            try:
+                stat = target.stat()
+                if (stat.st_dev, stat.st_ino) == (device, inode):
+                    target.unlink()
+            except FileNotFoundError:
+                pass
         try:
             dest.rmdir()
         except OSError:

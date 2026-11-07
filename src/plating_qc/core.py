@@ -75,17 +75,27 @@ def probe(path, config):
     return {"path": str(path), "video": {"codec": video.get("codec_name"), "width": video.get("width"), "height": video.get("height"), "pix_fmt": video.get("pix_fmt"), "r_frame_rate": rate, "avg_frame_rate": avg, "nb_frames_meta": int(meta) if meta and str(meta).isdigit() else None, "nb_frames_decoded": int(count), "duration_s": video.get("duration"), "profile": video.get("profile"), "color": {"primaries": video.get("color_primaries", "unknown"), "transfer": video.get("color_transfer", "unknown"), "space": video.get("color_space", "unknown")}}, "audio": None if audio is None else {"codec": audio.get("codec_name"), "sample_rate": audio.get("sample_rate"), "channels": audio.get("channels"), "duration_s": audio.get("duration")}, "warnings": warnings}
 
 
+def layout_names(config):
+    layout = config.get("layout", {})
+    if not isinstance(layout, dict):
+        raise QCError(2, "설정의 layout은 TOML 테이블이어야 합니다")
+    raw, prores = layout.get("raw", "raw"), layout.get("prores", "prores")
+    def valid(name):
+        return (isinstance(name, str) and name not in ("", ".", "..")
+                and name[-1] not in (" ", ".")
+                and not any(c in name for c in ("/", "\\", ":"))
+                and not any(ord(c) < 32 for c in name))
+    if not valid(raw) or not valid(prores) or raw.casefold() == prores.casefold():
+        raise QCError(2, "raw/prores 설정은 서로 다른 단일 폴더 이름이어야 합니다")
+    return raw, prores
+
+
 def convert(source, scene, config, suffix="", dry_run=False):
     if suffix and (not suffix.startswith("_") or any(c in suffix for c in ("/", "\\", ":")) or suffix in {"_", "_.."}):
         raise QCError(2, "접미사는 밑줄로 시작하는 파일 이름이어야 합니다")
     info = probe(source, config)
     source = Path(info["path"])
-    layout = config.get("layout", {})
-    if not isinstance(layout, dict):
-        raise QCError(2, "설정의 layout은 TOML 테이블이어야 합니다")
-    raw, prores = layout.get("raw", "raw"), layout.get("prores", "prores")
-    if any(not isinstance(x, str) or x in ("", ".", "..") or "/" in x or "\\" in x for x in (raw, prores)) or raw.casefold() == prores.casefold():
-        raise QCError(2, "raw/prores 설정은 서로 다른 단일 폴더 이름이어야 합니다")
+    raw, prores = layout_names(config)
     if scene is None:
         raw_dir = next((p for p in source.parents if p.name.casefold() == raw.casefold()), None)
         if raw_dir is None:
