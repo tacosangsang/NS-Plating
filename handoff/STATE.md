@@ -11,7 +11,7 @@
 - `tools/claude_design.py` 작성. Claude Messages API 시험 호출 1회 성공: 입력 108토큰, 출력 62토큰.
 - `handoff/usage-log.md`, `handoff/claude-usage.md` 기록. Console 잔액은 시험 전 US$100, 시험 후 US$99.99로 사용자 확인.
 
-막힘·질문(사용자 답 필요): Console 누적 비용 확인 대기. 잔액은 감소했지만 시험 호출에 대한 청구 상세는 미확인.
+막힘·질문(사용자 답 필요): 없음. 사용자 화면상 프로모션 잔액은 $0.01 감소했다. 정확한 누적 비용과 시험 호출의 청구 상세는 미확인.
 
 Claude API 호출 기록: `handoff/claude-usage.md` 참조.
 
