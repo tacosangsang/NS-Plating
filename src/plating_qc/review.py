@@ -1,6 +1,5 @@
 """원본을 변경하지 않는 프레임 비교와 검수 타일."""
 import json
-import math
 import os
 import re
 import tempfile
@@ -9,118 +8,11 @@ from fractions import Fraction
 import subprocess
 
 from .core import QCError, executable, layout_names, probe
+from .layout import checked_path
+from .publish import publish
 
 
-def frames(path, config, width, height, count):
-    from .backend.ffmpeg import FfmpegBackend
-
-    return FfmpegBackend(config).extract_frames(Path(path), width, height, count)
-
-
-def distance(a, b):
-    return sum(abs(x-y) for x, y in zip(a, b)) / (255 * len(a))
-
-
-def normalized_distance(a, b):
-    mean_a, mean_b = sum(a) / len(a), sum(b) / len(b)
-    std_a = math.sqrt(sum((x - mean_a) ** 2 for x in a) / len(a))
-    std_b = math.sqrt(sum((x - mean_b) ** 2 for x in b) / len(b))
-    if not std_a or not std_b:
-        return distance(a, b)
-    return sum(abs((x - mean_a) / std_a - (y - mean_b) / std_b)
-               for x, y in zip(a, b)) / (6 * len(a))
-
-
-def mixed_frame_hint(previous, current, candidate):
-    """두 원본 프레임의 혼합에 가까운지만 검사한다. 최종 판정이 아니다."""
-    separation = distance(previous, current)
-    if separation < .12:
-        return None
-    endpoint_error = min(distance(previous, candidate), distance(current, candidate))
-    if endpoint_error < .05:
-        return None
-    alternatives = []
-    for numerator in (1, 2, 3):
-        error = sum(abs((numerator*x + (4-numerator)*y)/4 - z) for x, y, z in zip(previous, current, candidate)) / (255 * len(previous))
-        alternatives.append((error, numerator / 4))
-    error, weight = min(alternatives)
-    if error <= .04 and endpoint_error - error >= .04:
-        return {"previous_weight": weight, "mixed_error": error, "nearest_source_error": endpoint_error}
-    return None
-
-
-def compare(original, candidate, config, search=30, threshold=.02):
-    if not 0 <= search <= 300 or not 0 <= threshold <= 1:
-        raise QCError(2, "search는 0~300, threshold는 0~1이어야 합니다")
-    a, b = probe(original, config), probe(candidate, config)
-    na, nb = a["video"]["nb_frames_decoded"], b["video"]["nb_frames_decoded"]
-    if na < 1 or nb < 1:
-        raise QCError(5, "비교할 프레임이 없습니다")
-    af = frames(a["path"], config, 64, 36, na)
-    bf = frames(b["path"], config, 64, 36, nb)
-    # 전체 겹치는 구간에서 최대 12개의 표본을 비교한다. 반복 장면은 애매함으로 처리한다.
-    scores = []
-    for offset in range(-min(search, nb-1), min(search, na-1)+1):
-        start, end = max(0, -offset), min(nb, na-offset)
-        overlap = end - start
-        if overlap < min(5, na, nb):
-            continue
-        positions = sorted({start + (overlap-1)*i//11 for i in range(12)})
-        score = sum(normalized_distance(af[i+offset], bf[i]) for i in positions)/len(positions)
-        scores.append((score, offset))
-    if not scores:
-        raise QCError(5, "정렬할 겹치는 프레임이 부족합니다")
-    scores.sort()
-    best, offset = scores[0]
-    second = scores[1][0] if len(scores)>1 else None
-    ambiguous = best > .15 or (second is not None and second-best < .002)
-    warnings = list(a["warnings"]) + list(b["warnings"])
-    if a["video"]["avg_frame_rate"] != b["video"]["avg_frame_rate"]:
-        warnings.append("프레임 속도가 다릅니다. 프레임 정렬 결과를 신뢰할 수 없습니다")
-        ambiguous = True
-    if any(x["timestamp_analysis"]["status"] != "observed" or x["timestamp_analysis"]["vfr_suspect"] is not False for x in (a, b)):
-        warnings.append("PTS가 없거나 가변 속도가 의심되어 프레임 번호 기반 정렬을 확정할 수 없습니다")
-        ambiguous = True
-    if ambiguous:
-        warnings.append("다른 소스이거나 반복 장면 등으로 정렬이 불확실합니다. 누락을 확정하지 않습니다")
-    start, end = max(0, -offset), min(nb, na-offset)
-    ranges = []
-    changed = []
-    current = None
-    for i in range(start, end):
-        if normalized_distance(af[i+offset], bf[i]) > threshold:
-            changed.append(i)
-            if current is None:
-                current = [i, i]
-            else:
-                current[1] = i
-        elif current is not None:
-            ranges.append(current)
-            current = None
-    if current is not None:
-        ranges.append(current)
-    mix_suspects = []
-    if not ambiguous:
-        for i in changed[:1000]:
-            j = i + offset
-            for left, right in ((j-1, j), (j, j+1)):
-                if left < 0 or right >= na:
-                    continue
-                hint = mixed_frame_hint(af[left], af[right], bf[i])
-                if hint:
-                    mix_suspects.append({"candidate_frame": i, "source_frames": [left, right], **hint})
-                    break
-    if len(changed) > 1000 and not ambiguous:
-        warnings.append("차이 프레임이 1000개를 넘어 혼합 의심 검사는 앞 1000개만 수행했습니다")
-    if mix_suspects:
-        warnings.append("인접한 두 원본 프레임의 혼합과 유사한 프레임이 있습니다. 원본 해상도로 직접 확인하세요")
-    if na != nb:
-        warnings.append("디코딩 프레임 수가 다릅니다")
-    if not ambiguous and offset != 0:
-        warnings.append("정렬 후보가 0프레임이 아닙니다. 앞뒤 구간을 확인하세요")
-    if ranges:
-        warnings.append("정렬 후보에서 차이가 큰 구간이 있습니다. 원본 해상도로 검수하세요")
-    return {"original": a, "candidate": b, "alignment": {"offset_candidate_to_original": None if ambiguous else offset, "score": best, "second_score": second, "uncertain": ambiguous, "estimated_missing_head": None if ambiguous else max(0, offset), "estimated_missing_tail": None if ambiguous else max(0, na - (offset + nb))}, "difference_ranges_candidate_frames": [] if ambiguous else ranges, "mixed_frame_suspects": mix_suspects, "threshold": threshold, "warnings": warnings, "notice": "축소 회색 프레임 기반의 검수 힌트입니다. 손상·누락·혼합 프레임의 확정 판정이 아닙니다."}
+from .compare import compare, distance, frames, mixed_frame_hint, normalized_distance
 
 
 def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), around=3, scene_threshold=.3):
@@ -134,7 +26,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
         raise QCError(2, "타임스탬프 검증을 위해 100000프레임 이하의 영상만 처리합니다")
     if any(not isinstance(c, int) or c < 0 or c >= count for c in cuts):
         raise QCError(2, "컷 번호는 영상의 실제 프레임 범위 안에 있어야 합니다")
-    dest = Path(out).resolve()
+    dest = checked_path(Path(out))
     raw, _ = layout_names(config)
     if any(p.name.casefold() == raw.casefold() for p in (dest, *dest.parents)):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
@@ -162,9 +54,23 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             stage = Path(work)
             # 원본 프레임의 n과 PTS를 select 전에 그린다. 선택 후 번호를 붙이면 원본 번호가 아니다.
             label = "drawtext=text='F %{n} T %{pts\\:flt}':x=3:y=3:fontsize=min(max(8\\,h/12)\\,w/25):fontcolor=white:box=1:boxcolor=black@0.75"
+            label_mode = "drawtext"
             select = f"select='isnan(prev_selected_t)+gte(t-prev_selected_t\\,{1 / fps:.12f})'"
             graph = f"showinfo@source,{label},{select},showinfo@selected,scale={width}:-2,tile={columns}x{rows}"
-            log = invoke([ffmpeg, "-v", "info", "-nostdin", "-copyts", "-i", info["path"], "-vf", graph, "-fps_mode", "passthrough", "-threads", "1", "-n", "tiles_%03d.png"], work)
+            args = [ffmpeg, "-v", "info", "-nostdin", "-copyts", "-i", info["path"], "-vf", graph, "-fps_mode", "passthrough", "-threads", "1", "-n", "tiles_%03d.png"]
+            try:
+                log = invoke(args, work)
+            except QCError as exc:
+                font_errors = ("cannot find a valid font", "failed to load font",
+                               "could not load font", "could not find font",
+                               "no usable font", "fontconfig error")
+                if exc.code != 5 or not any(message in str(exc).lower() for message in font_errors):
+                    raise
+                for partial in stage.glob("tiles_*.png"):
+                    partial.unlink()
+                label, label_mode = "null", "manifest"
+                args[args.index("-vf") + 1] = f"showinfo@source,{label},{select},showinfo@selected,scale={width}:-2,tile={columns}x{rows}"
+                log = invoke(args, work)
             timebase_match = re.search(r"showinfo@source[^\n]*config in time_base: (\d+/\d+)", log)
             source_frames = re.findall(r"showinfo@source[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", log)
             selected_frames = re.findall(r"showinfo@selected[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", log)
@@ -212,15 +118,13 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             (stage / "scene_candidates.txt").write_text("\n".join(scene_lines) + "\n", encoding="utf-8")
             created.append("scene_candidates.txt")
             cut_frames = {str(cut): [{"frame": n, "pts": int(source_frames[n][1]), "time_base": str(timebase), "seconds": float(int(source_frames[n][1]) * timebase)} for n in range(max(0, cut-around), min(count-1, cut+around)+1)] for cut in sorted(set(cuts))}
-            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "scene_threshold": scene_threshold, "scene_candidates": candidates, "files": created, "samples": samples, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info["warnings"]}
+            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "scene_threshold": scene_threshold, "scene_candidates": candidates, "files": created, "samples": samples, "label_mode": label_mode, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info["warnings"]}
             (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             # 하드링크는 같은 이름의 기존 파일이 생겨도 덮어쓰지 않는다.
             for name in [*created, "manifest.json"]:
                 target = dest / name
-                try:
-                    os.link(stage / name, target)
-                except FileExistsError as exc:
-                    raise QCError(3, f"출력 파일이 이미 있습니다: {target}") from exc
+                checked_path(target)
+                publish(stage / name, target)
                 stat = target.stat()
                 published.append((target, stat.st_dev, stat.st_ino))
         return report
@@ -243,7 +147,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
 
 def write_comparison(report, out, config):
     """새 폴더에 보고서와 정렬된 원본 크기의 나란히 보기 이미지를 저장한다."""
-    dest = Path(out).resolve()
+    dest = checked_path(Path(out))
     raw, _ = layout_names(config)
     if any(p.name.casefold() == raw.casefold() for p in (dest, *dest.parents)):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
@@ -295,10 +199,8 @@ def write_comparison(report, out, config):
             (stage / "report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
             for name in ["report.json", "report.txt", *[image["file"] for image in images]]:
                 target = dest / name
-                try:
-                    os.link(stage / name, target)
-                except FileExistsError as exc:
-                    raise QCError(3, f"출력 파일이 이미 있습니다: {target}") from exc
+                checked_path(target)
+                publish(stage / name, target)
                 stat = target.stat()
                 published.append((target, stat.st_dev, stat.st_ino))
         return report

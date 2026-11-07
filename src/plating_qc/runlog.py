@@ -5,10 +5,11 @@ from pathlib import Path
 import subprocess
 
 from .core import QCError, executable, layout_names
+from .layout import checked_path
 
 
 def reserve_log(name, config, output_dir=None):
-    path = Path(name).resolve()
+    path = checked_path(Path(name))
     raw, _ = layout_names(config)
     if path.suffix.lower() != ".json":
         raise QCError(2, "로그 파일은 .json 확장자를 사용하세요")

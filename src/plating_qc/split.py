@@ -3,34 +3,17 @@ import json
 import math
 import os
 from pathlib import Path
-import subprocess
 import tempfile
 
 from .core import QCError, executable, layout_names, probe
-
-
-def run(args, cwd=None):
-    try:
-        result = subprocess.run(args, cwd=cwd, capture_output=True, text=True, errors="replace")
-    except OSError as exc:
-        raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
-    if result.returncode:
-        raise QCError(5, "분할 또는 검증 실패: " + result.stderr[-2000:])
-    return result.stdout
+from .layout import checked_path
+from .publish import publish
 
 
 def frame_hashes(path, ffmpeg):
-    data = run([ffmpeg, "-v", "error", "-nostdin", "-i", str(path), "-map", "0:v:0", "-f", "framemd5", "-"])
-    hashes = []
-    for line in data.splitlines():
-        if line and not line.startswith("#"):
-            fields = line.split(",")
-            if len(fields) != 6 or len(fields[-1].strip()) != 32:
-                raise QCError(5, "프레임 검증 출력 형식이 올바르지 않습니다")
-            hashes.append(fields[-1].strip())
-    if not hashes:
-        raise QCError(5, "비교할 프레임이 없습니다")
-    return hashes
+    from .backend.ffmpeg import FfmpegBackend
+
+    return FfmpegBackend({"ffmpeg_path": ffmpeg}).framemd5(Path(path))
 
 
 def split(source, out, config, max_part_mb=400):
@@ -55,7 +38,7 @@ def split(source, out, config, max_part_mb=400):
     if segment_time < 1 / fps:
         raise QCError(2, "분할 크기가 한 프레임보다 작습니다")
     raw, _ = layout_names(config)
-    dest = Path(out).resolve()
+    dest = checked_path(Path(out))
     if any(p.name.casefold() == raw.casefold() for p in (dest, *dest.parents)):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
     if not dest.parent.is_dir():
@@ -71,8 +54,9 @@ def split(source, out, config, max_part_mb=400):
     try:
         with tempfile.TemporaryDirectory(prefix=".plating-qc-", dir=dest) as work:
             stage = Path(work)
-            run([ffmpeg, "-v", "error", "-nostdin", "-i", info["path"], "-map", "0:v:0", "-map", "0:a?", "-c", "copy", "-f", "segment", "-segment_format", "mov", "-segment_time", f"{segment_time:.9f}", "-reset_timestamps", "1", "-n", "part_%03d.mov"], cwd=work)
-            parts = sorted(stage.glob("part_*.mov"))
+            from .backend.ffmpeg import FfmpegBackend
+
+            parts = FfmpegBackend(config).cut_copy(Path(info["path"]), stage, segment_time)
             if not parts:
                 raise QCError(5, "분할 파일이 생성되지 않았습니다")
             sizes = [p.stat().st_size for p in parts]
@@ -102,10 +86,8 @@ def split(source, out, config, max_part_mb=400):
             (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             for part in [*parts, stage / "manifest.json"]:
                 target = dest / part.name
-                try:
-                    os.link(part, target)
-                except FileExistsError as exc:
-                    raise QCError(3, f"출력 파일이 이미 있습니다: {target}") from exc
+                checked_path(target)
+                publish(part, target)
                 stat = target.stat()
                 published.append((target, stat.st_dev, stat.st_ino))
         return report

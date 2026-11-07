@@ -54,6 +54,34 @@ class FfmpegBackend(MediaBackend):
             raise QCError(5, "비교용 디코딩 프레임 수가 probe 결과와 다릅니다")
         return [memoryview(result.stdout)[i:i + size] for i in range(0, len(result.stdout), size)]
 
+    def cut_copy(self, source: Path, output: Path, segment_time: float) -> list[Path]:
+        ffmpeg = core.executable("ffmpeg", self.config)
+        args = [ffmpeg, "-v", "error", "-nostdin", "-i", str(source), "-map", "0:v:0",
+                "-map", "0:a?", "-c", "copy", "-f", "segment", "-segment_format", "mov",
+                "-segment_time", f"{segment_time:.9f}", "-reset_timestamps", "1", "-n", "part_%03d.mov"]
+        try:
+            result = subprocess.run(args, cwd=output, capture_output=True, text=True, errors="replace")
+        except OSError as exc:
+            raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
+        if result.returncode:
+            raise QCError(5, "분할 실패: " + result.stderr[-2000:])
+        return sorted(output.glob("part_*.mov"))
+
+    def framemd5(self, source: Path) -> list[str]:
+        ffmpeg = core.executable("ffmpeg", self.config)
+        data = core.run([ffmpeg, "-v", "error", "-nostdin", "-i", str(source),
+                         "-map", "0:v:0", "-f", "framemd5", "-"]).stdout
+        hashes = []
+        for line in data.splitlines():
+            if line and not line.startswith("#"):
+                fields = line.split(",")
+                if len(fields) != 6 or len(fields[-1].strip()) != 32:
+                    raise QCError(5, "프레임 검증 출력 형식이 올바르지 않습니다")
+                hashes.append(fields[-1].strip())
+        if not hashes:
+            raise QCError(5, "비교할 프레임이 없습니다")
+        return hashes
+
     def probe(self, path: Path) -> MediaInfo:
         path = checked_path(Path(path))
         if not path.is_file():

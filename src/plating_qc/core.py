@@ -16,7 +16,13 @@ from .publish import publish
 
 
 def executable(name, config):
-    selected = config.get(name + "_path") or shutil.which(name)
+    selected = config.get(name + "_path")
+    if not selected and name == "ffprobe" and config.get("ffmpeg_path"):
+        base = Path(config["ffmpeg_path"])
+        selected = str(base if base.is_dir() else base.parent)
+    selected = selected or shutil.which(name)
+    if selected and Path(selected).is_dir():
+        selected = str(Path(selected) / (name + (".exe" if os.name == "nt" else "")))
     if not selected or not Path(selected).is_file():
         raise QCError(4, f"{name} 실행 파일을 찾지 못했습니다: {selected or name}")
     return str(selected)

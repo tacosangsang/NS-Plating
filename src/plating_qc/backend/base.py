@@ -22,7 +22,7 @@ class MediaBackend(ABC):
     def extract_frames(self, source: Path, width: int, height: int, count: int) -> list[memoryview]:
         raise QCError(4, "이 백엔드는 프레임 추출을 지원하지 않습니다")
 
-    def cut_copy(self, source: Path, output: Path) -> Path:
+    def cut_copy(self, source: Path, output: Path, segment_time: float) -> list[Path]:
         raise QCError(4, "이 백엔드는 분할을 지원하지 않습니다")
 
     def framemd5(self, source: Path) -> list[str]:
