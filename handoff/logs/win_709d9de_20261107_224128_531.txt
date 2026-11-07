@@ -1,0 +1,225 @@
+test_R10_count_is_advice_not_hard_failure (tests.test_pt_refs.ReferenceTests.test_R10_count_is_advice_not_hard_failure) ... ERROR
+test_R11_sheet_and_preview_are_preserved (tests.test_pt_refs.ReferenceTests.test_R11_sheet_and_preview_are_preserved) ... ERROR
+test_R12_complete_candidates_basis_and_largest_are_required (tests.test_pt_refs.ReferenceTests.test_R12_complete_candidates_basis_and_largest_are_required) ... ERROR
+test_R13_thumbnail_input_is_error (tests.test_pt_refs.ReferenceTests.test_R13_thumbnail_input_is_error) ... ERROR
+test_R14_fake_thumbnails_contact_and_conflict (tests.test_pt_refs.ReferenceTests.test_R14_fake_thumbnails_contact_and_conflict) ... ERROR
+test_R14_missing_ffmpeg_returns_four_without_result (tests.test_pt_refs.ReferenceTests.test_R14_missing_ffmpeg_returns_four_without_result) ... ERROR
+test_R15_cli_without_network_publishes_unknown_and_exit_one (tests.test_pt_refs.ReferenceTests.test_R15_cli_without_network_publishes_unknown_and_exit_one) ... ERROR
+test_R15_default_network_block_makes_zero_get_calls (tests.test_pt_refs.ReferenceTests.test_R15_default_network_block_makes_zero_get_calls) ... ERROR
+test_R1_same_image_has_dimensions_size_hash_and_byte_match (tests.test_pt_refs.ReferenceTests.test_R1_same_image_has_dimensions_size_hash_and_byte_match) ... ERROR
+test_R8_same_size_different_hash_is_mismatch (tests.test_pt_refs.ReferenceTests.test_R8_same_size_different_hash_is_mismatch) ... ERROR
+test_R9_indices_and_prompt_tokens_are_checked (tests.test_pt_refs.ReferenceTests.test_R9_indices_and_prompt_tokens_are_checked) ... ERROR
+
+======================================================================
+ERROR: test_R10_count_is_advice_not_hard_failure (tests.test_pt_refs.ReferenceTests.test_R10_count_is_advice_not_hard_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R11_sheet_and_preview_are_preserved (tests.test_pt_refs.ReferenceTests.test_R11_sheet_and_preview_are_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R12_complete_candidates_basis_and_largest_are_required (tests.test_pt_refs.ReferenceTests.test_R12_complete_candidates_basis_and_largest_are_required)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R13_thumbnail_input_is_error (tests.test_pt_refs.ReferenceTests.test_R13_thumbnail_input_is_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R14_fake_thumbnails_contact_and_conflict (tests.test_pt_refs.ReferenceTests.test_R14_fake_thumbnails_contact_and_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R14_missing_ffmpeg_returns_four_without_result (tests.test_pt_refs.ReferenceTests.test_R14_missing_ffmpeg_returns_four_without_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R15_cli_without_network_publishes_unknown_and_exit_one (tests.test_pt_refs.ReferenceTests.test_R15_cli_without_network_publishes_unknown_and_exit_one)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R15_default_network_block_makes_zero_get_calls (tests.test_pt_refs.ReferenceTests.test_R15_default_network_block_makes_zero_get_calls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R1_same_image_has_dimensions_size_hash_and_byte_match (tests.test_pt_refs.ReferenceTests.test_R1_same_image_has_dimensions_size_hash_and_byte_match)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R8_same_size_different_hash_is_mismatch (tests.test_pt_refs.ReferenceTests.test_R8_same_size_different_hash_is_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+======================================================================
+ERROR: test_R9_indices_and_prompt_tokens_are_checked (tests.test_pt_refs.ReferenceTests.test_R9_indices_and_prompt_tokens_are_checked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_refs.py", line 24, in setUp
+    self.api = importlib.import_module("plating_tools.refs.check")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plating_tools.refs'
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.021s
+
+FAILED (errors=11)

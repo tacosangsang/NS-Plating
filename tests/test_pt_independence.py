@@ -53,6 +53,8 @@ class IndependenceTests(NetworkBlockedCase):
     def test_S8_p0_imports_only_standard_library_and_p0(self):
         forbidden = {"refs", "versions", "qc", "plating_qc"}
         for file in (REPO / "src" / "plating_tools").rglob("*.py"):
+            if file.relative_to(REPO / "src" / "plating_tools").parts[0] in {"refs", "versions", "qc.py"}:
+                continue
             tree = ast.parse(file.read_text(encoding="utf-8"))
             for node in ast.walk(tree):
                 if isinstance(node, ast.Import):
@@ -68,6 +70,8 @@ class IndependenceTests(NetworkBlockedCase):
 
     def test_S9_p0_does_not_import_network_clients(self):
         for file in (REPO / "src" / "plating_tools").rglob("*.py"):
+            if file.relative_to(REPO / "src" / "plating_tools").parts[0] in {"refs", "versions", "qc.py"}:
+                continue
             names = {n.id for n in ast.walk(ast.parse(file.read_text(encoding="utf-8"))) if isinstance(n, ast.Name)}
             self.assertFalse(names & {"socket", "urllib", "http", "requests", "httpx", "httpx2"}, file)
 

@@ -1,5 +1,6 @@
 """공식 CLI. 기능 모듈은 해당 명령 실행 시점에만 import한다."""
 import argparse
+import importlib
 import sys
 from pathlib import Path
 
@@ -83,7 +84,14 @@ def parser() -> argparse.ArgumentParser:
 
 def execute(args, argv: list[str]):
     if args.group in {"refs", "versions", "qc"}:
-        raise Unavailable(f"P1 모듈 없음: plating_tools.{args.group}")
+        name = f"plating_tools.{args.group}"
+        try:
+            module = importlib.import_module(name)
+        except ModuleNotFoundError as exc:
+            if exc.name != name:
+                raise
+            raise Unavailable(f"P1 모듈 없음: {name}") from exc
+        return module.execute(args, argv, load_config(args.config))
     cfg = load_config(args.config)
     if args.group == "gate":
         from .docs import WorkflowDir
