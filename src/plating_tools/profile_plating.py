@@ -8,3 +8,41 @@ COLUMNS: Final = {
 COLOR_STATES: Final = {"red_bg": "todo", "green_bg": "done", "gray_bg": "removed", "yellow_bg": "revise"}
 SCENE_PATTERN: Final = r"^S#(\d{2})(\s|$)"
 CUT_PATTERN: Final = r"^S#\d{2}-C\d{3}(-\d+[A-Z]?)?$"
+
+DOC_FILES: Final = {
+    "W02": "02_작업규칙과_의사결정.md", "W05": "05_영상_생성_워크플로우.md",
+    "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",
+    "W10": "10_고정_프롬프트_블록.md", "W11": "11_설정_고정값.md",
+}
+AUTHORED_SHA256: Final = {
+    "W02": "2bc6c5d77cfbeddd62c9c22efdcb18a4d38f24091abe96b913d7790d6c8af8d6",
+    "W05": "30129dded003070f57b209471cfe137fe0911ef805db0d3dabec20543a36d997",
+    "W06": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+    "W07": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+    "W10": "ba12aab620bb1ae7010ca973b6e4c131203591a0eb244635761ad4e168443b44",
+    "W11": "5a918111676c1239a47bd5636895d70bb64c916628a6539fbcee5acbeb7b676c",
+}
+DOC_TITLES: Final = {
+    "W02": "02. 작업 규칙과 의사결정", "W05": "05. 영상 생성 워크플로우 (Seedance 2.5, 레퍼런스 투 비디오)",
+    "W06": "06. 영상 edit, 업스케일, 편집용 변환", "W07": "07. 도구·환경 제약",
+    "W10": "10. 고정 프롬프트 블록 (원문)", "W11": "11. 설정 고정값 (프롬프트에 자주 필요한 것)",
+}
+ORDER_PREFIXES: Final = ("REFERENCE ROLES", "STYLE", "SUMMARY", "SPACE AND LIGHT", "TIMELINE", "(사람이 나오면)", "CONSISTENCY", "AVOID")
+PEOPLE_BLOCKS: Final = ("FACE_EYES_HANDS", "EYES_CHILD", "FACE_REFLECTION", "IDENTICAL", "STAGING", "OUTFIT_CROWD", "OUTFIT_OFFERING", "BASE_OUTFIT", "COOK_APRON", "THIEF_APRON", "LAYOUT_TRUCK")
+SCENE_BLOCKS: Final = ("SCENE_LOW", "SCENE_JINWOO", "SCENE_RABBIT", "SCENE_A", "SCENE_B", "SCENE_C", "SCENE_D", "SCENE_E", "SCENE_F", "SCENE_G", "SCENE_PLATING")
+FORBID_NAMES: Final = ("진우", "최진우", "흰토끼", "흰토끼 가면남")
+FORBID_GROUPS: Final = ("상류층", "흰토끼", "진우")
+CHILD_GROUP: Final = "아이"
+GROUP_BLOCKS: Final = {"OUTFIT_CROWD": {"하층민", "아이"}, "OUTFIT_OFFERING": {"공물"}, "BASE_OUTFIT": {"요리사", "도둑"}, "COOK_APRON": {"요리사"}, "THIEF_APRON": {"도둑"}, "HANDS": {"하층민", "아이", "요리사", "도둑"}}
+FILE_EXCEPTION_KEYS: Final = ("W07", "W10", "W11")
+ANCHOR_SPECS: Final = {
+    "style": ("W10", ("2. STYLE (10-31판, 사용자 지시)",), "fences", 1),
+    "world": ("W10", ("3. WORLD & TONE (이미지 공통)",), "fences", 1),
+    "avoid": ("W10", ("4. AVOID (공통, 10-31)",), "fences", 2),
+    "people": ("W10", ("5. 사람 블록 (하층민·요리사·도둑·공물. 진우·흰토끼·상류층 제외)",), "fences", len(PEOPLE_BLOCKS)),
+    "scenes": ("W10", ("6. [SCENE] 모듈 (이미지)",), "fences", len(SCENE_BLOCKS)),
+    "order": ("W05", ("2. 프롬프트 블록 구조", "섹션 순서"), "lines", 1),
+    "image_limit": ("W05", ("2. 프롬프트 블록 구조", "글자 수"), "lines", 1),
+    "checklist": ("W02", ("4. 크레딧 쓰기 전 점검 8줄",), "numbered", 8),
+    "settings": ("W11", ("5. 최상층(연회장)",), "lines", 1),
+}

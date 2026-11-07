@@ -25,11 +25,58 @@ def parser() -> argparse.ArgumentParser:
     ext.add_argument("--table-line", type=int)
     ext.add_argument("--input", type=Path)
     ext.add_argument("--out", type=Path)
+    prompt = groups.add_parser("prompt").add_subparsers(dest="command", required=True)
+    for name in ("skeleton", "check"):
+        command = prompt.add_parser(name)
+        command.add_argument("--kind", required=True, choices=("video", "image"))
+        command.add_argument("--plan", type=Path)
+        command.add_argument("--clip")
+        command.add_argument("--out", type=Path)
+        command.add_argument("--cuts-json" if name == "skeleton" else "--prompt", type=Path, required=True)
     return root
 
 
 def execute(args, argv: list[str]):
     cfg = load_config(args.config)
+    if args.group == "prompt":
+        from .docs import WorkflowDir
+        from .prompt.rules import read_rules
+        from .prompt.plan import load_plan
+        from .textio import read_document, read_json
+        store = WorkflowDir(cfg.workflow_dir, cfg.declared_commit)
+        rules = read_rules(store)
+        plan = load_plan(args.plan, args.clip)
+        if plan is not None and plan.kind != args.kind:
+            raise InputError("--kind와 계획 kind 불일치")
+        inputs = tuple(Path(doc.path) for doc in rules.fingerprints) + ((args.plan,) if args.plan else ())
+        target = args.out or new_target(cfg.output_root, f"prompt-{args.command}", args.clip or "unplanned")
+        if args.command == "skeleton":
+            if args.kind != "video":
+                raise InputError("이미지는 prompt check만 지원")
+            from .prompt.assemble import build_skeleton, skeleton_md, gate_template
+            data = read_json(args.cuts_json)
+            if not all(key in data for key in ("source", "targets", "scene_id")):
+                raise InputError("cuts.json 계약 필드 누락")
+            result = build_skeleton(data, plan, rules)
+            code = 1 if result.lengths.placeholders or result.conflicts else 0
+            with RunDir(target, cfg.policy((*inputs, args.cuts_json))) as run:
+                run.write_json("skeleton.json", result)
+                run.write_text("skeleton.md", skeleton_md(result))
+                run.write_json("lengths.json", result.lengths)
+                run.write_text("gate.toml", gate_template())
+                run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256,
+                            "docs": rules.fingerprints, "inputs": [read_document(args.cuts_json, "cuts").fingerprint], "exit_code": code, "status": "검수 대기(전송본 아님)"})
+        else:
+            from .prompt.check import check_prompt
+            prompt_doc = read_document(args.prompt, "prompt")
+            result = check_prompt(prompt_doc.text, plan, rules, args.kind)
+            code = int(bool(result.findings))
+            with RunDir(target, cfg.policy((*inputs, args.prompt))) as run:
+                run.write_json("check.json", {"prompt_sha256": prompt_doc.fingerprint.sha256, "result": result})
+                run.write_text("check.md", "# [검수 대기] 프롬프트 검사\n\n```json\n" + json_text(result) + "```\n\n## 내가 정한 것\n실제 문자열 검사.\n\n## 사용자 답이 필요한 것\n원문 대응과 레퍼런스 역할 검수.\n\n## 근거\nrun.json 문서 지문 참조.\n")
+                run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256,
+                            "docs": rules.fingerprints, "inputs": [prompt_doc.fingerprint], "exit_code": code, "status": "검수 대기"})
+        return {"command": f"prompt {args.command}", "exit_code": code, "status": "검수 대기", "output": str(target.resolve())}
     if args.group == "cuts" and args.command == "extract":
         from .cuts.extract import extract_scene
         from .cuts.report import cuts_md, cuts_csv

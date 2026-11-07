@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
+import json
 
 from .errors import InputError, IoFailure
 from .model import DocFingerprint, SourceRef
@@ -43,3 +44,13 @@ def read_document(path: Path, key: str) -> Document:
 
 def normalized(text: str) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n").rstrip("\n")
+
+
+def read_json(path: Path):
+    try:
+        value = json.loads(read_document(path, "json").text)
+    except json.JSONDecodeError as exc:
+        raise InputError(f"JSON 입력 오류: {path}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise InputError(f"JSON 객체 필요: {path}")
+    return value
