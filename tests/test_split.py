@@ -43,7 +43,7 @@ class SplitIntegration(QCFixture):
         converted = Path(convert(source, None, {})["output"].path)
         dest = self.scene / "warning_parts"
         env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
-        p = subprocess.run([sys.executable, "-m", "plating_qc", "split", str(converted), "--out", str(dest)], env=env, capture_output=True, text=True)
+        p = subprocess.run([sys.executable, "-m", "plating_qc", "split", str(converted), "--out", str(dest)], env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(p.returncode, 1, p.stderr)
         import json
         result = json.loads(p.stdout)

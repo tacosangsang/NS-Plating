@@ -64,7 +64,7 @@ class CompareScenarios(unittest.TestCase):
         env["PYTHONPATH"] = str(Path(__file__).resolve().parents[1] / "src")
         env["PLATING_QC_LOG_DIR"] = str(self.root / "logs")
         result = subprocess.run([sys.executable, "-m", "plating_qc", "compare", str(self.source),
-                                 str(other)], env=env, capture_output=True, text=True)
+                                 str(other)], env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 1)
         report = json.loads(result.stdout)
         self.assertIsNone(report["alignment"]["estimated_missing_head"])
@@ -170,7 +170,7 @@ class CompareIntegration(QCFixture):
         self.assertEqual((target / "report.json").read_bytes(), before)
         env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
         cli_target = self.scene / "cli_report"
-        cli = subprocess.run([sys.executable, "-m", "plating_qc", "compare", str(source), str(candidate), "--search", "5", "--out", str(cli_target)], env=env, capture_output=True, text=True)
+        cli = subprocess.run([sys.executable, "-m", "plating_qc", "compare", str(source), str(candidate), "--search", "5", "--out", str(cli_target)], env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(cli.returncode, 1, cli.stderr)
         self.assertTrue((cli_target / "report.json").exists())
         self.assertTrue(list(cli_target.glob("pair_*.png")))
