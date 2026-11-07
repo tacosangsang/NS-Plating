@@ -13,6 +13,10 @@ from .runlog import json_default, reserve_log, source_hashes, tool_versions
 
 
 def main(argv=None):
+    # 결과 JSON·메시지는 콘솔 코드페이지와 무관하게 UTF-8로 낸다(cp1252 등에서 한글 출력 실패 방지).
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):  # 테스트 등에서 StringIO로 바뀐 경우 제외
+            stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(prog="plating-qc")
     parser.add_argument("--config")
     parser.add_argument("--backend", choices=("ffmpeg", "blender"), default="ffmpeg")
