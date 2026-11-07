@@ -1,0 +1,20 @@
+test_P10_modified_blocks_placeholders_and_reference_errors (tests.test_pt_prompt.PromptTests.test_P10_modified_blocks_placeholders_and_reference_errors) ... ok
+test_P11_block_placeholder_is_rejected (tests.test_pt_prompt.PromptTests.test_P11_block_placeholder_is_rejected) ... ok
+test_P1_P3_original_blocks_and_order_have_sources (tests.test_pt_prompt.PromptTests.test_P1_P3_original_blocks_and_order_have_sources) ... ok
+test_P2_anchor_changes_fail_without_fallback (tests.test_pt_prompt.PromptTests.test_P2_anchor_changes_fail_without_fallback) ... ok
+test_P4_P12_no_plan_stays_unresolved (tests.test_pt_prompt.PromptTests.test_P4_P12_no_plan_stays_unresolved) ... ok
+test_P5_plan_preserves_lengths_and_computes_slack (tests.test_pt_prompt.PromptTests.test_P5_plan_preserves_lengths_and_computes_slack) ... ok
+test_P6_absent_people_or_far_faces_excluded (tests.test_pt_prompt.PromptTests.test_P6_absent_people_or_far_faces_excluded) ... ok
+test_P7_conflicting_scene_stays_unresolved (tests.test_pt_prompt.PromptTests.test_P7_conflicting_scene_stays_unresolved) ... ok
+test_P8_image_limits_and_unicode_counts (tests.test_pt_prompt.PromptTests.test_P8_image_limits_and_unicode_counts) ... ok
+test_P9_video_has_no_confirmed_limit (tests.test_pt_prompt.PromptTests.test_P9_video_has_no_confirmed_limit) ... ok
+test_image_check_always_checks_world_block (tests.test_pt_prompt.PromptTests.test_image_check_always_checks_world_block) ... ok
+test_removed_cut_is_error_and_context_is_not_target (tests.test_pt_prompt.PromptTests.test_removed_cut_is_error_and_context_is_not_target) ... ok
+test_scene_blocks_use_space_slot_and_upper_avoid_uses_avoid_slot (tests.test_pt_prompt.PromptTests.test_scene_blocks_use_space_slot_and_upper_avoid_uses_avoid_slot) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.122s
+
+OK
+
+exit_code=0

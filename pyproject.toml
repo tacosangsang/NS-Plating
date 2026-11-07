@@ -9,3 +9,4 @@ requires-python = ">=3.12"
 
 [project.scripts]
 plating-qc = "plating_qc.cli:main"
+plating = "plating_tools.cli:main"

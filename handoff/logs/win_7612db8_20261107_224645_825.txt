@@ -1,0 +1,17 @@
+test_V10_every_result_retains_unverified_dimensions_and_geometry (tests.test_pt_versions.VersionTests.test_V10_every_result_retains_unverified_dimensions_and_geometry) ... ok
+test_V1_numeric_order_v10_over_v9 (tests.test_pt_versions.VersionTests.test_V1_numeric_order_v10_over_v9) ... ok
+test_V2_missing_prefix_does_not_pass (tests.test_pt_versions.VersionTests.test_V2_missing_prefix_does_not_pass) ... ok
+test_V3_stale_has_numeric_difference (tests.test_pt_versions.VersionTests.test_V3_stale_has_numeric_difference) ... ok
+test_V4_pin_only_applies_inside_scope (tests.test_pt_versions.VersionTests.test_V4_pin_only_applies_inside_scope) ... ok
+test_V5_pin_basis_is_required_and_must_match_line (tests.test_pt_versions.VersionTests.test_V5_pin_basis_is_required_and_must_match_line) ... ok
+test_V6_suffix_order_requires_explicit_order (tests.test_pt_versions.VersionTests.test_V6_suffix_order_requires_explicit_order) ... ok
+test_V7_separate_families_and_excluded_backup (tests.test_pt_versions.VersionTests.test_V7_separate_families_and_excluded_backup) ... ok
+test_V8_conflicting_sources_are_not_latest (tests.test_pt_versions.VersionTests.test_V8_conflicting_sources_are_not_latest) ... ok
+test_V9_scan_does_not_change_files_or_mtime (tests.test_pt_versions.VersionTests.test_V9_scan_does_not_change_files_or_mtime) ... ok
+test_cli_publishes_versions_and_pins_with_ts (tests.test_pt_versions.VersionTests.test_cli_publishes_versions_and_pins_with_ts) ... ok
+test_readme_render_version_requires_explicit_pattern (tests.test_pt_versions.VersionTests.test_readme_render_version_requires_explicit_pattern) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.132s
+
+OK
