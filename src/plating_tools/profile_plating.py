@@ -30,6 +30,10 @@ DOC_TITLES: Final = {
 ORDER_PREFIXES: Final = ("REFERENCE ROLES", "STYLE", "SUMMARY", "SPACE AND LIGHT", "TIMELINE", "(사람이 나오면)", "CONSISTENCY", "AVOID")
 PEOPLE_BLOCKS: Final = ("FACE_EYES_HANDS", "EYES_CHILD", "FACE_REFLECTION", "IDENTICAL", "STAGING", "OUTFIT_CROWD", "OUTFIT_OFFERING", "BASE_OUTFIT", "COOK_APRON", "THIEF_APRON", "LAYOUT_TRUCK")
 SCENE_BLOCKS: Final = ("SCENE_LOW", "SCENE_JINWOO", "SCENE_RABBIT", "SCENE_A", "SCENE_B", "SCENE_C", "SCENE_D", "SCENE_E", "SCENE_F", "SCENE_G", "SCENE_PLATING")
+UPPER_SCENES: Final = ("SCENE_A", "SCENE_B", "SCENE_C", "SCENE_D", "SCENE_E", "SCENE_F", "SCENE_G")
+BLOCK_SLOTS: Final = {"STYLE": 1, "AVOID": 7, "UPPER_AVOID": 7, "WORLD": 3,
+                      **{key: 3 for key in SCENE_BLOCKS}, **{key: 5 for key in PEOPLE_BLOCKS},
+                      "FACE_RULE": 5, "EYES": 5, "HANDS": 5, "LAYOUT_TRUCK": 3}
 FORBID_NAMES: Final = ("진우", "최진우", "흰토끼", "흰토끼 가면남")
 FORBID_GROUPS: Final = ("상류층", "흰토끼", "진우")
 CHILD_GROUP: Final = "아이"
@@ -49,6 +53,7 @@ ANCHOR_SPECS: Final = {
     "edit_billing": ("W06", ("2. video_edit 특성 (AICRON 웹앱, 11-04 실사용)",), "lines", 1),
     "topaz": ("W06", ("4. 업스케일", "설정 (Higgsfield 웹앱 Topaz Video, 11-04 확정) `[예외: 사용 서비스]`"), "lines", 1),
     "approval": ("W02", ("2. 소통·결과물 규칙", "승인 어휘 (크레딧이 드는 일)"), "lines", 1),
+    "clip_limits": ("W05", ("1. 씬 하나 워크플로우 (12단계)",), "lines", 1),
 }
 RATE_NEW_PATTERN: Final = r"^\| 영상 본 생성 \| (?P<model>.+?) (?P<low>\d+p) / (?P<high>\d+p) \| (?P<low_rate>\d+(?:\.\d+)?) / (?P<high_rate>\d+(?:\.\d+)?) per 초, 최소 (?P<minimum>\d+(?:\.\d+)?)초 \|$"
 RATE_EDIT_PATTERN: Final = r"^\| 영상 edit \| (?P<model>.+?) video_edit (?P<resolution>\d+p) \| 입력 길이 초 올림 × (?P<rate>\d+(?:\.\d+)?)\([^|]+\) \|$"

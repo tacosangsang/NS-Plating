@@ -61,10 +61,13 @@ def check_prompt(text: str, plan: ClipPlan | None, rules: RuleBook, kind: str) -
     findings = list(rules.findings)
     blocks = {}
     decisions = select_blocks(plan, rules)
-    for decision in decisions:
-        if decision.decision != "포함":
-            continue
-        block = rules.catalog[decision.block_key]
+    chosen = {d.block_key for d in decisions if d.decision == "포함"}
+    if kind == "image":
+        chosen.add("WORLD")
+    if "SCENE_D" in chosen:
+        findings.extend(rules.scene_conflicts)
+    for key in sorted(chosen):
+        block = rules.catalog[key]
         present = block.text in text
         blocks[block.key] = "원문 일치" if present else "변형 의심" if block.text.split("\n")[0] in text else "원문 불일치"
         if not present:

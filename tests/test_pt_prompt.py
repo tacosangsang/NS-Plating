@@ -3,14 +3,16 @@ import importlib
 import os
 import sys
 import unittest
+from tests._pt_support import NetworkBlockedCase
 from pathlib import Path
 from uuid import uuid4
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 
-class PromptTests(unittest.TestCase):
+class PromptTests(NetworkBlockedCase):
     def setUp(self):
+        super().setUp()
         self.root = Path(__file__).resolve().parents[1] / "out" / "pt-tests" / uuid4().hex
         self.root.mkdir(parents=True)
         self.docs = importlib.import_module("plating_tools.docs")
@@ -123,3 +125,15 @@ class PromptTests(unittest.TestCase):
     def test_removed_cut_is_error_and_context_is_not_target(self):
         skeleton = self.assemble.build_skeleton(self.cuts(True), self.plan(), self.rules())
         self.assertTrue(any(f.severity.value == "error" for f in skeleton.conflicts))
+
+    def test_scene_blocks_use_space_slot_and_upper_avoid_uses_avoid_slot(self):
+        from dataclasses import replace
+        skeleton = self.assemble.build_skeleton(self.cuts(), replace(self.plan(), scene_module="SCENE_A"), self.rules())
+        self.assertIn("SCENE_A", skeleton.slots[3].block_keys)
+        self.assertIn("UPPER_AVOID", skeleton.slots[7].block_keys)
+
+    def test_image_check_always_checks_world_block(self):
+        rules = self.rules()
+        text = rules.catalog["STYLE"].text + "\n\n" + rules.catalog["AVOID"].text
+        result = self.check.check_prompt(text, None, rules, "image")
+        self.assertEqual(result.blocks["WORLD"], "원문 불일치")

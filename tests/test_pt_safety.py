@@ -3,6 +3,7 @@ import importlib
 import json
 import sys
 import unittest
+from tests._pt_support import NetworkBlockedCase
 from pathlib import Path
 from unittest.mock import patch
 from uuid import uuid4
@@ -10,8 +11,9 @@ from uuid import uuid4
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 
-class SafetyTests(unittest.TestCase):
+class SafetyTests(NetworkBlockedCase):
     def setUp(self):
+        super().setUp()
         self.root = Path(__file__).resolve().parents[1] / "out" / "pt-tests" / uuid4().hex
         self.root.mkdir(parents=True)
         self.paths = importlib.import_module("plating_tools.paths")
@@ -64,6 +66,22 @@ class SafetyTests(unittest.TestCase):
                 run.finish({"exit_code": 0})
         self.assertNotEqual(*targets)
         self.assertTrue(all((p / "run.json").is_file() for p in targets))
+
+    def test_S4_publish_failure_marks_run_as_failed(self):
+        import os
+        actual = os.rename
+        calls = []
+        def rename(source, destination):
+            calls.append(destination)
+            if len(calls) == 1:
+                raise OSError("SYNTH 공개 실패")
+            return actual(source, destination)
+        target = self.root / "result"
+        with self.assertRaises(OSError), patch("plating_tools.output.os.rename", side_effect=rename):
+            with self.output.RunDir(target, self.policy()) as run:
+                run.finish({"status": "검수 대기", "exit_code": 0})
+        failed = next((self.root / "_failed").glob("*/run.json"))
+        self.assertEqual(json.loads(failed.read_text(encoding="utf-8"))["status"], "failed")
 
     def test_S6_read_only_and_input_and_git_are_rejected(self):
         readonly = self.root / "NS-Plating"

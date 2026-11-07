@@ -3,6 +3,7 @@ import importlib
 import os
 import sys
 import unittest
+from tests._pt_support import NetworkBlockedCase
 from dataclasses import replace
 from decimal import Decimal
 from pathlib import Path
@@ -11,8 +12,9 @@ from uuid import uuid4
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 
-class GateTests(unittest.TestCase):
+class GateTests(NetworkBlockedCase):
     def setUp(self):
+        super().setUp()
         self.docs = importlib.import_module("plating_tools.docs")
         self.gate = importlib.import_module("plating_tools.gate.checklist")
         self.cost = importlib.import_module("plating_tools.gate.cost")
@@ -108,3 +110,7 @@ class GateTests(unittest.TestCase):
         machine, fresh = self.gate.machine_findings(None, {"source": {"sha256": "b" * 64}, "targets": [], "context": []}, None, None, "a" * 64, "a" * 64)
         self.assertFalse(fresh)
         self.assertTrue(any(f.severity.value == "error" for f in machine[4]))
+
+    def test_generation_above_document_limit_requires_split(self):
+        machine, _ = self.gate.machine_findings(self.clip(gen_seconds=self.rules.max_seconds + 1), None, None, None, None, "a" * 64, max_seconds=self.rules.max_seconds)
+        self.assertTrue(any(f.code == "GATE_DURATION" and f.severity.value == "error" for f in machine[2]))

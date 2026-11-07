@@ -3,6 +3,7 @@ import importlib
 import os
 import sys
 import unittest
+from tests._pt_support import NetworkBlockedCase
 from decimal import Decimal
 from pathlib import Path
 from uuid import uuid4
@@ -18,8 +19,9 @@ def row(cut="S#01-C001", tc="00:00–00:04", length="4s", picture="SYNTH", attrs
     return f'<tr {attrs}><td>{cut}</td><td>{tc}</td><td>{length}</td><td>{picture}</td></tr>'
 
 
-class CutTests(unittest.TestCase):
+class CutTests(NetworkBlockedCase):
     def setUp(self):
+        super().setUp()
         self.root = Path(__file__).resolve().parents[1] / "out" / "pt-tests" / uuid4().hex
         self.root.mkdir(parents=True)
         self.source_module = importlib.import_module("plating_tools.cuts.source")

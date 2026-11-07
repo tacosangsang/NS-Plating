@@ -3,6 +3,7 @@ import re
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
+from decimal import Decimal
 
 from ..docs import Anchor, DocStore, resolve
 from ..errors import InputError
@@ -23,6 +24,7 @@ class ChecklistLine:
 class GateRules:
     lines: tuple[ChecklistLine, ...]
     approval_words: tuple[str, ...]
+    max_seconds: Decimal
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,7 +95,12 @@ def read_gate_rules(store: DocStore) -> GateRules:
     words = tuple(word for pattern in APPROVAL_PATTERNS for match in re.finditer(pattern, text, re.MULTILINE) for word in match.groups())
     if not words:
         raise InputError("W02 승인 어휘 패턴 변경")
-    return GateRules(lines, words)
+    key, headings, take, count = ANCHOR_SPECS["clip_limits"]
+    limits = resolve(store.load(key), Anchor(key, (DOC_TITLES[key], *headings), take, count))[0]
+    maximum = re.findall(r"한 클립 최대 (\d+(?:\.\d+)?)초", limits.text)
+    if len(maximum) != 1:
+        raise InputError("W05 생성 길이 상한 앵커 변경")
+    return GateRules(lines, words, Decimal(maximum[0]))
 
 
 def load_gate(path: Path):
@@ -160,7 +167,7 @@ def evaluate_gate(lines, inputs, context: GateContext, approval: ApprovalEvidenc
     return GateResult(tuple(results), complete, ApprovalResult(approval_status, hits, bound, approval), context.cost, context.cuts_fresh, label)
 
 
-def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_sha: str):
+def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_sha: str, *, max_seconds: Decimal | None = None):
     machine: dict[int, list[Finding]] = {i: [] for i in range(1, 9)}
     def add(no: int, code: str, severity: Severity, message: str) -> None:
         machine[no].append(Finding(code, severity, message))
@@ -176,6 +183,8 @@ def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_
             add(1, "GATE_MODE", Severity.ERROR, "생성/edit/코드 모드 미입력")
         if len(plan.references) >= 6:
             add(2, "GATE_SPLIT", Severity.WARN, "레퍼런스 6장 이상: 분할 검토")
+        if max_seconds is not None and isinstance(plan.gen_seconds, Decimal) and plan.mode == "new" and plan.gen_seconds > max_seconds:
+            add(2, "GATE_DURATION", Severity.ERROR, f"문서의 한 클립 상한 {max_seconds}초 초과. 분할 필요")
         if any(r.sheet != "있음" for r in plan.references):
             add(3, "GATE_SHEET", Severity.ERROR, "시트 없음/만들어야 함")
         if not isinstance(plan.props, Unknown) and any(not any(prop in r.role and r.sheet == "있음" for r in plan.references) for prop in plan.props):
@@ -192,6 +201,10 @@ def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_
         add(6, "GATE_CONTEXT", Severity.WARN, "연결 문맥 미확인")
     if refs is None:
         add(7, "GATE_REFS", Severity.WARN, "레퍼런스 검사 결과 없음")
+    else:
+        results = refs.get("results", [])
+        if not results or any(r.get("best_original") != "최대 원본 확인됨" for r in results):
+            add(7, "GATE_ORIGINAL", Severity.WARN, "최대 원본 미확인")
     if check is None:
         add(4, "GATE_CHECK", Severity.WARN, "프롬프트 검사 결과 없음")
     else:

@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import unittest
+from tests._pt_support import NetworkBlockedCase
 from pathlib import Path
 from uuid import uuid4
 
@@ -13,7 +14,7 @@ F_PATH = Path(os.environ.get("PLATING_TOOLS_F", r"C:\Users\uicus\Dev\dot-handoff
 F_SHA = "cae22e2f0637d29ebfe1f6e5a7daa973ee8ea72a397373246ecdddf9cfe6dc37"
 
 
-class InventoryTests(unittest.TestCase):
+class InventoryTests(NetworkBlockedCase):
     def test_synthetic_inventory_preserves_color_counts(self):
         root = Path(__file__).resolve().parents[1] / "out" / "pt-tests" / uuid4().hex
         root.mkdir(parents=True)

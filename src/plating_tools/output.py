@@ -1,6 +1,7 @@
 """배타적 파일 생성, staging 공개, 실패 격리. 기존 파일은 지우지 않는다."""
 import os
 import re
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -71,7 +72,10 @@ class RunDir:
         if not log.exists():
             self.write_json("run.json", {"status": "failed", "error": str(exc), "started": self.started, "ended": now()})
         else:
-            self.write_json("failure.json", {"status": "failed", "error": str(exc)})
+            metadata = json.loads(log.read_text(encoding="utf-8"))
+            metadata.update(status="failed", error=str(exc), ended=now())
+            with log.open("w", encoding="utf-8", newline="\n") as stream:
+                stream.write(json_text(metadata))
         self.policy.check(self.stage)
         os.rename(self.stage, failed)
         return False

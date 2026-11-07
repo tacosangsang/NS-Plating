@@ -35,6 +35,7 @@ class DocFingerprint:
     sha256: str
     authored_sha256: str | None = None
     declared_commit: str | None = None
+    newline: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 from ..model import SourceRef, Unknown
-from ..profile_plating import FORBID_GROUPS, FORBID_NAMES, CHILD_GROUP, GROUP_BLOCKS
+from ..profile_plating import FORBID_GROUPS, FORBID_NAMES, CHILD_GROUP, GROUP_BLOCKS, UPPER_SCENES
 from .plan import ClipPlan
 from .rules import RuleBook
 
@@ -22,11 +22,13 @@ def select_blocks(clip: ClipPlan | None, rules: RuleBook) -> list[BlockDecision]
         decision, reason = "미결", "사람 메타데이터 미입력"
         if key in {"STYLE", "AVOID"}:
             decision, reason = "포함", "공통 고정 블록"
-        elif key in {"WORLD", "UPPER_AVOID"} or key.startswith("SCENE_") or key == "LAYOUT_TRUCK":
+        elif key == "WORLD":
+            decision, reason = ("포함", "이미지 공통") if clip is not None and clip.kind == "image" else ("제외", "영상 골격")
+        elif key == "UPPER_AVOID" and clip is not None and clip.scene_module in UPPER_SCENES:
+            decision, reason = "포함", "최상층 전용 금지"
+        elif key == "UPPER_AVOID" or key.startswith("SCENE_") or key == "LAYOUT_TRUCK":
             if clip is not None and not isinstance(clip.scene_module, Unknown):
                 decision, reason = ("포함", "사람이 지정한 모듈") if clip.scene_module == key else ("제외", "지정한 모듈 아님")
-            elif key == "WORLD":
-                decision, reason = ("포함", "이미지 공통") if clip is not None and clip.kind == "image" else ("제외", "영상 골격")
         elif clip is not None and clip.people == "없음":
             decision, reason = "제외", "사람 없음"
         elif clip is not None and clip.people == "있음" and clip.characters:

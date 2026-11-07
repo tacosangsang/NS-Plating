@@ -48,10 +48,42 @@ def parser() -> argparse.ArgumentParser:
     for command in (cost, check):
         command.add_argument("--plan", type=Path)
         command.add_argument("--clip")
+    refs = groups.add_parser("refs").add_subparsers(dest="command", required=True).add_parser("check")
+    refs.add_argument("--list", type=Path, required=True)
+    refs.add_argument("--allow-network", action="store_true")
+    refs.add_argument("--thumbs", action="store_true")
+    refs.add_argument("--prompt", type=Path)
+    refs.add_argument("--out", type=Path)
+    versions = groups.add_parser("versions").add_subparsers(dest="command", required=True).add_parser("check")
+    versions.add_argument("--spec", type=Path, required=True)
+    versions.add_argument("--pins", type=Path)
+    versions.add_argument("--out", type=Path)
+    qc = groups.add_parser("qc").add_subparsers(dest="command", required=True)
+    for name, fields in (("probe", ("files",)), ("compare", ("original", "candidate")), ("tiles", ("input",)), ("split", ("input",)), ("convert", ("input",))):
+        command = qc.add_parser(name)
+        for field in fields:
+            command.add_argument(field, nargs="+" if field == "files" else None)
+        command.add_argument("--out", type=Path)
+        command.add_argument("--json", action="store_true")
+        if name == "compare":
+            command.add_argument("--search", type=int)
+            command.add_argument("--threshold", type=float)
+        if name == "tiles":
+            for field, kind in (("fps", float), ("width", int), ("grid", str), ("cuts", str), ("around", int), ("scene-threshold", float)):
+                command.add_argument("--" + field, type=kind)
+        if name == "split":
+            command.add_argument("--max-part-mb", type=float)
+            command.add_argument("--verify", action="store_true")
+        if name == "convert":
+            command.add_argument("--dry-run", action="store_true")
+            for field in ("scene", "suffix", "profile"):
+                command.add_argument("--" + field)
     return root
 
 
 def execute(args, argv: list[str]):
+    if args.group in {"refs", "versions", "qc"}:
+        raise Unavailable(f"P1 모듈 없음: plating_tools.{args.group}")
     cfg = load_config(args.config)
     if args.group == "gate":
         from .docs import WorkflowDir
@@ -79,7 +111,8 @@ def execute(args, argv: list[str]):
                 inputs = tuple(Path(d.fingerprint.path) for d in store.used.values()) + ((args.plan,) if args.plan else ())
                 with RunDir(args.out, cfg.policy(inputs)) as run:
                     run.write_json("cost.json", result)
-                    run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256, "docs": table.doc_versions, "exit_code": code, "status": "검수 대기"})
+                    run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256, "docs": table.doc_versions,
+                                "inputs": [read_document(args.plan, "plan").fingerprint] if args.plan else [], "exit_code": code, "status": "검수 대기"})
                 target = str(args.out.resolve())
             return {"command": "gate cost", "exit_code": code, "status": "검수 대기", "output": target, "cost": result}
         from .gate.checklist import GateContext, evaluate_gate, gate_md, load_gate, machine_findings, read_gate_rules
@@ -90,13 +123,13 @@ def execute(args, argv: list[str]):
         check = read_json(args.check_json) if args.check_json else None
         refs = read_json(args.refs_json) if args.refs_json else None
         current = read_document(cfg.cuts_input, "F") if cfg.cuts_input else None
-        machine, fresh = machine_findings(plan, cuts, check, refs, current.fingerprint.sha256 if current else None, prompt.fingerprint.sha256)
+        machine, fresh = machine_findings(plan, cuts, check, refs, current.fingerprint.sha256 if current else None, prompt.fingerprint.sha256, max_seconds=rules.max_seconds)
         cost = cost_for(plan, table) if plan else None
         if cost is not None:
             machine[8] = (*machine.get(8, ()), *cost.findings)
         context = GateContext(prompt.fingerprint.sha256, rules.approval_words, machine, cost, fresh)
         result = evaluate_gate(rules.lines, inputs, context, approval)
-        code = int(not result.checklist_complete or (args.require_approval and result.approval.status != "승인 기록 있음"))
+        code = int(not result.checklist_complete or any(machine.values()) or (args.require_approval and result.approval.status != "승인 기록 있음"))
         target = args.out or new_target(cfg.output_root, "gate-check", args.clip or "unplanned")
         paths = tuple(p for p in (args.gate, args.prompt, args.plan, args.cuts_json, args.check_json, args.refs_json, cfg.cuts_input) if p)
         paths += tuple(Path(d.fingerprint.path) for d in store.used.values())
@@ -134,7 +167,7 @@ def execute(args, argv: list[str]):
                 run.write_json("lengths.json", result.lengths)
                 run.write_text("gate.toml", gate_template())
                 run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256,
-                            "docs": rules.fingerprints, "inputs": [read_document(args.cuts_json, "cuts").fingerprint], "exit_code": code, "status": "검수 대기(전송본 아님)"})
+                            "docs": rules.fingerprints, "inputs": [read_document(p, "input").fingerprint for p in (args.cuts_json, args.plan) if p], "exit_code": code, "status": "검수 대기(전송본 아님)"})
         else:
             from .prompt.check import check_prompt
             prompt_doc = read_document(args.prompt, "prompt")
@@ -144,7 +177,7 @@ def execute(args, argv: list[str]):
                 run.write_json("check.json", {"prompt_sha256": prompt_doc.fingerprint.sha256, "result": result})
                 run.write_text("check.md", "# [검수 대기] 프롬프트 검사\n\n```json\n" + json_text(result) + "```\n\n## 내가 정한 것\n실제 문자열 검사.\n\n## 사용자 답이 필요한 것\n원문 대응과 레퍼런스 역할 검수.\n\n## 근거\nrun.json 문서 지문 참조.\n")
                 run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256,
-                            "docs": rules.fingerprints, "inputs": [prompt_doc.fingerprint], "exit_code": code, "status": "검수 대기"})
+                            "docs": rules.fingerprints, "inputs": [prompt_doc.fingerprint, *([read_document(args.plan, "plan").fingerprint] if args.plan else [])], "exit_code": code, "status": "검수 대기"})
         return {"command": f"prompt {args.command}", "exit_code": code, "status": "검수 대기", "output": str(target.resolve())}
     if args.group == "cuts" and args.command == "extract":
         from .cuts.extract import extract_scene
@@ -156,6 +189,10 @@ def execute(args, argv: list[str]):
         source = NotionMdFile(source_path)
         result = extract_scene(source, args.scene, cut_ids=tuple(args.cuts.split(",")) if args.cuts else None,
                                section_line=args.section_line, table_line=args.table_line)
+        if cfg.cuts_expected_sha256 and source.fingerprint().sha256 != cfg.cuts_expected_sha256:
+            from dataclasses import replace
+            from .model import Finding, Severity
+            result = replace(result, findings=(*result.findings, Finding("DOC_CHANGED", Severity.WARN, "F의 설정 기준 지문 변경")))
         code = int(bool(result.findings))
         target = args.out or new_target(cfg.output_root, "cuts-extract", result.scene_id)
         with RunDir(target, cfg.policy((source_path,))) as run:

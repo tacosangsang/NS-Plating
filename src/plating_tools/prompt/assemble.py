@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from ..errors import InputError
 from ..model import Finding, Severity, Unknown, json_text
+from ..profile_plating import BLOCK_SLOTS
 from .check import LengthReport, count, length_report
 from .plan import ClipPlan
 from .rules import RuleBook
@@ -68,7 +69,7 @@ def build_skeleton(cuts, plan: ClipPlan | None, rules: RuleBook) -> Skeleton:
         chosen.remove("SCENE_D")
     slots = []
     for i, section in enumerate(rules.order):
-        keys = ("STYLE",) if i == 1 else ("AVOID",) if i == 7 else tuple(k for k in chosen if k not in {"STYLE", "AVOID"}) if i == 5 else ()
+        keys = tuple(k for k in chosen if BLOCK_SLOTS.get(k) == i)
         needs = []
         parts = [rules.catalog[k].text for k in keys]
         if i not in {1, 7}:
