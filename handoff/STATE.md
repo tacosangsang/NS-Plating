@@ -1,12 +1,13 @@
-# STATE (갱신 2026-11-07 18:03 KST)
+# STATE (갱신 2026-11-07 18:35 KST)
 
-다음 행동: 클로드 프로젝트가 `design/requests/plating-tools.md`와 `handoff/REPLY_1803_10.md`를 검수한다. 10번 1장 3번에 따라 요청서 제출 후 중단. 요청서 검수·명시 승인 전 Claude API 호출 금지.
+다음 행동: 클로드 프로젝트가 11번을 반영한 `design/requests/plating-tools.md`(커밋 `bb4a99a`)와 `handoff/REPLY_1835_11.md`를 검수한 뒤 샌드박스 밖에서 push·설계 API 호출을 직접 수행한다. dot는 호출·push하지 않는다.
 
-현재 단계: B 실제 클립 검증과 09 지정 구조 수정 완료. 후속 plating-tools 요청서 작성 완료·검수 대기. 설계 초안·구현 미착수. QC 구조는 11/11 이후 Blender 백엔드 작업까지 동결.
+현재 단계: B 실제 클립 검증과 09 지정 구조 수정 완료. 후속 plating-tools 요청서의 11번 1~6장 반영 완료·검수 대기. 설계 초안·구현 미착수. QC 구조는 11/11 이후 Blender 백엔드 작업까지 동결.
 
-오늘 모델/한도: CLI 환경. 사용자 지정 모델 `gpt-6.1-sol`, effort `xhigh`; 런타임 독립 확인 미확인. 주간 잔여 97%(사용자 제공, 2026-11-07 17:53 KST; 이번 재측정 아님).
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 런타임 독립 확인 미확인. 마지막 제공 주간 잔여 97%(사용자 제공, 2026-11-07 17:53 KST; 이번 재측정 아님).
 
 완료:
+- 11번 1~6장: 실제 컷표 fetch를 읽어 문법·열·색 속성·원문 발췌를 반영했다. 요청서 19,429자, 노션 발췌 47행. 행 색 상태 네 가지·P0/P1·동일 저장소 src/plating_tools/와 CLI plating·QC 하위 프로세스 경계를 확정했다. 요청서 커밋 `bb4a99a`, REPLY `handoff/REPLY_1835_11.md`, 문서 검증 로그 `handoff/logs/win_b023237_20261107_1834_11_docs.txt`. 이번 네트워크·API·설치·코드 변경·push 없음.
 - 10번 1장 2~3번: workflow 01~11과 11-07 핸드북의 관련 절에 근거한 요청서·REPLY 작성. 기존 NS-Plating 클론 HEAD `577c3d4cc607c823603fe1aa0e78fa02773a8e33`을 읽기 전용 확인. API·스캐폴드·코드 작업·push 없음.
 - S02C006 원본·업스케일·사용자 ProRes 검증 후 S02C016 A1·A2를 검증했다. 로그는 `2fd9ac8`, PNG는 PC에만 있다.
 - probe의 `MediaInfo`를 명령 내부에서 유지하고 JSON 출력 시 직렬화한다. `describe_prores`와 불변 경고 튜플을 적용했다. 기존 테스트의 자동 로그는 임시 폴더로 보낸다.
@@ -14,7 +15,7 @@
 - 실제 A1 생성 ProRes는 `samples/real_S02C016/prores/`에만 있고 Git에서 제외했다.
 
 막힘·질문(사용자 답 필요):
-- 요청서 검수·API 호출 승인 대기. 실제 노션 컷표 fetch 원문·형식은 미확인으로 요청서에 명시. 구현 배치와 충돌하는 SCENE 블록 사용 방침은 검수에서 결정.
+- 요청서 검수와 클로드 프로젝트의 직접 설계 호출 대기. 컷표 fetch 형식·행 색 상태·구현 배치는 확인·확정했다. 셀·제목 span 색 의미, 실제 원고 fixture의 커밋 여부, 기존 SCENE 블록 충돌 정책은 미결이다. 원문 fetch는 저장소 밖 읽기 전용으로 유지한다.
 - 앞선 PNG 포함 push는 자동 승인 심사에서 거부됐다. 사용자는 PNG를 원격에 올리지 않기로 결정했다.
 - Anthropic SDK는 사용자 재설치 후 `python -s -c "import anthropic"` 종료 0, 버전 0.125.0으로 확인했다.
 - 기존 `plating-qc-logs/` 53개는 사용자 확인 전 삭제하지 않는다.
