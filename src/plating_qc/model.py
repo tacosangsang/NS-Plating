@@ -1,6 +1,7 @@
 """미디어 검사 결과 계약."""
 
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,6 +51,14 @@ class TimingInfo:
 class Finding:
     code: str
     message: str
+
+
+@dataclass(frozen=True, slots=True)
+class ProresRequest:
+    source: Path
+    output: Path | None
+    generate_pts: bool
+    audio_duration: float | None
 
 
 @dataclass(frozen=True, slots=True)

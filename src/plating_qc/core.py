@@ -10,7 +10,9 @@ import subprocess
 import tempfile
 from .config import load_config
 from .errors import QCError
-from .layout import SceneLayout
+from .layout import SceneLayout, checked_path
+from .model import ProresRequest
+from .publish import publish
 
 
 def executable(name, config):
@@ -112,14 +114,16 @@ def convert(source, scene, config, suffix="", dry_run=False):
     if not isinstance(base_suffix, str) or not base_suffix.startswith("_") or any(c in base_suffix for c in ("/", "\\", ":")):
         raise QCError(2, "설정의 suffix는 밑줄로 시작하는 파일 이름이어야 합니다")
     out = out_dir / (source.stem + base_suffix + suffix + ".mov")
+    checked_path(out)
     if out.exists() or out.is_symlink():
         raise QCError(3, f"출력 파일이 이미 있습니다: {out}")
     colors = info["video"]["color"]
     if any(v not in (None, "unknown", "bt709") for v in colors.values()):
         raise QCError(1, f"입력 색 태그가 BT.709와 다릅니다: {colors}")
-    ffmpeg = executable("ffmpeg", config)
-    timestamp_options = ["-fflags", "+genpts"] if info["timestamp_analysis"]["status"] == "generated" else []
-    args = [ffmpeg, "-v", "error", "-nostdin", *timestamp_options, "-i", str(source), "-map", "0:v:0", "-map", "0:a:0?", "-vf", "setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709", "-c:v", "prores_ks", "-profile:v", "3", "-pix_fmt", "yuv422p10le", "-vendor", "apl0", "-fps_mode", "passthrough", "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-movflags", "+write_colr", "-c:a", "pcm_s16le"]
+    from .backend.ffmpeg import FfmpegBackend
+
+    backend = FfmpegBackend(config)
+    duration = None
     if info["audio"]:
         duration = info["video"]["duration_s"]
         try:
@@ -128,9 +132,9 @@ def convert(source, scene, config, suffix="", dry_run=False):
                 raise ValueError
         except (TypeError, ValueError):
             raise QCError(2, "영상 길이를 확인할 수 없어 오디오 패딩을 안전하게 적용할 수 없습니다")
-        args += ["-af", f"apad=whole_dur={duration:.9f}"]
+    request = ProresRequest(source, None, info["timestamp_analysis"]["status"] == "generated", duration)
     if dry_run:
-        return {"input": str(source), "output": str(out), "command": args + ["<임시 출력 파일>"]}
+        return {"input": str(source), "output": str(out), "command": backend.prores_command(request)}
     try:
         out_dir.mkdir(exist_ok=True)
         fd, temporary = tempfile.mkstemp(prefix=".plating-qc-", suffix=".partial.mov", dir=out_dir)
@@ -139,7 +143,8 @@ def convert(source, scene, config, suffix="", dry_run=False):
         raise QCError(5, f"출력 폴더 또는 임시 파일 생성 실패: {exc}") from exc
     temp = Path(temporary)
     try:
-        run(args + ["-y", str(temp)])
+        request = ProresRequest(source, temp, request.generate_pts, request.audio_duration)
+        backend.encode_prores(request)
         result = probe(temp, config)
         before, after = info["video"], result["video"]
         problems = []
@@ -190,12 +195,7 @@ def convert(source, scene, config, suffix="", dry_run=False):
                 problems.append("출력 오디오 길이 확인 불가")
         if problems:
             raise QCError(1, "변환 결과 검증 실패: " + "; ".join(problems))
-        try:
-            os.link(temp, out)
-        except FileExistsError as exc:
-            raise QCError(3, f"변환 중 출력 파일이 생겼습니다: {out}") from exc
-        except OSError as exc:
-            raise QCError(5, f"덮어쓰기 방지 저장 실패: {exc}") from exc
+        publish(temp, out)
         result["path"] = str(out)
         return {"input": info, "output": result, "warnings": info["warnings"] + result["warnings"] + extra_warnings}
     finally:

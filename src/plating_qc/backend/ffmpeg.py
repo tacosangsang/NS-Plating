@@ -6,15 +6,38 @@ from pathlib import Path
 from .base import MediaBackend
 from .. import core
 from ..errors import QCError
-from ..model import AudioInfo, ColorInfo, MediaInfo, TimingInfo, VideoInfo
+from ..layout import checked_path
+from ..model import AudioInfo, ColorInfo, MediaInfo, ProresRequest, TimingInfo, VideoInfo
 
 
 class FfmpegBackend(MediaBackend):
     def __init__(self, config):
         self.config = config
 
+    def prores_command(self, request: ProresRequest) -> list[str]:
+        timestamp_options = ["-fflags", "+genpts"] if request.generate_pts else []
+        args = [core.executable("ffmpeg", self.config), "-v", "error", "-nostdin",
+                *timestamp_options, "-i", str(request.source), "-map", "0:v:0",
+                "-map", "0:a:0?", "-vf",
+                "setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709",
+                "-c:v", "prores_ks", "-profile:v", "3", "-pix_fmt", "yuv422p10le",
+                "-vendor", "apl0", "-fps_mode", "passthrough", "-color_primaries",
+                "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
+                "-movflags", "+write_colr", "-c:a", "pcm_s16le"]
+        if request.audio_duration is not None:
+            args += ["-af", f"apad=whole_dur={request.audio_duration:.9f}"]
+        if request.output is None:
+            return args + ["<임시 출력 파일>"]
+        return args + ["-y", str(request.output)]
+
+    def encode_prores(self, request: ProresRequest) -> Path:
+        if request.output is None:
+            raise QCError(2, "변환 출력 경로가 없습니다")
+        core.run(self.prores_command(request))
+        return request.output
+
     def probe(self, path: Path) -> MediaInfo:
-        path = Path(path).resolve()
+        path = checked_path(Path(path))
         if not path.is_file():
             raise QCError(2, f"입력 파일이 없습니다: {path}")
         ffprobe = core.executable("ffprobe", self.config)

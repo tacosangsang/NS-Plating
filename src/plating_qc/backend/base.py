@@ -4,7 +4,7 @@ from abc import ABC
 from pathlib import Path
 
 from ..errors import QCError
-from ..model import MediaInfo
+from ..model import MediaInfo, ProresRequest
 
 
 class MediaBackend(ABC):
@@ -13,7 +13,10 @@ class MediaBackend(ABC):
     def probe(self, path: Path) -> MediaInfo:
         raise QCError(4, "이 백엔드는 probe를 지원하지 않습니다")
 
-    def encode_prores(self, source: Path, output: Path) -> Path:
+    def encode_prores(self, request: ProresRequest) -> Path:
+        raise QCError(4, "이 백엔드는 ProRes 변환을 지원하지 않습니다")
+
+    def prores_command(self, request: ProresRequest) -> list[str]:
         raise QCError(4, "이 백엔드는 ProRes 변환을 지원하지 않습니다")
 
     def extract_frames(self, source: Path, output: Path) -> list[Path]:

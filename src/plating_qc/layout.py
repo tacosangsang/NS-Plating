@@ -1,8 +1,19 @@
 """입출력 폴더 이름의 공통 검증."""
 
 from dataclasses import dataclass
+from pathlib import Path
 
 from .errors import QCError
+
+
+def checked_path(path: Path) -> Path:
+    absolute = path.absolute()
+    if len(str(absolute)) > 240:
+        raise QCError(2, f"경로가 240자를 초과합니다: {absolute}")
+    resolved = absolute.resolve()
+    if len(str(resolved)) > 240:
+        raise QCError(2, f"경로가 240자를 초과합니다: {resolved}")
+    return resolved
 
 
 @dataclass(frozen=True, slots=True)
