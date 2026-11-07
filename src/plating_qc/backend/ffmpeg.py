@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 
 from .base import MediaBackend
-from .. import core
+from .ffmpeg_helpers import analyze_timestamps, executable, run
 from ..errors import QCError
 from ..layout import checked_path
 from ..model import AudioInfo, ColorInfo, MediaInfo, ProresRequest, TimingInfo, VideoInfo
@@ -17,7 +17,7 @@ class FfmpegBackend(MediaBackend):
 
     def prores_command(self, request: ProresRequest) -> list[str]:
         timestamp_options = ["-fflags", "+genpts"] if request.generate_pts else []
-        args = [core.executable("ffmpeg", self.config), "-v", "error", "-nostdin",
+        args = [executable("ffmpeg", self.config), "-v", "error", "-nostdin",
                 *timestamp_options, "-i", str(request.source), "-map", "0:v:0",
                 "-map", "0:a:0?", "-vf",
                 "setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709",
@@ -34,13 +34,13 @@ class FfmpegBackend(MediaBackend):
     def encode_prores(self, request: ProresRequest) -> Path:
         if request.output is None:
             raise QCError(2, "변환 출력 경로가 없습니다")
-        core.run(self.prores_command(request))
+        run(self.prores_command(request))
         return request.output
 
     def extract_frames(self, source: Path, width: int, height: int, count: int) -> list[memoryview]:
         if width * height * count > 128 * 1024 * 1024:
             raise QCError(2, "비교 영상이 너무 깁니다. 짧은 구간으로 나눠 확인하세요")
-        cmd = [core.executable("ffmpeg", self.config), "-v", "error", "-nostdin", "-i",
+        cmd = [executable("ffmpeg", self.config), "-v", "error", "-nostdin", "-i",
                str(source), "-map", "0:v:0", "-vf", f"scale={width}:{height},format=gray",
                "-fps_mode", "passthrough", "-f", "rawvideo", "-"]
         try:
@@ -55,7 +55,7 @@ class FfmpegBackend(MediaBackend):
         return [memoryview(result.stdout)[i:i + size] for i in range(0, len(result.stdout), size)]
 
     def cut_copy(self, source: Path, output: Path, segment_time: float) -> list[Path]:
-        ffmpeg = core.executable("ffmpeg", self.config)
+        ffmpeg = executable("ffmpeg", self.config)
         args = [ffmpeg, "-v", "error", "-nostdin", "-i", str(source), "-map", "0:v:0",
                 "-map", "0:a?", "-c", "copy", "-f", "segment", "-segment_format", "mov",
                 "-segment_time", f"{segment_time:.9f}", "-reset_timestamps", "1", "-n", "part_%03d.mov"]
@@ -68,8 +68,8 @@ class FfmpegBackend(MediaBackend):
         return sorted(output.glob("part_*.mov"))
 
     def framemd5(self, source: Path) -> list[str]:
-        ffmpeg = core.executable("ffmpeg", self.config)
-        data = core.run([ffmpeg, "-v", "error", "-nostdin", "-i", str(source),
+        ffmpeg = executable("ffmpeg", self.config)
+        data = run([ffmpeg, "-v", "error", "-nostdin", "-i", str(source),
                          "-map", "0:v:0", "-f", "framemd5", "-"]).stdout
         hashes = []
         for line in data.splitlines():
@@ -86,8 +86,8 @@ class FfmpegBackend(MediaBackend):
         path = checked_path(Path(path))
         if not path.is_file():
             raise QCError(2, f"입력 파일이 없습니다: {path}")
-        ffprobe = core.executable("ffprobe", self.config)
-        result = core.run([ffprobe, "-v", "error", "-count_frames", "-count_packets",
+        ffprobe = executable("ffprobe", self.config)
+        result = run([ffprobe, "-v", "error", "-count_frames", "-count_packets",
                            "-show_streams", "-show_format", "-of", "json", str(path)])
         if result.stderr.strip():
             raise QCError(5, "디코딩 오류: " + result.stderr.strip()[-1000:])
@@ -109,7 +109,7 @@ class FfmpegBackend(MediaBackend):
         if packet_count is not None and packet_count != int(count):
             warnings.append("패킷 수와 디코딩 프레임 수가 다릅니다")
         avg, rate = video.get("avg_frame_rate"), video.get("r_frame_rate")
-        timing = core.analyze_timestamps(path, ffprobe, int(count), avg, rate)
+        timing = analyze_timestamps(path, ffprobe, int(count), avg, rate)
         if timing["status"] == "generated":
             warnings.append("원본 PTS 일부가 없어 genpts로 생성한 시간입니다. 원래 타이밍은 확인할 수 없습니다")
         elif timing["status"] == "unavailable":

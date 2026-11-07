@@ -43,7 +43,7 @@ class ProbeTests(unittest.TestCase):
             result.stderr = "error decoding frame"
             return result
 
-        with patch("plating_qc.core.run", side_effect=error_result):
+        with patch("plating_qc.backend.ffmpeg.run", side_effect=error_result):
             with self.assertRaises(QCError) as caught:
                 probe(self.source, {})
         self.assertEqual(caught.exception.code, 5)
@@ -56,7 +56,7 @@ class ProbeTests(unittest.TestCase):
 class ProbeIntegration(QCFixture):
     def test_timestamp_analysis_detects_vfr_even_if_rates_match(self):
         source = self.raw / "synthetic_pts"
-        with patch("plating_qc.core.frame_timestamps", return_value=[0, .04, .08, .18, .22]):
+        with patch("plating_qc.backend.ffmpeg_helpers.frame_timestamps", return_value=[0, .04, .08, .18, .22]):
             result = analyze_timestamps(source, "ffprobe", 5, "25/1", "25/1")
         self.assertEqual(result["status"], "observed")
         self.assertTrue(result["vfr_suspect"])
@@ -65,13 +65,13 @@ class ProbeIntegration(QCFixture):
 
     def test_timestamp_missing_recovery_is_never_claimed_original(self):
         source = self.raw / "synthetic_pts"
-        with patch("plating_qc.core.frame_timestamps", side_effect=[[None, None], [0, .04]]) as reader:
+        with patch("plating_qc.backend.ffmpeg_helpers.frame_timestamps", side_effect=[[None, None], [0, .04]]) as reader:
             result = analyze_timestamps(source, "ffprobe", 2, "25/1", "25/1")
         self.assertEqual(result["status"], "generated")
         self.assertEqual(result["missing_count"], 2)
         self.assertIsNone(result["vfr_suspect"])
         self.assertTrue(reader.call_args_list[1].kwargs["generated"])
-        with patch("plating_qc.core.frame_timestamps", side_effect=[[None, None], [None, None]]):
+        with patch("plating_qc.backend.ffmpeg_helpers.frame_timestamps", side_effect=[[None, None], [None, None]]):
             result = analyze_timestamps(source, "ffprobe", 2, "25/1", "25/1")
         self.assertEqual(result["status"], "unavailable")
         self.assertIsNone(result["vfr_suspect"])

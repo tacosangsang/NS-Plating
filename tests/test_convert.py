@@ -146,12 +146,9 @@ class ConvertIntegration(QCFixture):
         target_dir = self.scene / "prores"
         from plating_qc import core
         real = core.frame_timestamps
-        calls = 0
         def alter_only_final(path, ffprobe, generated=False):
-            nonlocal calls
             values = real(path, ffprobe, generated)
-            calls += 1
-            if calls == 4 and len(values) > 2:
+            if str(path).endswith(".partial.mov") and len(values) > 2:
                 values[-1] += .1
             return values
         with patch("plating_qc.core.frame_timestamps", side_effect=alter_only_final):
