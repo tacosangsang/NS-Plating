@@ -24,6 +24,7 @@ class TcValue:
     start_s: Decimal | Unknown
     end_s: Decimal | Unknown
     form: str | None
+    minute_inherited: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -92,19 +93,31 @@ def choose_table(section: SceneSection, line: int | None) -> ParsedTable:
     return tables[0]
 
 
-def parse_tc(raw: str) -> TcValue:
-    match = re.fullmatch(r"(\d+):([0-5]\d(?:\.\d+)?)–(?:(\d+):)?([0-5]\d(?:\.\d+)?)", raw)
+def parse_tc(raw: str, previous_end: Decimal | None = None) -> TcValue:
+    """생략한 분은 명시된 시작 분 또는 같은 표의 직전 행 끝에서만 얻는다."""
+    match = re.fullmatch(r"(?:(\d+):)?([0-5]\d(?:\.\d+)?)–(?:(\d+):)?([0-5]\d(?:\.\d+)?)", raw)
     if match:
-        start = Decimal(match[1]) * 60 + Decimal(match[2])
-        end = Decimal(match[3] if match[3] is not None else match[1]) * 60 + Decimal(match[4])
-        if end >= start:
-            return TcValue(raw, start, end, "mm:ss–mm:ss" if match[3] is not None else "mm:ss.f–ss.f")
+        if match[1] is not None:
+            minute = Decimal(match[1])
+        elif previous_end is not None and match[3] is None:
+            minute = previous_end // 60
+        else:
+            return TcValue(raw, Unknown("TC 해석 실패"), Unknown("TC 해석 실패"), None)
+        start = minute * 60 + Decimal(match[2])
+        end = (Decimal(match[3]) if match[3] is not None else minute) * 60 + Decimal(match[4])
+        inherited = match[3] is None
+        if end >= start and (not inherited or previous_end is None or start >= previous_end):
+            form = "mm:ss–mm:ss"
+            if inherited:
+                form = "mm:ss.f–ss.f" if match[1] is not None else "ss.f–ss.f"
+            return TcValue(raw, start, end, form, inherited)
     return TcValue(raw, Unknown("TC 해석 실패"), Unknown("TC 해석 실패"), None)
 
 
 def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
     findings: list[Finding] = []
     rows: list[CutRow] = []
+    previous_end: Decimal | None = None
     def finding(code: str, message: str, where: SourceRef = section.where) -> None:
         findings.append(Finding(code, Severity.WARN, message, where))
     if not table.header_row_present:
@@ -149,7 +162,8 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
         if mark is not None and mark.raw not in COLOR_STATES:
             finding("CT009", f"미정의 색: {mark.raw}", where)
         state = mark.state if mark is not None else "unknown"
-        tc = parse_tc(value("tc"))
+        tc = parse_tc(value("tc"), previous_end)
+        previous_end = tc.end_s if isinstance(tc.end_s, Decimal) else None
         raw_length = value("length")
         seconds = Decimal(raw_length[:-1]) if re.fullmatch(r"\d+(?:\.\d+)?s", raw_length) else Unknown("길이 해석 실패")
         length = LengthValue(raw_length, seconds)

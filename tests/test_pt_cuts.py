@@ -198,7 +198,7 @@ class CutTests(NetworkBlockedCase):
         inputs = self.root / "inputs"
         inputs.mkdir()
         source = inputs / "SYNTH.md"
-        source.write_text("### S#01\n" + table([row()]).replace(' header-row="true"', ''), encoding="utf-8")
+        source.write_text("### S#01\n" + table([row(), row(cut="S#01-C002", tc="04–06", length="2s")]).replace(' header-row="true"', ''), encoding="utf-8")
         config = self.root / "plating.toml"
         config.write_text("[paths]\nwrite_root='.'\noutput_root='out'\n", encoding="utf-8")
         target = self.root / "out" / "extract"
@@ -212,3 +212,90 @@ class CutTests(NetworkBlockedCase):
         self.assertEqual(json.loads(result.stdout)["exit_code"], 0)
         data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
         self.assertEqual([(f["code"], f["severity"]) for f in data["findings"]], [("CT018", "info")])
+        self.assertEqual(data["targets"][1]["tc"]["raw"], "04–06")
+        self.assertTrue(data["targets"][1]["tc"]["minute_inherited"])
+
+    def test_seconds_tc_inherits_immediate_previous_end_minute(self):
+        text = "### S#01\n" + table([
+            row(tc="01:58–02:00", length="2s"),
+            row(cut="S#01-C002", tc="00.00–02.50", length="2.50s"),
+            row(cut="S#01-C003", tc="02.50–03.75", length="1.25s"),
+        ])
+        result = self.extract.extract_scene(self.source(text), "01")
+        self.assertEqual([(r.tc.start_s, r.tc.end_s) for r in result.targets],
+                         [(Decimal("118"), Decimal("120")), (Decimal("120.00"), Decimal("122.50")),
+                          (Decimal("122.50"), Decimal("123.75"))])
+        self.assertEqual([r.tc.minute_inherited for r in result.targets], [False, True, True])
+        self.assertEqual(result.targets[1].tc.raw, "00.00–02.50")
+        self.assertFalse(result.findings)
+
+    def test_seconds_tc_without_previous_is_preserved(self):
+        result = self.extract.extract_scene(self.source("### S#01\n" + table([row(tc="02.0–03.5", length="1.5s")])), "01")
+        self.assertIsNone(result.targets[0].tc.form)
+        self.assertEqual(result.targets[0].tc.raw, "02.0–03.5")
+        self.assertIn("CT006", [f.code for f in result.findings])
+
+    def test_invalid_previous_row_clears_minute_context(self):
+        text = "### S#01\n" + table([
+            row(tc="01:00–01:04"), row(cut="S#01-C002", tc="SYNTH invalid"),
+            row(cut="S#01-C003", tc="04–06", length="2s"),
+        ])
+        result = self.extract.extract_scene(self.source(text), "01")
+        self.assertIsNone(result.targets[-1].tc.form)
+        self.assertEqual(result.targets[-1].tc.raw, "04–06")
+        self.assertEqual([f.code for f in result.findings].count("CT006"), 2)
+
+    def test_seconds_tc_before_previous_end_is_not_rolled_forward(self):
+        for tc in ("00–02", "58–59"):
+            with self.subTest(tc=tc):
+                text = "### S#01\n" + table([row(tc="01:55–01:59"), row(cut="S#01-C002", tc=tc, length="2s")])
+                result = self.extract.extract_scene(self.source(text), "01")
+                self.assertIsNone(result.targets[-1].tc.form)
+                self.assertEqual(result.targets[-1].tc.raw, tc)
+                self.assertIn("CT006", [f.code for f in result.findings])
+
+    def test_seconds_tc_reversed_range_is_preserved(self):
+        text = "### S#01\n" + table([row(tc="01:00–01:04"), row(cut="S#01-C002", tc="06–05", length="1s")])
+        result = self.extract.extract_scene(self.source(text), "01")
+        self.assertIsNone(result.targets[-1].tc.form)
+        self.assertEqual(result.targets[-1].tc.raw, "06–05")
+        self.assertIn("CT006", [f.code for f in result.findings])
+
+    def test_tc_minutes_do_not_cross_tables(self):
+        text = "### S#01\n" + table([row(tc="01:00–01:04")])
+        text += "### S#02\n" + table([row(cut="S#02-C001", tc="04–06", length="2s")])
+        result = self.extract.extract_scene(self.source(text), "02")
+        self.assertIsNone(result.targets[0].tc.form)
+        self.assertIn("CT006", [f.code for f in result.findings])
+
+    def test_partial_tc_uses_explicit_start_minute_and_marks_inheritance(self):
+        for tc, start, end in (("00:00.0–02.0", "0.0", "2.0"), ("02:00–02.0", "120", "122.0")):
+            with self.subTest(tc=tc):
+                result = self.extract.extract_scene(self.source("### S#01\n" + table([row(tc=tc, length="2.0s")])), "01")
+                self.assertEqual((result.targets[0].tc.start_s, result.targets[0].tc.end_s), (Decimal(start), Decimal(end)))
+                self.assertTrue(result.targets[0].tc.minute_inherited)
+                self.assertEqual(result.targets[0].tc.raw, tc)
+                self.assertFalse(result.findings)
+
+    def test_partial_tc_before_previous_end_is_preserved(self):
+        text = "### S#01\n" + table([row(tc="01:06–01:10"), row(cut="S#01-C002", tc="01:09–11", length="2s")])
+        result = self.extract.extract_scene(self.source(text), "01")
+        self.assertIsNone(result.targets[-1].tc.form)
+        self.assertIn("CT006", [f.code for f in result.findings])
+
+    def test_cut_selection_still_parses_previous_row_for_minutes(self):
+        text = "### S#01\n" + table([row(tc="01:00–01:04"), row(cut="S#01-C002", tc="04–06", length="2s")])
+        result = self.extract.extract_scene(self.source(text), "01", cut_ids=("S#01-C002",))
+        self.assertEqual(len(result.targets), 1)
+        self.assertEqual((result.targets[0].tc.start_s, result.targets[0].tc.end_s), (Decimal("64"), Decimal("66")))
+        self.assertTrue(result.targets[0].tc.minute_inherited)
+        self.assertFalse(result.findings)
+
+    def test_invalid_seconds_tc_syntax_is_not_guessed(self):
+        for tc in ("60–61", "04–01:06", "4–06", "-01–02"):
+            with self.subTest(tc=tc):
+                text = "### S#01\n" + table([row(), row(cut="S#01-C002", tc=tc, length="2s")])
+                result = self.extract.extract_scene(self.source(text), "01")
+                self.assertIsNone(result.targets[-1].tc.form)
+                self.assertEqual(result.targets[-1].tc.raw, tc)
+                self.assertIn("CT006", [f.code for f in result.findings])
