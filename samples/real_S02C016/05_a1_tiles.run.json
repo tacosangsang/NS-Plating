@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "command": [
+    "python",
+    "-m",
+    "plating_qc",
+    "--log",
+    "samples/real_S02C016/logs/05_a1_tiles.json",
+    "tiles",
+    "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "--out",
+    "samples/real_S02C016/a1_tiles"
+  ],
+  "elapsed_seconds": 6.3414935
+}
