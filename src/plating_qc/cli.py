@@ -3,6 +3,7 @@ import json
 import sys
 from .core import QCError, convert, load_config, probe
 from .review import compare, tiles
+from .split import split
 
 
 def main(argv=None):
@@ -32,6 +33,11 @@ def main(argv=None):
     tile.add_argument("--grid", default="5x2")
     tile.add_argument("--cuts", default="")
     tile.add_argument("--around", type=int, default=3)
+    part = subs.add_parser("split")
+    part.add_argument("input")
+    part.add_argument("--out", required=True)
+    part.add_argument("--max-part-mb", type=float, default=400)
+    part.add_argument("--verify", action="store_true", help="호환 옵션: 프레임 검증은 항상 실행")
     args = parser.parse_args(argv)
     try:
         config = load_config(args.config)
@@ -49,6 +55,9 @@ def main(argv=None):
                 raise QCError(2, "grid 또는 cuts 형식이 올바르지 않습니다") from exc
             result = tiles(args.input, args.out, config, args.fps, args.width, columns, rows, cuts, args.around)
             warnings = bool(result["warnings"][:-1])
+        elif args.command == "split":
+            result = split(args.input, args.out, config, args.max_part_mb)
+            warnings = False
         else:
             result = convert(args.input, args.scene, config, args.suffix, args.dry_run)
             warnings = bool(result.get("warnings"))
