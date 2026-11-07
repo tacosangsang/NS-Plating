@@ -1,0 +1,7 @@
+# Windows 예시: 경로는 사용하는 컴퓨터에 맞춰 설정합니다.
+# ffmpeg_path = 'D:\Plating\tools\ffmpeg\bin\ffmpeg.exe'
+# ffprobe_path = 'D:\Plating\tools\ffmpeg\bin\ffprobe.exe'
+suffix = "_prores422hq"
+[layout]
+raw = "raw"
+prores = "prores"
