@@ -18,11 +18,38 @@ def parser() -> argparse.ArgumentParser:
     inv = cuts.add_parser("inventory")
     inv.add_argument("--input", type=Path)
     inv.add_argument("--out", type=Path)
+    ext = cuts.add_parser("extract")
+    ext.add_argument("--scene", required=True)
+    ext.add_argument("--cuts")
+    ext.add_argument("--section-line", type=int)
+    ext.add_argument("--table-line", type=int)
+    ext.add_argument("--input", type=Path)
+    ext.add_argument("--out", type=Path)
     return root
 
 
 def execute(args, argv: list[str]):
     cfg = load_config(args.config)
+    if args.group == "cuts" and args.command == "extract":
+        from .cuts.extract import extract_scene
+        from .cuts.report import cuts_md, cuts_csv
+        from .cuts.source import NotionMdFile
+        source_path = args.input or cfg.cuts_input
+        if source_path is None:
+            raise InputError("컷표 --input 또는 cuts.input 필요")
+        source = NotionMdFile(source_path)
+        result = extract_scene(source, args.scene, cut_ids=tuple(args.cuts.split(",")) if args.cuts else None,
+                               section_line=args.section_line, table_line=args.table_line)
+        code = int(bool(result.findings))
+        target = args.out or new_target(cfg.output_root, "cuts-extract", result.scene_id)
+        with RunDir(target, cfg.policy((source_path,))) as run:
+            run.write_json("cuts.json", result)
+            run.write_text("cuts.md", cuts_md(result))
+            run.write_text("cuts.csv", cuts_csv(result), "utf-8-sig")
+            run.finish({"tool_version": __version__, "argv": argv, "config_sha256": cfg.sha256,
+                        "docs": [source.fingerprint()], "exit_code": code, "status": "검수 대기",
+                        "section_line": args.section_line, "table_line": args.table_line})
+        return {"command": "cuts extract", "exit_code": code, "status": "검수 대기", "output": str(target.resolve()), "targets": len(result.targets), "findings": len(result.findings)}
     if args.group == "cuts" and args.command == "inventory":
         from .cuts.report import inventory, inventory_md
         from .cuts.source import NotionMdFile
