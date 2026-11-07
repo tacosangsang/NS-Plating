@@ -1,3 +1,4 @@
 __pycache__/
 plating-qc-logs/
 samples/real_S02C016/prores/*.mov
+samples/real_*/**/*.png
