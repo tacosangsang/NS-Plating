@@ -39,8 +39,8 @@ def split(source, out, config, max_part_mb=400):
     info = probe(source, config)
     if info["video"]["codec"] != "prores":
         raise QCError(2, "ProRes 영상만 무재인코딩 분할할 수 있습니다")
-    if info["video"]["r_frame_rate"] != info["video"]["avg_frame_rate"]:
-        raise QCError(2, "가변 프레임 속도 의심 영상은 분할 전 타이밍 검수가 필요합니다")
+    if info["timestamp_analysis"]["status"] != "observed" or info["timestamp_analysis"]["vfr_suspect"] is not False:
+        raise QCError(2, "PTS가 없거나 가변 프레임 속도가 의심되어 안전하게 분할할 수 없습니다")
     try:
         duration = float(info["video"]["duration_s"])
         num, den = (int(x) for x in info["video"]["avg_frame_rate"].split("/"))

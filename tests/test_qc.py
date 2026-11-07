@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -7,15 +8,14 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from plating_qc.core import QCError, convert, probe
-from plating_qc.review import compare, tiles, write_comparison
+from plating_qc.core import QCError, analyze_timestamps, convert, frame_timestamps, probe
+from plating_qc.review import compare, mixed_frame_hint, tiles, write_comparison
 from plating_qc.split import split
 
 
 class QCIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        import shutil
         if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
             raise unittest.SkipTest("ffmpeg와 ffprobe가 필요합니다")
 
@@ -100,6 +100,117 @@ class QCIntegration(unittest.TestCase):
         result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "convert", str(source)], env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertNotIn("Traceback", result.stderr)
+
+    def test_timestamp_analysis_detects_vfr_even_if_rates_match(self):
+        source = self.raw / "synthetic_pts"
+        with patch("plating_qc.core.frame_timestamps", return_value=[0, .04, .08, .18, .22]):
+            result = analyze_timestamps(source, "ffprobe", 5, "25/1", "25/1")
+        self.assertEqual(result["status"], "observed")
+        self.assertTrue(result["vfr_suspect"])
+        self.assertFalse(result["rates_differ"])
+        self.assertGreater(result["interval_stddev_s"], .002)
+
+    def test_timestamp_missing_recovery_is_never_claimed_original(self):
+        source = self.raw / "synthetic_pts"
+        with patch("plating_qc.core.frame_timestamps", side_effect=[[None, None], [0, .04]]) as reader:
+            result = analyze_timestamps(source, "ffprobe", 2, "25/1", "25/1")
+        self.assertEqual(result["status"], "generated")
+        self.assertEqual(result["missing_count"], 2)
+        self.assertIsNone(result["vfr_suspect"])
+        self.assertTrue(reader.call_args_list[1].kwargs["generated"])
+        with patch("plating_qc.core.frame_timestamps", side_effect=[[None, None], [None, None]]):
+            result = analyze_timestamps(source, "ffprobe", 2, "25/1", "25/1")
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIsNone(result["vfr_suspect"])
+
+    def test_generated_pts_convert_uses_genpts_option(self):
+        source = self.make_video("genpts_option.mp4")
+        info = probe(source, {})
+        info["timestamp_analysis"]["status"] = "generated"
+        with patch("plating_qc.core.probe", return_value=info):
+            result = convert(source, None, {}, dry_run=True)
+        self.assertIn("-fflags", result["command"])
+        self.assertIn("+genpts", result["command"])
+
+    def test_timestamp_absent_h264_refuses_unsafe_convert(self):
+        encoders = subprocess.run(["ffmpeg", "-hide_banner", "-encoders"], capture_output=True, text=True, check=True).stdout
+        if "libx264" not in encoders:
+            self.skipTest("합성 H.264 인코더가 없습니다")
+        source = self.raw / "missing_pts.h264"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=24:duration=1", "-c:v", "libx264", "-f", "h264", str(source)], check=True)
+        result = probe(source, {})
+        self.assertEqual(result["timestamp_analysis"]["status"], "unavailable")
+        self.assertEqual(result["timestamp_analysis"]["missing_count"], 24)
+        self.assertTrue(result["warnings"])
+        with self.assertRaises(QCError) as exc:
+            convert(source, None, {})
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse((self.scene / "prores").exists())
+        self.assertTrue(source.is_file())
+        with self.assertRaises(QCError) as exc:
+            tiles(source, self.scene / "no_pts_review", {})
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse((self.scene / "no_pts_review").exists())
+        comparison = compare(source, source, {}, search=2)
+        self.assertTrue(comparison["alignment"]["uncertain"])
+        self.assertIsNone(comparison["alignment"]["estimated_missing_head"])
+
+    def test_vfr_probe_and_compare_do_not_claim_alignment(self):
+        source = self.raw / "vfr_for_probe.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=4:duration=2.5", "-vf", "setpts=PTS+if(gte(N\\,4)\\,0.25/TB\\,0)", "-fps_mode", "vfr", "-c:v", "ffv1", str(source)], check=True)
+        result = probe(source, {})
+        self.assertEqual(result["timestamp_analysis"]["status"], "observed")
+        self.assertTrue(result["timestamp_analysis"]["vfr_suspect"])
+        comparison = compare(source, source, {}, search=2)
+        self.assertTrue(comparison["alignment"]["uncertain"])
+        self.assertIsNone(comparison["alignment"]["estimated_missing_head"])
+        self.assertEqual(comparison["mixed_frame_suspects"], [])
+        output = convert(source, None, {})
+        self.assertEqual(output["output"]["video"]["nb_frames_decoded"], 10)
+        self.assertTrue(output["warnings"])
+        ffprobe = shutil.which("ffprobe")
+        before = frame_timestamps(source, ffprobe)
+        after = frame_timestamps(Path(output["output"]["path"]), ffprobe)
+        self.assertTrue(all(abs((a-before[0])-(b-after[0])) <= .001 for a,b in zip(before,after)))
+        with self.assertRaises(QCError) as exc:
+            split(Path(output["output"]["path"]), self.scene / "vfr_parts", {})
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse((self.scene / "vfr_parts").exists())
+
+    def test_convert_checks_relative_pts_and_cleans_mismatch(self):
+        source = self.make_video("pts_compare.mp4")
+        target_dir = self.scene / "prores"
+        from plating_qc import core
+        real = core.frame_timestamps
+        calls = 0
+        def alter_only_final(path, ffprobe, generated=False):
+            nonlocal calls
+            values = real(path, ffprobe, generated)
+            calls += 1
+            if calls == 4 and len(values) > 2:
+                values[-1] += .1
+            return values
+        with patch("plating_qc.core.frame_timestamps", side_effect=alter_only_final):
+            with self.assertRaises(QCError) as exc:
+                convert(source, None, {})
+        self.assertEqual(exc.exception.code, 1)
+        self.assertIn("PTS", str(exc.exception))
+        self.assertFalse(list(target_dir.glob("*.mov")))
+        self.assertTrue(source.exists())
+
+    def test_detects_synthetic_mixed_frame_as_suspicion(self):
+        import random
+        original = [random.Random(i).randbytes(64*36) for i in range(24)]
+        candidate = original.copy()
+        candidate[12] = bytes((a+b)//2 for a,b in zip(original[11], original[12]))
+        source, other = self.raw / "mix_source.mkv", self.raw / "mix_candidate.mkv"
+        for path, frames in ((source, original), (other, candidate)):
+            subprocess.run(["ffmpeg", "-v", "error", "-f", "rawvideo", "-pix_fmt", "gray", "-s", "64x36", "-r", "24", "-i", "-", "-c:v", "ffv1", "-pix_fmt", "gray", str(path)], input=b"".join(frames), check=True, capture_output=True)
+        result = compare(source, other, {}, search=3)
+        self.assertFalse(result["alignment"]["uncertain"])
+        self.assertTrue(any(x["candidate_frame"] == 12 and x["source_frames"] == [11, 12] for x in result["mixed_frame_suspects"]))
+        self.assertTrue(result["warnings"])
+        self.assertIsNone(mixed_frame_hint(original[11], original[12], original[12]))
 
     def test_compare_identical_and_missing_input(self):
         source = self.make_video("compare.mp4")
