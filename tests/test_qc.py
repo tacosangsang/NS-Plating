@@ -177,6 +177,32 @@ class QCIntegration(unittest.TestCase):
         self.assertEqual(exc.exception.code, 2)
         self.assertFalse((self.scene / "vfr_parts").exists())
 
+    def test_convert_reports_absolute_start_shift(self):
+        source = self.raw / "offset_start.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=24:duration=1", "-vf", "setpts=PTS+2/TB", "-c:v", "mpeg4", str(source)], check=True)
+        output = convert(source, None, {})
+        self.assertAlmostEqual(float(output["input"]["video"]["start_time_s"]), 2.0, places=3)
+        self.assertAlmostEqual(float(output["output"]["video"]["start_time_s"]), 0.0, places=3)
+        self.assertTrue(any("절대 시작 시각" in x for x in output["warnings"]))
+        self.assertEqual(output["output"]["video"]["nb_frames_decoded"], 24)
+
+    def test_convert_warns_on_audio_start_offset_change(self):
+        source = self.make_video("audio_start.mp4", "1")
+        from plating_qc import core
+        real_probe = core.probe
+        calls = 0
+        def shift_output_audio(path, config):
+            nonlocal calls
+            info = real_probe(path, config)
+            calls += 1
+            if calls == 2:
+                info["audio"]["start_time_s"] = str(float(info["audio"]["start_time_s"]) + .1)
+            return info
+        with patch("plating_qc.core.probe", side_effect=shift_output_audio):
+            result = convert(source, None, {})
+        self.assertTrue(any("상대 시작 시각이 달라졌습니다" in x for x in result["warnings"]))
+        self.assertTrue(Path(result["output"]["path"]).exists())
+
     def test_convert_checks_relative_pts_and_cleans_mismatch(self):
         source = self.make_video("pts_compare.mp4")
         target_dir = self.scene / "prores"
@@ -335,6 +361,21 @@ class QCIntegration(unittest.TestCase):
         self.assertFalse(list(target.glob("pair_*.png")))
         self.assertTrue((target / "report.json").exists())
 
+    def test_tiles_scene_candidate_with_exact_frame_and_timestamp(self):
+        import json
+        source = self.raw / "scene.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=black:s=160x90:r=24:d=0.5", "-f", "lavfi", "-i", "color=white:s=160x90:r=24:d=0.5", "-filter_complex", "[0:v][1:v]concat=n=2:v=1:a=0[out]", "-map", "[out]", "-c:v", "ffv1", str(source)], check=True)
+        target = self.scene / "scene_review"
+        result = tiles(source, target, {})
+        self.assertEqual([x["frame"] for x in result["scene_candidates"]], [12])
+        self.assertAlmostEqual(result["scene_candidates"][0]["seconds"], .5, places=3)
+        self.assertIn("직접 확인", (target / "scene_candidates.txt").read_text(encoding="utf-8"))
+        saved = json.loads((target / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(saved["scene_candidates"], result["scene_candidates"])
+        high_threshold = tiles(source, self.scene / "strict_review", {}, scene_threshold=1.0)
+        self.assertEqual(high_threshold["scene_candidates"], [])
+        self.assertTrue(source.is_file())
+
     def test_tiles_create_cut_and_do_not_overwrite(self):
         source = self.make_video("tile.mp4")
         dest = self.scene / "review"
@@ -407,6 +448,25 @@ class QCIntegration(unittest.TestCase):
         self.assertEqual(exc.exception.code, 5)
         self.assertFalse(target.exists())
         self.assertTrue(source.exists())
+
+    def test_scene_detection_failure_cleans_all_temporary_output(self):
+        source = self.make_video("scene_fail.mp4")
+        target = self.scene / "scene_failure"
+        source_info = probe(source, {})
+        def fail_on_scene(args, cwd, **kwargs):
+            if "showinfo@scene" in " ".join(args):
+                return subprocess.CompletedProcess(args, 1, "", "scene error")
+            (Path(cwd) / "tiles_001.png").write_bytes(b"partial")
+            logs = ["[showinfo@source] config in time_base: 1/24"]
+            logs += [f"[showinfo@source] n: {i} pts: {i} pts_time:" for i in range(24)]
+            logs += ["[showinfo@selected] n: 0 pts: 0 pts_time:"]
+            return subprocess.CompletedProcess(args, 0, "", "\n".join(logs))
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=fail_on_scene):
+            with self.assertRaises(QCError) as exc:
+                tiles(source, target, {})
+        self.assertEqual(exc.exception.code, 5)
+        self.assertFalse(target.exists())
+        self.assertTrue(source.is_file())
 
     def test_tiles_invalid_frame_does_not_create_folder(self):
         source = self.make_video("tile_bad.mp4")

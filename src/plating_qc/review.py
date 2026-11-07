@@ -123,8 +123,8 @@ def compare(original, candidate, config, search=30, threshold=.02):
     return {"original": a, "candidate": b, "alignment": {"offset_candidate_to_original": None if ambiguous else offset, "score": best, "second_score": second, "uncertain": ambiguous, "estimated_missing_head": None if ambiguous else max(0, offset), "estimated_missing_tail": None if ambiguous else max(0, na - (offset + nb))}, "difference_ranges_candidate_frames": [] if ambiguous else ranges, "mixed_frame_suspects": mix_suspects, "threshold": threshold, "warnings": warnings, "notice": "축소 회색 프레임 기반의 검수 힌트입니다. 손상·누락·혼합 프레임의 확정 판정이 아닙니다."}
 
 
-def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), around=3):
-    if not 0 < fps <= 30 or not 16 <= width <= 4096 or not 1 <= columns <= 20 or not 1 <= rows <= 20 or columns*rows > 100 or not 0 <= around <= 10:
+def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), around=3, scene_threshold=.3):
+    if not 0 < fps <= 30 or not 16 <= width <= 4096 or not 1 <= columns <= 20 or not 1 <= rows <= 20 or columns*rows > 100 or not 0 <= around <= 10 or not 0 <= scene_threshold <= 1:
         raise QCError(2, "타일 설정 범위가 올바르지 않습니다")
     info = probe(source, config)
     if info["timestamp_analysis"]["status"] != "observed":
@@ -194,8 +194,25 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
                 if not (stage / name).is_file():
                     raise QCError(5, f"컷 {cut} 이미지를 만들지 못했습니다")
                 created.append(name)
+            # 장면 전환 점수는 후보일 뿐이며, 원본 PTS를 통해 프레임 번호와 매칭한다.
+            scene_graph = f"select='gt(scene\\,{scene_threshold:.8f})',showinfo@scene"
+            scene_log = invoke([ffmpeg, "-v", "info", "-nostdin", "-copyts", "-i", info["path"], "-vf", scene_graph, "-fps_mode", "passthrough", "-f", "null", "-"], work)
+            scene_base = re.search(r"showinfo@scene[^\n]*config in time_base: (\d+/\d+)", scene_log)
+            if not scene_base or Fraction(scene_base.group(1)) != timebase:
+                raise QCError(5, "장면 후보의 시간 기준을 확인하지 못했습니다")
+            scene_pts = re.findall(r"showinfo@scene[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", scene_log)
+            candidates = []
+            for _, pts in scene_pts:
+                matches = source_by_pts.get(int(pts), [])
+                if len(matches) != 1:
+                    raise QCError(5, "장면 후보의 원본 프레임을 특정할 수 없습니다")
+                candidates.append({"frame": matches[0], "pts": int(pts), "time_base": str(timebase), "seconds": float(int(pts)*timebase)})
+            scene_lines = ["장면 전환 후보입니다. 빠른 움직임일 수 있으므로 직접 확인하세요.", "frame (0 기반)\tPTS\ttime_base\t초"]
+            scene_lines += [f"{item['frame']}\t{item['pts']}\t{item['time_base']}\t{item['seconds']:.6f}" for item in candidates]
+            (stage / "scene_candidates.txt").write_text("\n".join(scene_lines) + "\n", encoding="utf-8")
+            created.append("scene_candidates.txt")
             cut_frames = {str(cut): [{"frame": n, "pts": int(source_frames[n][1]), "time_base": str(timebase), "seconds": float(int(source_frames[n][1]) * timebase)} for n in range(max(0, cut-around), min(count-1, cut+around)+1)] for cut in sorted(set(cuts))}
-            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "files": created, "samples": samples, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info["warnings"]}
+            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "scene_threshold": scene_threshold, "scene_candidates": candidates, "files": created, "samples": samples, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info["warnings"]}
             (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             # 하드링크는 같은 이름의 기존 파일이 생겨도 덮어쓰지 않는다.
             for name in [*created, "manifest.json"]:

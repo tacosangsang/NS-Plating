@@ -221,6 +221,24 @@ def convert(source, scene, config, suffix="", dry_run=False):
             max_error = max(abs((a-source_pts[0])-(b-result_pts[0])) for a, b in zip(source_pts, result_pts))
             if max_error > .001:
                 problems.append(f"프레임별 상대 PTS 최대 차이 {max_error:.6f}초")
+        try:
+            input_start, output_start = float(before["start_time_s"]), float(after["start_time_s"])
+            if not math.isfinite(input_start) or not math.isfinite(output_start):
+                raise ValueError
+            if abs(input_start - output_start) > .001:
+                extra_warnings.append(f"영상 절대 시작 시각이 {input_start:.6f}초에서 {output_start:.6f}초로 이동했습니다")
+        except (TypeError, ValueError):
+            extra_warnings.append("영상 절대 시작 시각을 비교하지 못했습니다")
+        if info["audio"]:
+            try:
+                in_audio = float(info["audio"]["start_time_s"])
+                out_audio = float(result["audio"]["start_time_s"])
+                if not all(math.isfinite(x) for x in (in_audio, out_audio, input_start, output_start)):
+                    raise ValueError
+                if abs((in_audio-input_start)-(out_audio-output_start)) > .001:
+                    extra_warnings.append("오디오와 영상의 상대 시작 시각이 달라졌습니다. 편집기에서 동기화를 확인하세요")
+            except (TypeError, ValueError, KeyError, UnboundLocalError):
+                extra_warnings.append("오디오와 영상의 상대 시작 시각을 확인하지 못했습니다")
         if after["profile"] != "HQ" or after["pix_fmt"] != "yuv422p10le" or any(v != "bt709" for v in after["color"].values()):
             problems.append("출력 프로파일·픽셀 형식·색 태그 불일치")
         if info["audio"]:

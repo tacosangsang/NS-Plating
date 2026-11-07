@@ -34,6 +34,7 @@ def main(argv=None):
     tile.add_argument("--grid", default="5x2")
     tile.add_argument("--cuts", default="")
     tile.add_argument("--around", type=int, default=3)
+    tile.add_argument("--scene-threshold", type=float, default=.3)
     part = subs.add_parser("split")
     part.add_argument("input")
     part.add_argument("--out", required=True)
@@ -56,7 +57,7 @@ def main(argv=None):
                 cuts = [int(c) for c in args.cuts.split(",")] if args.cuts else []
             except ValueError as exc:
                 raise QCError(2, "grid 또는 cuts 형식이 올바르지 않습니다") from exc
-            result = tiles(args.input, args.out, config, args.fps, args.width, columns, rows, cuts, args.around)
+            result = tiles(args.input, args.out, config, args.fps, args.width, columns, rows, cuts, args.around, args.scene_threshold)
             warnings = bool(result["warnings"])
         elif args.command == "split":
             result = split(args.input, args.out, config, args.max_part_mb)
