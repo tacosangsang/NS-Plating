@@ -65,4 +65,7 @@ ANCHOR_SPECS: Final = {
 }
 RATE_NEW_PATTERN: Final = r"^\| 영상 본 생성 \| (?P<model>.+?) (?P<low>\d+p) / (?P<high>\d+p) \| (?P<low_rate>\d+(?:\.\d+)?) / (?P<high_rate>\d+(?:\.\d+)?) per 초, 최소 (?P<minimum>\d+(?:\.\d+)?)초 \|$"
 RATE_EDIT_PATTERN: Final = r"^\| 영상 edit \| (?P<model>.+?) video_edit (?P<resolution>\d+p) \| 입력 길이 초 올림 × (?P<rate>\d+(?:\.\d+)?)\([^|]+\) \|$"
+# 승인 판정(ts 확정 2026-11-08): 인용문이 W02 승인 어휘로 끝나고 부정어가 없어야 승인. 애매하면 미승인.
+APPROVAL_NEGATION: Final = r"(?:^|\s)안(?:\s|$)|말고|하지\s*마"
+APPROVAL_TRAILING: Final = " \t.!~"
 APPROVAL_PATTERNS: Final = (r'^- "([^"]+)", "([^"]+)": 생성 승인\.$', r'^- "([^"]+)": 그 씬 한 바퀴 생성은 승인된 것')

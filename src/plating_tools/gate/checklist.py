@@ -9,7 +9,7 @@ from ..cuts.extract import FIRST_SCENE_NO_PREV, SCENE_NEIGHBOR_ROLES
 from ..docs import Anchor, DocStore, resolve
 from ..errors import InputError
 from ..model import Finding, Severity, SourceRef, Unknown, json_text
-from ..profile_plating import ANCHOR_SPECS, APPROVAL_PATTERNS, DOC_TITLES
+from ..profile_plating import ANCHOR_SPECS, APPROVAL_NEGATION, APPROVAL_PATTERNS, APPROVAL_TRAILING, DOC_TITLES
 from ..textio import read_document
 from .cost import CostSummary
 
@@ -159,7 +159,8 @@ def evaluate_gate(lines, inputs, context: GateContext, approval: ApprovalEvidenc
         status = "기계 소견과 충돌" if any(f.severity == Severity.ERROR for f in machine) else "미완료" if problems else "완료"
         results.append(ItemResult(line, item, machine, ("사람의 항목별 판단과 근거",), status, tuple(problems)))
     bound = approval is not None and approval.prompt_sha256 == context.prompt_sha256
-    hits = tuple(word for word in context.approval_words if approval is not None and word in approval.quote)
+    quote = approval.quote.strip().rstrip(APPROVAL_TRAILING) if approval is not None else ""
+    hits = () if re.search(APPROVAL_NEGATION, quote) else tuple(word for word in context.approval_words if quote.endswith(word))
     approval_status = "승인 기록 없음"
     if approval is not None:
         approval_status = "승인 기록 있음" if all((approval.quote, approval.where, approval.by, approval.at, approval.prompt_sha256)) and bound and hits else "승인 기록 불일치" if not bound else "어휘 불명확"

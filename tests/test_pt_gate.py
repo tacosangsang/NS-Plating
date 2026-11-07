@@ -145,3 +145,28 @@ class MachineFindingTests(NetworkBlockedCase):
         machine, _ = self.gate.machine_findings(None, None, None, refs, None, "a" * 64)
         codes = {f.code: f.severity.value for f in machine[7]}
         self.assertEqual(codes, {"REF_MISMATCH": "error"})
+
+
+class ApprovalWordingTests(NetworkBlockedCase):
+    """실제 W 없이 승인 문장 판정만 검사(ts 확정 2026-11-08)."""
+    def setUp(self):
+        super().setUp()
+        self.gate = importlib.import_module("plating_tools.gate.checklist")
+        self.model = importlib.import_module("plating_tools.model")
+        where = self.model.SourceRef("W02", 1, 1)
+        self.lines = tuple(self.gate.ChecklistLine(i, f"{i}. SYNTH", where) for i in range(1, 9))
+        self.context = self.gate.GateContext("a" * 64, ("생성해", "돌려", "씬 하나 다 만들어 둬"), {}, None, self.model.Unknown("SYNTH"))
+
+    def status(self, quote):
+        proof = self.gate.ApprovalEvidence(quote, "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        return self.gate.evaluate_gate(self.lines, (), self.context, proof).approval.status
+
+    def test_sentence_ending_in_approval_word_is_approval(self):
+        for quote in ("생성해", "S#02 A 클립 돌려.", "씬 하나 다 만들어 둬!"):
+            with self.subTest(quote=quote):
+                self.assertEqual(self.status(quote), "승인 기록 있음")
+
+    def test_negated_or_non_final_word_is_not_approval(self):
+        for quote in ("생성해도 안 돼", "돌려 말고 프롬프트만", "아직 생성해 하지 마", "안 돌려", "돌려보기 전에 보여줘"):
+            with self.subTest(quote=quote):
+                self.assertEqual(self.status(quote), "어휘 불명확")
