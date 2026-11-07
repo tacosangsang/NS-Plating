@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from plating_qc.core import QCError, convert, probe
-from plating_qc.review import compare, tiles
+from plating_qc.review import compare, tiles, write_comparison
 from plating_qc.split import split
 
 
@@ -132,6 +132,98 @@ class QCIntegration(unittest.TestCase):
         self.assertTrue(result["alignment"]["uncertain"])
         self.assertIsNone(result["alignment"]["estimated_missing_head"])
 
+    def test_tiles_report_original_frame_indices_and_pts(self):
+        import json
+        from fractions import Fraction
+        source = self.raw / "timed.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=4:duration=2.5", "-vf", "setpts=PTS+2/TB", "-c:v", "mpeg4", str(source)], check=True)
+        dest = self.scene / "timed_review"
+        result = tiles(source, dest, {}, fps=1, width=320, columns=2, rows=1, cuts=[4], around=1)
+        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True)
+        source_frames = json.loads(raw.stdout)["frames"]
+        self.assertEqual([x["frame"] for x in result["samples"]], [0, 4, 8])
+        for sample in result["samples"]:
+            timestamp = float(source_frames[sample["frame"]]["best_effort_timestamp_time"])
+            self.assertAlmostEqual(sample["seconds"], timestamp, places=5)
+            self.assertAlmostEqual(float(sample["pts"] * Fraction(sample["time_base"])), timestamp, places=5)
+        self.assertEqual(result["samples"][2]["tile"], "tiles_002.png")
+        self.assertEqual(result["samples"][2]["cell"], 0)
+        self.assertEqual([x["frame"] for x in result["cut_frames"]["4"]], [3, 4, 5])
+        self.assertAlmostEqual(result["cut_frames"]["4"][1]["seconds"], 3.0, places=5)
+        self.assertEqual(json.loads((dest / "manifest.json").read_text(encoding="utf-8"))["samples"], result["samples"])
+        self.assertTrue((dest / "cut_000004_000003-000005.png").exists())
+
+    def test_tiles_variable_timestamps_match_source_frames(self):
+        import json
+        source = self.raw / "vfr.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=4:duration=2.5", "-vf", "setpts=PTS+if(gte(N\\,4)\\,0.25/TB\\,0)", "-fps_mode", "vfr", "-c:v", "ffv1", str(source)], check=True)
+        result = tiles(source, self.scene / "vfr_review", {}, fps=1, width=320, columns=3, rows=1)
+        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True)
+        frames = json.loads(raw.stdout)["frames"]
+        self.assertEqual([x["frame"] for x in result["samples"]], [0, 4, 8])
+        for sample in result["samples"]:
+            self.assertAlmostEqual(sample["seconds"], float(frames[sample["frame"]]["best_effort_timestamp_time"]), places=5)
+
+    def test_compare_report_and_aligned_images(self):
+        import json
+        source, candidate = self.raw / "pattern.mkv", self.raw / "head.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "nullsrc=s=64x36:r=24:d=1,geq=lum='mod(N*71+X*Y,256)':cb=128:cr=128", "-c:v", "ffv1", str(source)], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-i", str(source), "-vf", "trim=start_frame=2,setpts=PTS-STARTPTS", "-c:v", "ffv1", str(candidate)], check=True)
+        target = self.scene / "report%03d"
+        result = write_comparison(compare(source, candidate, {}, search=5), target, {})
+        self.assertEqual(result["alignment"]["offset_candidate_to_original"], 2)
+        image = result["comparison_images"][0]
+        self.assertEqual((image["original_frame"], image["candidate_frame"]), (2, 0))
+        import struct
+        png = (target / image["file"]).read_bytes()
+        self.assertEqual(struct.unpack(">II", png[16:24]), (128, 36))
+        rgb = subprocess.run(["ffmpeg", "-v", "error", "-f", "image2pipe", "-i", "-", "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], input=png, capture_output=True, check=True).stdout
+        for y in range(36):
+            row = rgb[y * 128 * 3:(y + 1) * 128 * 3]
+            self.assertEqual(row[:64 * 3], row[64 * 3:])
+        saved = json.loads((target / "report.json").read_text(encoding="utf-8"))
+        self.assertEqual(saved["comparison_images"], result["comparison_images"])
+        self.assertIn("왼쪽 원본", (target / "report.txt").read_text(encoding="utf-8"))
+        before = (target / "report.json").read_bytes()
+        with self.assertRaises(QCError) as exc:
+            write_comparison(result, target, {})
+        self.assertEqual(exc.exception.code, 3)
+        self.assertEqual((target / "report.json").read_bytes(), before)
+        env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
+        cli_target = self.scene / "cli_report"
+        cli = subprocess.run([sys.executable, "-m", "plating_qc", "compare", str(source), str(candidate), "--search", "5", "--out", str(cli_target)], env=env, capture_output=True, text=True)
+        self.assertEqual(cli.returncode, 1, cli.stderr)
+        self.assertTrue((cli_target / "report.json").exists())
+        self.assertTrue(list(cli_target.glob("pair_*.png")))
+        with self.assertRaises(QCError) as exc:
+            write_comparison(result, self.raw / "unsafe", {})
+        self.assertEqual(exc.exception.code, 2)
+
+    def test_comparison_image_failure_cleans_output(self):
+        source = self.raw / "failure_pattern.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "nullsrc=s=64x36:r=24:d=1,geq=lum='mod(N*71+X*Y,256)':cb=128:cr=128", "-c:v", "ffv1", str(source)], check=True)
+        result = compare(source, source, {}, search=5)
+        target = self.scene / "failed_compare"
+        def fail_after_writing(args, cwd, **kwargs):
+            (Path(cwd) / args[-1]).write_bytes(b"partial")
+            return subprocess.CompletedProcess(args, 1, "", "encoder error")
+        with patch("plating_qc.review.subprocess.run", side_effect=fail_after_writing):
+            with self.assertRaises(QCError) as exc:
+                write_comparison(result, target, {})
+        self.assertEqual(exc.exception.code, 5)
+        self.assertFalse(target.exists())
+        self.assertTrue(source.exists())
+
+    def test_uncertain_comparison_saves_no_misleading_images(self):
+        source = self.raw / "static_report.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=black:size=160x90:rate=24:duration=1", "-c:v", "mpeg4", str(source)], check=True)
+        target = self.scene / "uncertain"
+        result = write_comparison(compare(source, source, {}, search=2), target, {})
+        self.assertTrue(result["alignment"]["uncertain"])
+        self.assertEqual(result["comparison_images"], [])
+        self.assertFalse(list(target.glob("pair_*.png")))
+        self.assertTrue((target / "report.json").exists())
+
     def test_tiles_create_cut_and_do_not_overwrite(self):
         source = self.make_video("tile.mp4")
         dest = self.scene / "review"
@@ -189,6 +281,20 @@ class QCIntegration(unittest.TestCase):
         self.assertEqual(exc.exception.code, 5)
         self.assertFalse(target.exists())
         self.assertFalse((self.scene / "failed001").exists())
+        self.assertTrue(source.exists())
+
+    def test_tiles_missing_timestamps_do_not_publish(self):
+        source = self.make_video("missing_pts.mp4")
+        target = self.scene / "missing_pts_review"
+        source_info = probe(source, {})
+        def no_timestamps(args, cwd, **kwargs):
+            (Path(cwd) / "tiles_001.png").write_bytes(b"fake")
+            return subprocess.CompletedProcess(args, 0, "", "[showinfo@source] config in time_base: 1/24\n[showinfo@source] n: 0 pts: NOPTS pts_time:NOPTS\n")
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=no_timestamps):
+            with self.assertRaises(QCError) as exc:
+                tiles(source, target, {})
+        self.assertEqual(exc.exception.code, 5)
+        self.assertFalse(target.exists())
         self.assertTrue(source.exists())
 
     def test_tiles_invalid_frame_does_not_create_folder(self):

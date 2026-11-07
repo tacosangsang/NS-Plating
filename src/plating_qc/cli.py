@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 from .core import QCError, convert, load_config, probe
-from .review import compare, tiles
+from .review import compare, tiles, write_comparison
 from .split import split
 
 
@@ -25,6 +25,7 @@ def main(argv=None):
     comp.add_argument("--search", type=int, default=30)
     comp.add_argument("--threshold", type=float, default=.02)
     comp.add_argument("--json", action="store_true")
+    comp.add_argument("--out")
     tile = subs.add_parser("tiles")
     tile.add_argument("input")
     tile.add_argument("--out", required=True)
@@ -46,6 +47,8 @@ def main(argv=None):
             warnings = any(item["warnings"] for item in result)
         elif args.command == "compare":
             result = compare(args.original, args.candidate, config, args.search, args.threshold)
+            if args.out:
+                result = write_comparison(result, args.out, config)
             warnings = bool(result["warnings"])
         elif args.command == "tiles":
             try:
@@ -54,7 +57,7 @@ def main(argv=None):
             except ValueError as exc:
                 raise QCError(2, "grid 또는 cuts 형식이 올바르지 않습니다") from exc
             result = tiles(args.input, args.out, config, args.fps, args.width, columns, rows, cuts, args.around)
-            warnings = bool(result["warnings"][:-1])
+            warnings = bool(result["warnings"])
         elif args.command == "split":
             result = split(args.input, args.out, config, args.max_part_mb)
             warnings = bool(result["warnings"])
