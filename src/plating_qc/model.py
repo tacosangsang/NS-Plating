@@ -1,7 +1,13 @@
 """미디어 검사 결과 계약."""
 
 from dataclasses import dataclass
-from pathlib import Path
+
+
+@dataclass(frozen=True, slots=True)
+class ColorInfo:
+    primaries: str
+    transfer: str
+    space: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -9,17 +15,35 @@ class VideoInfo:
     codec: str | None
     width: int | None
     height: int | None
-    frames_decoded: int
-    frames_metadata: int | None
-    frames_packets: int | None
-    frame_rate: str | None
+    pix_fmt: str | None
+    r_frame_rate: str | None
+    avg_frame_rate: str | None
+    nb_frames_meta: int | None
+    nb_frames_decoded: int
+    nb_read_packets: int | None
+    decode_errors: int
+    duration_s: str | None
+    start_time_s: str | None
+    profile: str | None
+    color: ColorInfo
 
 
 @dataclass(frozen=True, slots=True)
 class AudioInfo:
     codec: str | None
-    sample_rate: int | None
+    sample_rate: str | None
     channels: int | None
+    duration_s: str | None
+    start_time_s: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class TimingInfo:
+    status: str
+    missing_count: int | None
+    vfr_suspect: bool | None
+    interval_stddev_s: float | None
+    rates_differ: bool | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,7 +54,8 @@ class Finding:
 
 @dataclass(frozen=True, slots=True)
 class MediaInfo:
-    path: Path
+    path: str
+    timestamp_analysis: TimingInfo
     video: VideoInfo
     audio: AudioInfo | None
-    findings: tuple[Finding, ...]
+    warnings: list[str]

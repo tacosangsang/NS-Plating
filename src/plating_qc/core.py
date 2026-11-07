@@ -79,36 +79,10 @@ def analyze_timestamps(path, ffprobe, count, avg_rate, base_rate):
 
 
 def probe(path, config):
-    path = Path(path).resolve()
-    if not path.is_file():
-        raise QCError(2, f"입력 파일이 없습니다: {path}")
-    result = run([executable("ffprobe", config), "-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", str(path)])
-    try:
-        data = json.loads(result.stdout)
-        video = next(s for s in data["streams"] if s["codec_type"] == "video")
-    except (ValueError, KeyError, StopIteration) as exc:
-        raise QCError(5, "영상 스트림을 읽지 못했습니다") from exc
-    count = video.get("nb_read_frames")
-    if not count or not str(count).isdigit():
-        raise QCError(5, "디코딩 프레임 수를 확인하지 못했습니다")
-    audio = next((s for s in data["streams"] if s["codec_type"] == "audio"), None)
-    warnings = []
-    meta = video.get("nb_frames")
-    if meta and str(meta).isdigit() and int(meta) != int(count):
-        warnings.append("컨테이너 프레임 수와 디코딩 프레임 수가 다릅니다")
-    if result.stderr.strip():
-        warnings.append("디코딩 경고: " + result.stderr.strip()[-1000:])
-    avg, rate = video.get("avg_frame_rate"), video.get("r_frame_rate")
-    timing = analyze_timestamps(path, executable("ffprobe", config), int(count), avg, rate)
-    if timing["status"] == "generated":
-        warnings.append("원본 PTS 일부가 없어 genpts로 생성한 시간입니다. 원래 타이밍은 확인할 수 없습니다")
-    elif timing["status"] == "unavailable":
-        warnings.append("원본 PTS가 없고 genpts로도 복구되지 않았습니다. 타이밍을 확인할 수 없습니다")
-    elif timing["status"] == "not_checked":
-        warnings.append("100000프레임 초과로 PTS 간격을 검사하지 못했습니다")
-    if timing["vfr_suspect"]:
-        warnings.append("PTS 간격 또는 프레임 속도 차이로 가변 프레임 속도가 의심됩니다")
-    return {"path": str(path), "timestamp_analysis": timing, "video": {"codec": video.get("codec_name"), "width": video.get("width"), "height": video.get("height"), "pix_fmt": video.get("pix_fmt"), "r_frame_rate": rate, "avg_frame_rate": avg, "nb_frames_meta": int(meta) if meta and str(meta).isdigit() else None, "nb_frames_decoded": int(count), "duration_s": video.get("duration"), "start_time_s": video.get("start_time"), "profile": video.get("profile"), "color": {"primaries": video.get("color_primaries", "unknown"), "transfer": video.get("color_transfer", "unknown"), "space": video.get("color_space", "unknown")}}, "audio": None if audio is None else {"codec": audio.get("codec_name"), "sample_rate": audio.get("sample_rate"), "channels": audio.get("channels"), "duration_s": audio.get("duration"), "start_time_s": audio.get("start_time")}, "warnings": warnings}
+    from dataclasses import asdict
+    from .backend.ffmpeg import FfmpegBackend
+
+    return asdict(FfmpegBackend(config).probe(Path(path)))
 
 
 def layout_names(config):
