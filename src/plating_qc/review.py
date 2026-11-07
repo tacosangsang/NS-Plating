@@ -1,5 +1,6 @@
 """원본을 변경하지 않는 프레임 비교와 검수 타일."""
 import json
+import math
 import os
 import re
 import tempfile
@@ -11,24 +12,23 @@ from .core import QCError, executable, layout_names, probe
 
 
 def frames(path, config, width, height, count):
-    # 작은 회색 프레임도 전체 길이에 비례한다. 예상 메모리가 크면 중단한다.
-    if width * height * count > 128 * 1024 * 1024:
-        raise QCError(2, "비교 영상이 너무 깁니다. 짧은 구간으로 나눠 확인하세요")
-    cmd = [executable("ffmpeg", config), "-v", "error", "-nostdin", "-i", str(path), "-map", "0:v:0", "-vf", f"scale={width}:{height},format=gray", "-fps_mode", "passthrough", "-f", "rawvideo", "-"]
-    try:
-        result = subprocess.run(cmd, capture_output=True)
-    except OSError as exc:
-        raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
-    if result.returncode:
-        raise QCError(5, "프레임 디코딩 실패: " + result.stderr.decode(errors="replace")[-2000:])
-    size = width * height
-    if len(result.stdout) != count * size:
-        raise QCError(5, "비교용 디코딩 프레임 수가 probe 결과와 다릅니다")
-    return [memoryview(result.stdout)[i:i+size] for i in range(0, len(result.stdout), size)]
+    from .backend.ffmpeg import FfmpegBackend
+
+    return FfmpegBackend(config).extract_frames(Path(path), width, height, count)
 
 
 def distance(a, b):
     return sum(abs(x-y) for x, y in zip(a, b)) / (255 * len(a))
+
+
+def normalized_distance(a, b):
+    mean_a, mean_b = sum(a) / len(a), sum(b) / len(b)
+    std_a = math.sqrt(sum((x - mean_a) ** 2 for x in a) / len(a))
+    std_b = math.sqrt(sum((x - mean_b) ** 2 for x in b) / len(b))
+    if not std_a or not std_b:
+        return distance(a, b)
+    return sum(abs((x - mean_a) / std_a - (y - mean_b) / std_b)
+               for x, y in zip(a, b)) / (6 * len(a))
 
 
 def mixed_frame_hint(previous, current, candidate):
@@ -66,7 +66,7 @@ def compare(original, candidate, config, search=30, threshold=.02):
         if overlap < min(5, na, nb):
             continue
         positions = sorted({start + (overlap-1)*i//11 for i in range(12)})
-        score = sum(distance(af[i+offset], bf[i]) for i in positions)/len(positions)
+        score = sum(normalized_distance(af[i+offset], bf[i]) for i in positions)/len(positions)
         scores.append((score, offset))
     if not scores:
         raise QCError(5, "정렬할 겹치는 프레임이 부족합니다")
@@ -88,7 +88,7 @@ def compare(original, candidate, config, search=30, threshold=.02):
     changed = []
     current = None
     for i in range(start, end):
-        if distance(af[i+offset], bf[i]) > threshold:
+        if normalized_distance(af[i+offset], bf[i]) > threshold:
             changed.append(i)
             if current is None:
                 current = [i, i]

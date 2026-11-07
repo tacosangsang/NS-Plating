@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import subprocess
 
 from .base import MediaBackend
 from .. import core
@@ -35,6 +36,23 @@ class FfmpegBackend(MediaBackend):
             raise QCError(2, "변환 출력 경로가 없습니다")
         core.run(self.prores_command(request))
         return request.output
+
+    def extract_frames(self, source: Path, width: int, height: int, count: int) -> list[memoryview]:
+        if width * height * count > 128 * 1024 * 1024:
+            raise QCError(2, "비교 영상이 너무 깁니다. 짧은 구간으로 나눠 확인하세요")
+        cmd = [core.executable("ffmpeg", self.config), "-v", "error", "-nostdin", "-i",
+               str(source), "-map", "0:v:0", "-vf", f"scale={width}:{height},format=gray",
+               "-fps_mode", "passthrough", "-f", "rawvideo", "-"]
+        try:
+            result = subprocess.run(cmd, capture_output=True)
+        except OSError as exc:
+            raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
+        if result.returncode:
+            raise QCError(5, "프레임 디코딩 실패: " + result.stderr.decode(errors="replace")[-2000:])
+        size = width * height
+        if len(result.stdout) != count * size:
+            raise QCError(5, "비교용 디코딩 프레임 수가 probe 결과와 다릅니다")
+        return [memoryview(result.stdout)[i:i + size] for i in range(0, len(result.stdout), size)]
 
     def probe(self, path: Path) -> MediaInfo:
         path = checked_path(Path(path))
