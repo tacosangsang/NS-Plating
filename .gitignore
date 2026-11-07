@@ -18,3 +18,7 @@ __pycache__/
 *.hwp
 *.xlsx
 *.zip
+
+# rea-video 분석 결과 (report.html, breakdown.json 등)
+out/
+.env

@@ -52,3 +52,16 @@ GitHub는 프롬프트·문서(텍스트)만. 대용량 파일로 repo 무거워
 
 **미디어 추가 시**
 - Google Drive 공유 폴더의 해당 위치에 업로드 (GitHub 아님)
+
+## 도구: rea-video (레퍼런스 영상 역분석)
+
+[rea-video](https://github.com/JuneYaooo/rea-video): 영상을 샷 단위로 분석해 실사/AI/3D/모션그래픽 여부, 자막·편집·사운드, 재현 방법을 리포트로 출력.
+
+- 스킬: `.claude/skills/rea-video/` (repo에 포함, Claude Code에서 자동 인식)
+- CLI 설치 (macOS/Linux 로컬, Claude Code 클라우드 공통, 재실행 안전):
+  ```bash
+  bash scripts/setup-rea-video.sh
+  ```
+  필요: ffmpeg, Python 3.10+ (OCR까지 쓰려면 3.12 이하). Windows는 WSL에서 실행.
+- 사용: Claude Code에서 "이 영상 분석해줘: <경로>" -> 스킬이 CLI 없으면 위 스크립트로 설치 후 실행
+- 결과: `out/<이름>/report.html` (커밋 안 됨)
