@@ -47,6 +47,10 @@ class CutRow:
     where: SourceRef
 
 
+FIRST_SCENE_NO_PREV = "첫 씬이라 없음"
+SCENE_NEIGHBOR_ROLES = ("prev_scene_last", "next_scene_first")
+
+
 @dataclass(frozen=True, slots=True)
 class ContextCut:
     role: str
@@ -197,14 +201,14 @@ def extract_scene(src: CutTableSource, scene_id: str, *, cut_ids: tuple[str, ...
         raise InputError(f"지정 컷 ID 없음: {cut_ids}")
     context: list[ContextCut] = []
     number = int(scene[2:])
-    for delta, role in ((-1, "prev_scene_last"), (1, "next_scene_first")):
+    for delta, role in zip((-1, 1), SCENE_NEIGHBOR_ROLES):
         neighbor = f"S#{number + delta:02d}"
         try:
             neighbor_section = choose_section(sections, neighbor, None)
             neighbor_table = choose_table(neighbor_section, None)
             candidates, _ = parse_rows(src, neighbor_section, neighbor_table)
         except InputError as exc:
-            context.append(ContextCut(role, None, "첫 씬이라 없음" if number == 1 and delta == -1 else str(exc)))
+            context.append(ContextCut(role, None, FIRST_SCENE_NO_PREV if number == 1 and delta == -1 else str(exc)))
             continue
         if not candidates:
             context.append(ContextCut(role, None, f"{neighbor} 표에 데이터 행 없음"))

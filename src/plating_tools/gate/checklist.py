@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from decimal import Decimal
 
+from ..cuts.extract import FIRST_SCENE_NO_PREV, SCENE_NEIGHBOR_ROLES
 from ..docs import Anchor, DocStore, resolve
 from ..errors import InputError
 from ..model import Finding, Severity, SourceRef, Unknown, json_text
@@ -199,12 +200,19 @@ def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_
         add(4, "GATE_CUTS", Severity.WARN, "컷표 추출 결과 없음")
     if cuts is None or not cuts.get("context"):
         add(6, "GATE_CONTEXT", Severity.WARN, "연결 문맥 미확인")
+    else:
+        for c in cuts["context"]:
+            if c.get("role") in SCENE_NEIGHBOR_ROLES and c.get("row") is None and c.get("note") != FIRST_SCENE_NO_PREV:
+                add(6, "GATE_CONTEXT", Severity.WARN, f"연결 문맥 미확인: {c.get('role')} ({c.get('note')})")
     if refs is None:
         add(7, "GATE_REFS", Severity.WARN, "레퍼런스 검사 결과 없음")
     else:
         results = refs.get("results", [])
         if not results or any(r.get("best_original") != "최대 원본 확인됨" for r in results):
             add(7, "GATE_ORIGINAL", Severity.WARN, "최대 원본 미확인")
+        for finding in refs.get("findings", []):
+            if finding.get("severity") != Severity.INFO:
+                add(7, finding.get("code", "GATE_REFS"), Severity(finding.get("severity", "warn")), finding.get("message", "미확인"))
     if check is None:
         add(4, "GATE_CHECK", Severity.WARN, "프롬프트 검사 결과 없음")
     else:

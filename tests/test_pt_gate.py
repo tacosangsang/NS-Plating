@@ -114,3 +114,34 @@ class GateTests(NetworkBlockedCase):
     def test_generation_above_document_limit_requires_split(self):
         machine, _ = self.gate.machine_findings(self.clip(gen_seconds=self.rules.max_seconds + 1), None, None, None, None, "a" * 64, max_seconds=self.rules.max_seconds)
         self.assertTrue(any(f.code == "GATE_DURATION" and f.severity.value == "error" for f in machine[2]))
+
+
+
+class MachineFindingTests(NetworkBlockedCase):
+    """실제 W 없이 machine_findings만 검사."""
+    def setUp(self):
+        super().setUp()
+        self.gate = importlib.import_module("plating_tools.gate.checklist")
+
+    def test_unresolved_neighbor_scene_context_warns(self):
+        cuts = {"source": {"sha256": "a" * 64}, "targets": [], "context": [
+            {"role": "prev_scene_last", "row": None, "note": "SYNTH 경계 없음"},
+            {"role": "next_scene_first", "row": None, "note": "SYNTH 경계 없음"}]}
+        machine, _ = self.gate.machine_findings(None, cuts, None, None, "a" * 64, "a" * 64)
+        self.assertEqual(sum(f.code == "GATE_CONTEXT" for f in machine[6]), 2)
+
+    def test_first_scene_without_previous_is_not_flagged(self):
+        extract = importlib.import_module("plating_tools.cuts.extract")
+        row = {"cut_id": "SYNTH-1"}
+        cuts = {"source": {"sha256": "a" * 64}, "targets": [], "context": [
+            {"role": "prev_scene_last", "row": None, "note": extract.FIRST_SCENE_NO_PREV},
+            {"role": "next_scene_first", "row": row, "note": "생성 대상 아님"}]}
+        machine, _ = self.gate.machine_findings(None, cuts, None, None, "a" * 64, "a" * 64)
+        self.assertFalse(machine.get(6))
+
+    def test_reference_errors_reach_gate_even_with_best_original(self):
+        refs = {"results": [{"best_original": "최대 원본 확인됨"}],
+                "findings": [{"code": "REF_MISMATCH", "severity": "error", "message": "SYNTH 불일치"}, {"code": "REF_NOTE", "severity": "info", "message": "SYNTH"}]}
+        machine, _ = self.gate.machine_findings(None, None, None, refs, None, "a" * 64)
+        codes = {f.code: f.severity.value for f in machine[7]}
+        self.assertEqual(codes, {"REF_MISMATCH": "error"})
