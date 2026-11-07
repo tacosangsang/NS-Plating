@@ -81,6 +81,8 @@ def convert(source, scene, config, suffix="", dry_run=False):
     info = probe(source, config)
     source = Path(info["path"])
     layout = config.get("layout", {})
+    if not isinstance(layout, dict):
+        raise QCError(2, "설정의 layout은 TOML 테이블이어야 합니다")
     raw, prores = layout.get("raw", "raw"), layout.get("prores", "prores")
     if any(not isinstance(x, str) or x in ("", ".", "..") or "/" in x or "\\" in x for x in (raw, prores)) or raw.casefold() == prores.casefold():
         raise QCError(2, "raw/prores 설정은 서로 다른 단일 폴더 이름이어야 합니다")
@@ -117,9 +119,12 @@ def convert(source, scene, config, suffix="", dry_run=False):
         args += ["-af", f"apad=whole_dur={duration:.9f}"]
     if dry_run:
         return {"input": str(source), "output": str(out), "command": args + ["<임시 출력 파일>"]}
-    out_dir.mkdir(exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=".plating-qc-", suffix=".partial.mov", dir=out_dir)
-    os.close(fd)
+    try:
+        out_dir.mkdir(exist_ok=True)
+        fd, temporary = tempfile.mkstemp(prefix=".plating-qc-", suffix=".partial.mov", dir=out_dir)
+        os.close(fd)
+    except OSError as exc:
+        raise QCError(5, f"출력 폴더 또는 임시 파일 생성 실패: {exc}") from exc
     temp = Path(temporary)
     try:
         run(args + ["-y", str(temp)])

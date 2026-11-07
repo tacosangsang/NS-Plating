@@ -73,6 +73,31 @@ class QCIntegration(unittest.TestCase):
         self.assertEqual(exc.exception.code, 5)
         self.assertFalse((self.scene / "prores").exists())
 
+    def test_prores_path_is_file_returns_storage_error(self):
+        source = self.make_video("blocked.mp4")
+        (self.scene / "prores").write_text("기존 파일", encoding="utf-8")
+        with self.assertRaises(QCError) as exc:
+            convert(source, None, {})
+        self.assertEqual(exc.exception.code, 5)
+        self.assertEqual((self.scene / "prores").read_text(encoding="utf-8"), "기존 파일")
+        env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
+        result = subprocess.run([sys.executable, "-m", "plating_qc", "convert", str(source)], env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 5, result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_layout_must_be_table(self):
+        source = self.make_video("config.mp4")
+        with self.assertRaises(QCError) as exc:
+            convert(source, None, {"layout": "raw"})
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse((self.scene / "prores").exists())
+        config = self.scene / "bad.toml"
+        config.write_text('layout = "raw"\n', encoding="utf-8")
+        env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
+        result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "convert", str(source)], env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
     def test_missing_input_and_dry_run(self):
         with self.assertRaises(QCError) as exc:
             probe(self.raw / "missing.mp4", {})
