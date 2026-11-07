@@ -15,9 +15,9 @@ from .backend.ffmpeg_helpers import analyze_timestamps, executable, frame_timest
 
 def probe(path, config):
     from dataclasses import asdict
-    from .backend.ffmpeg import FfmpegBackend
+    from .backend import make_backend
 
-    return asdict(FfmpegBackend(config).probe(Path(path)))
+    return asdict(make_backend(config).probe(Path(path)))
 
 
 def layout_names(config):
@@ -53,9 +53,9 @@ def convert(source, scene, config, suffix="", dry_run=False):
     colors = info["video"]["color"]
     if any(v not in (None, "unknown", "bt709") for v in colors.values()):
         raise QCError(1, f"입력 색 태그가 BT.709와 다릅니다: {colors}")
-    from .backend.ffmpeg import FfmpegBackend
+    from .backend import make_backend
 
-    backend = FfmpegBackend(config)
+    backend = make_backend(config)
     duration = None
     if info["audio"]:
         duration = info["video"]["duration_s"]
@@ -91,8 +91,8 @@ def convert(source, scene, config, suffix="", dry_run=False):
             else:
                 problems.append(f"avg_frame_rate: {before['avg_frame_rate']} → {after['avg_frame_rate']}")
         # 시작점 차이를 제외한 모든 프레임의 상대 PTS를 검증한다.
-        source_pts = frame_timestamps(source, executable("ffprobe", config), generated=info["timestamp_analysis"]["status"] == "generated")
-        result_pts = frame_timestamps(temp, executable("ffprobe", config))
+        source_pts = backend.timestamps(source, generated=info["timestamp_analysis"]["status"] == "generated")
+        result_pts = backend.timestamps(temp)
         if (len(source_pts) != len(result_pts) or not source_pts or
                 any(x is None for x in source_pts) or any(x is None for x in result_pts)):
             problems.append("프레임별 PTS를 비교할 수 없음")

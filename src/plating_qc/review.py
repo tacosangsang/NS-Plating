@@ -5,10 +5,10 @@ import re
 import tempfile
 from pathlib import Path
 from fractions import Fraction
-import subprocess
-
-from .core import QCError, executable, layout_names, probe
+from .backend import make_backend
+from .core import QCError, layout_names, probe
 from .layout import checked_path
+from .model import CutRenderRequest, PairRenderRequest, TileRenderRequest
 from .publish import publish
 
 
@@ -32,7 +32,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
     if not dest.parent.is_dir():
         raise QCError(2, "출력 폴더의 상위 폴더가 없습니다")
-    ffmpeg = executable("ffmpeg", config)
+    backend = make_backend(config)
     try:
         dest.mkdir()
     except FileExistsError as exc:
@@ -40,26 +40,15 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
     except OSError as exc:
         raise QCError(5, f"출력 폴더 생성 실패: {exc}") from exc
     published = []
-    def invoke(args, workdir):
-        try:
-            p = subprocess.run(args, cwd=workdir, capture_output=True, text=True, errors="replace")
-        except OSError as exc:
-            raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
-        if p.returncode:
-            raise QCError(5, "타일 생성 실패: " + p.stderr[-2000:])
-        return p.stderr
     try:
         # FFmpeg에는 경로 없이 고정 파일명만 전달한다. 폴더의 %를 패턴으로 해석하지 않는다.
         with tempfile.TemporaryDirectory(prefix=".plating-qc-", dir=dest) as work:
             stage = Path(work)
             # 원본 프레임의 n과 PTS를 select 전에 그린다. 선택 후 번호를 붙이면 원본 번호가 아니다.
-            label = "drawtext=text='F %{n} T %{pts\\:flt}':x=3:y=3:fontsize=min(max(8\\,h/12)\\,w/25):fontcolor=white:box=1:boxcolor=black@0.75"
             label_mode = "drawtext"
-            select = f"select='isnan(prev_selected_t)+gte(t-prev_selected_t\\,{1 / fps:.12f})'"
-            graph = f"showinfo@source,{label},{select},showinfo@selected,scale={width}:-2,tile={columns}x{rows}"
-            args = [ffmpeg, "-v", "info", "-nostdin", "-copyts", "-i", info["path"], "-vf", graph, "-fps_mode", "passthrough", "-threads", "1", "-n", "tiles_%03d.png"]
+            render = TileRenderRequest(Path(info["path"]), stage, fps, width, columns, rows, True)
             try:
-                log = invoke(args, work)
+                log = backend.render_tiles(render)
             except QCError as exc:
                 font_errors = ("cannot find a valid font", "failed to load font",
                                "could not load font", "could not find font",
@@ -68,9 +57,9 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
                     raise
                 for partial in stage.glob("tiles_*.png"):
                     partial.unlink()
-                label, label_mode = "null", "manifest"
-                args[args.index("-vf") + 1] = f"showinfo@source,{label},{select},showinfo@selected,scale={width}:-2,tile={columns}x{rows}"
-                log = invoke(args, work)
+                label_mode = "manifest"
+                render = TileRenderRequest(Path(info["path"]), stage, fps, width, columns, rows, False)
+                log = backend.render_tiles(render)
             timebase_match = re.search(r"showinfo@source[^\n]*config in time_base: (\d+/\d+)", log)
             source_frames = re.findall(r"showinfo@source[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", log)
             selected_frames = re.findall(r"showinfo@selected[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", log)
@@ -96,13 +85,12 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             for cut in sorted(set(cuts)):
                 lo, hi = max(0,cut-around), min(count-1,cut+around)
                 name = f"cut_{cut:06d}_{lo:06d}-{hi:06d}.png"
-                invoke([ffmpeg,"-v","error","-nostdin","-copyts","-i",info["path"],"-vf",f"{label},select=between(n\\,{lo}\\,{hi}),tile={hi-lo+1}x1","-frames:v","1","-threads","1","-n",name], work)
+                backend.render_cut(CutRenderRequest(Path(info["path"]), stage, lo, hi, name, label_mode == "drawtext"))
                 if not (stage / name).is_file():
                     raise QCError(5, f"컷 {cut} 이미지를 만들지 못했습니다")
                 created.append(name)
             # 장면 전환 점수는 후보일 뿐이며, 원본 PTS를 통해 프레임 번호와 매칭한다.
-            scene_graph = f"select='gt(scene\\,{scene_threshold:.8f})',showinfo@scene"
-            scene_log = invoke([ffmpeg, "-v", "info", "-nostdin", "-copyts", "-i", info["path"], "-vf", scene_graph, "-fps_mode", "passthrough", "-f", "null", "-"], work)
+            scene_log = backend.scene_candidates(Path(info["path"]), stage, scene_threshold)
             scene_base = re.search(r"showinfo@scene[^\n]*config in time_base: (\d+/\d+)", scene_log)
             if not scene_base or Fraction(scene_base.group(1)) != timebase:
                 raise QCError(5, "장면 후보의 시간 기준을 확인하지 못했습니다")
@@ -153,7 +141,7 @@ def write_comparison(report, out, config):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
     if not dest.parent.is_dir():
         raise QCError(2, "출력 폴더의 상위 폴더가 없습니다")
-    ffmpeg = executable("ffmpeg", config)
+    backend = make_backend(config)
     try:
         dest.mkdir()
     except FileExistsError as exc:
@@ -178,16 +166,9 @@ def write_comparison(report, out, config):
                     src = frame + offset
                     name = f"pair_original_{src:06d}_candidate_{frame:06d}.png"
                     # 왼쪽 원본은 그대로, 오른쪽 후보는 원본 크기로 축소한다.
-                    graph = (f"[0:v]select=eq(n\\,{src}),setpts=PTS-STARTPTS[left];"
-                             f"[1:v]select=eq(n\\,{frame}),scale={width}:{height},setpts=PTS-STARTPTS[right];"
-                             "[left][right]hstack=inputs=2[out]")
-                    args = [ffmpeg, "-v", "error", "-nostdin", "-i", a["path"], "-i", b["path"], "-filter_complex", graph, "-map", "[out]", "-frames:v", "1", "-threads", "1", "-n", name]
-                    try:
-                        result = subprocess.run(args, cwd=work, capture_output=True, text=True, errors="replace")
-                    except OSError as exc:
-                        raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
-                    if result.returncode or not (stage / name).is_file():
-                        raise QCError(5, "비교 이미지 생성 실패: " + result.stderr[-2000:])
+                    backend.render_pair(PairRenderRequest(Path(a["path"]), Path(b["path"]), stage, src, frame, width, height, name))
+                    if not (stage / name).is_file():
+                        raise QCError(5, "비교 이미지 생성 실패")
                     images.append({"file": name, "original_frame": src, "candidate_frame": frame})
             report["comparison_images"] = images
             report["comparison_images_truncated"] = len(ranges) > 10

@@ -5,15 +5,21 @@ from pathlib import Path
 import subprocess
 
 from .base import MediaBackend
-from .ffmpeg_helpers import analyze_timestamps, executable, run
+from .ffmpeg_helpers import analyze_timestamps, executable, frame_timestamps, run
 from ..errors import QCError
 from ..layout import checked_path
-from ..model import AudioInfo, ColorInfo, MediaInfo, ProresRequest, TimingInfo, VideoInfo
+from ..model import (AudioInfo, ColorInfo, CutRenderRequest, MediaInfo, PairRenderRequest,
+                     ProresRequest, TileRenderRequest, TimingInfo, VideoInfo)
+
+DRAW_TEXT = "drawtext=text='F %{n} T %{pts\\:flt}':x=3:y=3:fontsize=min(max(8\\,h/12)\\,w/25):fontcolor=white:box=1:boxcolor=black@0.75"
 
 
 class FfmpegBackend(MediaBackend):
     def __init__(self, config):
         self.config = config
+
+    def timestamps(self, path: Path, generated: bool = False) -> list[float | None]:
+        return frame_timestamps(path, executable("ffprobe", self.config), generated)
 
     def prores_command(self, request: ProresRequest) -> list[str]:
         timestamp_options = ["-fflags", "+genpts"] if request.generate_pts else []
@@ -81,6 +87,45 @@ class FfmpegBackend(MediaBackend):
         if not hashes:
             raise QCError(5, "비교할 프레임이 없습니다")
         return hashes
+
+    def _render(self, args: list[str], work: Path) -> str:
+        try:
+            result = subprocess.run(args, cwd=work, capture_output=True, text=True, errors="replace")
+        except OSError as exc:
+            raise QCError(4, f"ffmpeg 실행 실패: {exc}") from exc
+        if result.returncode:
+            raise QCError(5, "검수 이미지 생성 실패: " + result.stderr[-2000:])
+        return result.stderr
+
+    def render_tiles(self, request: TileRenderRequest) -> str:
+        label = DRAW_TEXT if request.labels else "null"
+        select = f"select='isnan(prev_selected_t)+gte(t-prev_selected_t\\,{1 / request.fps:.12f})'"
+        graph = f"showinfo@source,{label},{select},showinfo@selected,scale={request.width}:-2,tile={request.columns}x{request.rows}"
+        return self._render([executable("ffmpeg", self.config), "-v", "info", "-nostdin",
+                             "-copyts", "-i", str(request.source), "-vf", graph, "-fps_mode",
+                             "passthrough", "-threads", "1", "-n", "tiles_%03d.png"], request.work)
+
+    def render_cut(self, request: CutRenderRequest) -> None:
+        label = DRAW_TEXT if request.labels else "null"
+        graph = f"{label},select=between(n\\,{request.start}\\,{request.end}),tile={request.end-request.start+1}x1"
+        self._render([executable("ffmpeg", self.config), "-v", "error", "-nostdin", "-copyts",
+                      "-i", str(request.source), "-vf", graph, "-frames:v", "1", "-threads",
+                      "1", "-n", request.name], request.work)
+
+    def scene_candidates(self, source: Path, work: Path, threshold: float) -> str:
+        graph = f"select='gt(scene\\,{threshold:.8f})',showinfo@scene"
+        return self._render([executable("ffmpeg", self.config), "-v", "info", "-nostdin",
+                             "-copyts", "-i", str(source), "-vf", graph, "-fps_mode",
+                             "passthrough", "-f", "null", "-"], work)
+
+    def render_pair(self, request: PairRenderRequest) -> None:
+        graph = (f"[0:v]select=eq(n\\,{request.source_frame}),setpts=PTS-STARTPTS[left];"
+                 f"[1:v]select=eq(n\\,{request.candidate_frame}),scale={request.width}:{request.height},setpts=PTS-STARTPTS[right];"
+                 "[left][right]hstack=inputs=2[out]")
+        self._render([executable("ffmpeg", self.config), "-v", "error", "-nostdin", "-i",
+                      str(request.original), "-i", str(request.candidate), "-filter_complex",
+                      graph, "-map", "[out]", "-frames:v", "1", "-threads", "1", "-n",
+                      request.name], request.work)
 
     def probe(self, path: Path) -> MediaInfo:
         path = checked_path(Path(path))

@@ -37,7 +37,7 @@ class TileFallbackTests(unittest.TestCase):
                     return subprocess.CompletedProcess(args, 1, "", "Cannot find a valid font")
                 return real_run(args, **kwargs)
 
-            with patch("plating_qc.review.probe", return_value=info), patch("plating_qc.review.subprocess.run", side_effect=fail_font_once):
+            with patch("plating_qc.review.probe", return_value=info), patch("plating_qc.backend.ffmpeg.subprocess.run", side_effect=fail_font_once):
                 report = tiles(source, root / "output", {}, cuts=[3])
             self.assertTrue(failed)
             self.assertEqual(report["label_mode"], "manifest")
@@ -148,7 +148,7 @@ class TilesIntegration(QCFixture):
         def fail_after_writing(args, cwd, **kwargs):
             (Path(cwd) / "tiles_001.png").write_bytes(b"partial")
             return subprocess.CompletedProcess(args, 1, "", "인코더 실패")
-        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=fail_after_writing):
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.backend.ffmpeg.subprocess.run", side_effect=fail_after_writing):
             with self.assertRaises(QCError) as exc:
                 tiles(source, target, {})
         self.assertEqual(exc.exception.code, 5)
@@ -163,7 +163,7 @@ class TilesIntegration(QCFixture):
         def no_timestamps(args, cwd, **kwargs):
             (Path(cwd) / "tiles_001.png").write_bytes(b"fake")
             return subprocess.CompletedProcess(args, 0, "", "[showinfo@source] config in time_base: 1/24\n[showinfo@source] n: 0 pts: NOPTS pts_time:NOPTS\n")
-        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=no_timestamps):
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.backend.ffmpeg.subprocess.run", side_effect=no_timestamps):
             with self.assertRaises(QCError) as exc:
                 tiles(source, target, {})
         self.assertEqual(exc.exception.code, 5)
@@ -182,7 +182,7 @@ class TilesIntegration(QCFixture):
             logs += [f"[showinfo@source] n: {i} pts: {i} pts_time:" for i in range(24)]
             logs += ["[showinfo@selected] n: 0 pts: 0 pts_time:"]
             return subprocess.CompletedProcess(args, 0, "", "\n".join(logs))
-        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.review.subprocess.run", side_effect=fail_on_scene):
+        with patch("plating_qc.review.probe", return_value=source_info), patch("plating_qc.backend.ffmpeg.subprocess.run", side_effect=fail_on_scene):
             with self.assertRaises(QCError) as exc:
                 tiles(source, target, {})
         self.assertEqual(exc.exception.code, 5)

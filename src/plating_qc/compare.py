@@ -6,9 +6,9 @@ from .core import QCError, probe
 
 
 def frames(path, config, width, height, count):
-    from .backend.ffmpeg import FfmpegBackend
+    from .backend import make_backend
 
-    return FfmpegBackend(config).extract_frames(Path(path), width, height, count)
+    return make_backend(config).extract_frames(Path(path), width, height, count)
 
 
 def distance(a, b):

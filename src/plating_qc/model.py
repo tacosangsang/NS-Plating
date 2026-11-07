@@ -62,6 +62,39 @@ class ProresRequest:
 
 
 @dataclass(frozen=True, slots=True)
+class TileRenderRequest:
+    source: Path
+    work: Path
+    fps: float
+    width: int
+    columns: int
+    rows: int
+    labels: bool
+
+
+@dataclass(frozen=True, slots=True)
+class CutRenderRequest:
+    source: Path
+    work: Path
+    start: int
+    end: int
+    name: str
+    labels: bool
+
+
+@dataclass(frozen=True, slots=True)
+class PairRenderRequest:
+    original: Path
+    candidate: Path
+    work: Path
+    source_frame: int
+    candidate_frame: int
+    width: int
+    height: int
+    name: str
+
+
+@dataclass(frozen=True, slots=True)
 class MediaInfo:
     path: str
     timestamp_analysis: TimingInfo

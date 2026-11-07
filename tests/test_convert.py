@@ -151,7 +151,7 @@ class ConvertIntegration(QCFixture):
             if str(path).endswith(".partial.mov") and len(values) > 2:
                 values[-1] += .1
             return values
-        with patch("plating_qc.core.frame_timestamps", side_effect=alter_only_final):
+        with patch("plating_qc.backend.ffmpeg.frame_timestamps", side_effect=alter_only_final):
             with self.assertRaises(QCError) as exc:
                 convert(source, None, {})
         self.assertEqual(exc.exception.code, 1)

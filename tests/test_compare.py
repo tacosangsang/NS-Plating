@@ -182,7 +182,7 @@ class CompareIntegration(QCFixture):
         def fail_after_writing(args, cwd, **kwargs):
             (Path(cwd) / args[-1]).write_bytes(b"partial")
             return subprocess.CompletedProcess(args, 1, "", "encoder error")
-        with patch("plating_qc.review.subprocess.run", side_effect=fail_after_writing):
+        with patch("plating_qc.backend.ffmpeg.subprocess.run", side_effect=fail_after_writing):
             with self.assertRaises(QCError) as exc:
                 write_comparison(result, target, {})
         self.assertEqual(exc.exception.code, 5)

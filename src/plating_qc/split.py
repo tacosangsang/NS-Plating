@@ -5,15 +5,15 @@ import os
 from pathlib import Path
 import tempfile
 
-from .core import QCError, executable, layout_names, probe
+from .backend import make_backend
+from .backend.base import MediaBackend
+from .core import QCError, layout_names, probe
 from .layout import checked_path
 from .publish import publish
 
 
-def frame_hashes(path, ffmpeg):
-    from .backend.ffmpeg import FfmpegBackend
-
-    return FfmpegBackend({"ffmpeg_path": ffmpeg}).framemd5(Path(path))
+def frame_hashes(path, backend: MediaBackend):
+    return backend.framemd5(Path(path))
 
 
 def split(source, out, config, max_part_mb=400):
@@ -43,7 +43,7 @@ def split(source, out, config, max_part_mb=400):
         raise QCError(2, "raw 폴더에는 출력할 수 없습니다")
     if not dest.parent.is_dir():
         raise QCError(2, "출력 폴더의 상위 폴더가 없습니다")
-    ffmpeg = executable("ffmpeg", config)
+    backend = make_backend(config)
     try:
         dest.mkdir()
     except FileExistsError as exc:
@@ -54,19 +54,17 @@ def split(source, out, config, max_part_mb=400):
     try:
         with tempfile.TemporaryDirectory(prefix=".plating-qc-", dir=dest) as work:
             stage = Path(work)
-            from .backend.ffmpeg import FfmpegBackend
-
-            parts = FfmpegBackend(config).cut_copy(Path(info["path"]), stage, segment_time)
+            parts = backend.cut_copy(Path(info["path"]), stage, segment_time)
             if not parts:
                 raise QCError(5, "분할 파일이 생성되지 않았습니다")
             sizes = [p.stat().st_size for p in parts]
             if any(n > limit for n in sizes):
                 raise QCError(1, "분할 파일이 지정한 최대 크기를 초과했습니다. 더 작은 설정으로 다시 시도하세요")
-            original = frame_hashes(info["path"], ffmpeg)
+            original = frame_hashes(info["path"], backend)
             joined = []
             details = []
             for part, part_size in zip(parts, sizes):
-                hashes = frame_hashes(part, ffmpeg)
+                hashes = frame_hashes(part, backend)
                 joined.extend(hashes)
                 part_info = probe(part, config)
                 video, audio = part_info["video"], part_info["audio"]
