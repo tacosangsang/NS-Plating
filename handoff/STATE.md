@@ -1,3 +1,17 @@
+# STATE (갱신 2026-11-07 21:28 KST)
+
+다음 행동: 클로드 프로젝트가 handoff/REPORT_2128_P0.md의 설계 변경 제안 2건(S#02 header-row 없는 표, 초 단위 TC 확장)을 검수한다. 승인 전 해당 확장은 구현하지 않는다. push는 클로드 프로젝트가 한다.
+
+현재 단계: 12번 P0 1~6단계 구현·단계 커밋 완료. 3단계의 위 두 실제 문법 확장은 보류. 실제 S#01 15행·S#04 수정 12행 추출, inventory 색 유실 0. P1 미구현.
+
+검증: 기존 기준선 66건 통과. 최종 전체 124건(기존 66 + 새 P0 58), 실패·오류·skip 0. handoff/logs/win_e57ccbe_20261107_212832_stage6.txt. 최종 코드 HEAD e57ccbe. 단계 커밋: 1 ced18a5 / 2 83a9dcf / 3 e8b7955 / 4 3385e9a / 5 6285232 / 6 e57ccbe.
+
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 주간 잔여 이번 미측정. 네트워크·push·API·설치 없음.
+
+결과물: src/plating_tools/, plating.toml, tools/plating/README.md, handoff/REPORT_2128_P0.md. 실제 입력 출력과 P0 테스트 산출물은 out/에만 있으며 Git 제외. src/plating_qc·config.toml·REPORT_1935·기존 미추적 파일은 보존했다.
+
+## run12 기록 (과거 상태)
+
 # STATE (갱신 2026-11-07 19:35 KST)
 
 다음 행동: Codex/Python의 임시 디렉터리 접근 문제를 해결한 뒤 `python -m unittest discover -s tests -v`로 기존 66건 통과부터 확인한다. 이후 12번 P0 1단계 공통 모듈과 S1~S6를 구현한다. 전체 테스트 반복은 환경 해결 이후로 보류한다.
