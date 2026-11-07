@@ -7,6 +7,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from plating_qc.core import QCError, convert, probe
+from plating_qc.review import compare, tiles
 
 
 class QCIntegration(unittest.TestCase):
@@ -97,6 +98,61 @@ class QCIntegration(unittest.TestCase):
         result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "convert", str(source)], env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertNotIn("Traceback", result.stderr)
+
+    def test_compare_identical_and_missing_input(self):
+        source = self.make_video("compare.mp4")
+        result = compare(source, source, {}, search=2)
+        self.assertEqual(result["original"]["video"]["nb_frames_decoded"], 24)
+        self.assertEqual(result["alignment"]["score"], 0)
+        self.assertEqual(result["difference_ranges_candidate_frames"], [])
+        with self.assertRaises(QCError) as exc:
+            compare(source, self.raw / "absent.mp4", {})
+        self.assertEqual(exc.exception.code, 2)
+
+    def test_compare_detects_head_and_tail_loss(self):
+        source = self.raw / "pattern.mkv"
+        head = self.raw / "head.mkv"
+        tail = self.raw / "tail.mkv"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "nullsrc=s=64x36:r=24:d=1,geq=lum='mod(N*71+X*Y,256)':cb=128:cr=128", "-c:v", "ffv1", str(source)], check=True)
+        for target, filt in ((head, "trim=start_frame=2,setpts=PTS-STARTPTS"), (tail, "trim=end_frame=20,setpts=PTS-STARTPTS")):
+            subprocess.run(["ffmpeg", "-v", "error", "-i", str(source), "-vf", filt, "-c:v", "ffv1", str(target)], check=True)
+        a = compare(source, head, {}, search=5)
+        b = compare(source, tail, {}, search=5)
+        self.assertFalse(a["alignment"]["uncertain"])
+        self.assertEqual(a["alignment"]["estimated_missing_head"], 2)
+        self.assertFalse(b["alignment"]["uncertain"])
+        self.assertEqual(b["alignment"]["estimated_missing_tail"], 4)
+
+    def test_compare_repeated_frames_is_uncertain(self):
+        source = self.raw / "static.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=black:size=160x90:rate=24:duration=1", "-c:v", "mpeg4", str(source)], check=True)
+        result = compare(source, source, {}, search=2)
+        self.assertTrue(result["alignment"]["uncertain"])
+        self.assertIsNone(result["alignment"]["estimated_missing_head"])
+
+    def test_tiles_create_cut_and_do_not_overwrite(self):
+        source = self.make_video("tile.mp4")
+        dest = self.scene / "review"
+        result = tiles(source, dest, {}, cuts=[12], around=1)
+        self.assertIn("cut_000012_000011-000013.png", result["files"])
+        self.assertTrue((dest / "tiles_001.png").is_file())
+        self.assertTrue((dest / "manifest.json").is_file())
+        before = (dest / "manifest.json").read_bytes()
+        with self.assertRaises(QCError) as exc:
+            tiles(source, dest, {})
+        self.assertEqual(exc.exception.code, 3)
+        self.assertEqual((dest / "manifest.json").read_bytes(), before)
+        with self.assertRaises(QCError) as exc:
+            tiles(source, self.raw / "review", {})
+        self.assertEqual(exc.exception.code, 2)
+
+    def test_tiles_invalid_frame_does_not_create_folder(self):
+        source = self.make_video("tile_bad.mp4")
+        dest = self.scene / "review"
+        with self.assertRaises(QCError) as exc:
+            tiles(source, dest, {}, cuts=[24])
+        self.assertEqual(exc.exception.code, 2)
+        self.assertFalse(dest.exists())
 
     def test_missing_input_and_dry_run(self):
         with self.assertRaises(QCError) as exc:
