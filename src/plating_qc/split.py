@@ -84,10 +84,21 @@ def split(source, out, config, max_part_mb=400):
             for part, part_size in zip(parts, sizes):
                 hashes = frame_hashes(part, ffmpeg)
                 joined.extend(hashes)
-                details.append({"file": part.name, "bytes": part_size, "frames": len(hashes)})
+                part_info = probe(part, config)
+                video, audio = part_info["video"], part_info["audio"]
+                timing = None if audio is None else {
+                    "video_start_s": video["start_time_s"],
+                    "video_duration_s": video["duration_s"],
+                    "audio_start_s": audio["start_time_s"],
+                    "audio_duration_s": audio["duration_s"],
+                }
+                details.append({"file": part.name, "bytes": part_size, "frames": len(hashes), "audio_timing_first_stream": timing})
             if joined != original or len(original) != info["video"]["nb_frames_decoded"]:
                 raise QCError(1, "분할 전후 프레임 검증이 일치하지 않습니다. 결과를 저장하지 않았습니다")
-            report = {"input": info["path"], "limit_bytes": limit, "parts": details, "frames_verified": len(original), "warnings": ["영상 프레임만 검증했습니다. 오디오 및 편집기에서의 경계 재생은 별도 확인하세요."]}
+            warnings = []
+            if info["audio"] is not None:
+                warnings.append("영상 프레임만 검증했습니다. 오디오는 패킷 단위로 분할되어 조각별 시작 시각과 길이가 영상 경계와 다를 수 있습니다. 음성 이음새는 보장되지 않으므로 편집기에서 별도 확인하세요. 시간 정보는 첫 번째 오디오 스트림만 표시합니다.")
+            report = {"input": info["path"], "limit_bytes": limit, "parts": details, "frames_verified": len(original), "audio_boundary_verified": False if info["audio"] is not None else None, "warnings": warnings}
             (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             for part in [*parts, stage / "manifest.json"]:
                 target = dest / part.name

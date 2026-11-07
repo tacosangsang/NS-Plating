@@ -57,7 +57,7 @@ def main(argv=None):
             warnings = bool(result["warnings"][:-1])
         elif args.command == "split":
             result = split(args.input, args.out, config, args.max_part_mb)
-            warnings = False
+            warnings = bool(result["warnings"])
         else:
             result = convert(args.input, args.scene, config, args.suffix, args.dry_run)
             warnings = bool(result.get("warnings"))
