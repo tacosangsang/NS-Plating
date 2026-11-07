@@ -8,13 +8,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-import tomllib
-
-
-class QCError(Exception):
-    def __init__(self, code, message):
-        super().__init__(message)
-        self.code = code
+from .config import load_config
+from .errors import QCError
+from .layout import SceneLayout
 
 
 def executable(name, config):
@@ -32,24 +28,6 @@ def run(args):
     if result.returncode:
         raise QCError(5, "미디어 처리 실패: " + result.stderr[-3000:])
     return result
-
-
-def load_config(path=None):
-    if path:
-        candidates = [Path(path)]
-    else:
-        candidates = [p / "plating-qc.toml" for p in (Path.cwd(), *Path.cwd().parents)]
-    for candidate in candidates:
-        if candidate.is_file():
-            try:
-                with candidate.open("rb") as stream:
-                    data = tomllib.load(stream)
-                return data
-            except (OSError, tomllib.TOMLDecodeError) as exc:
-                raise QCError(2, f"설정 오류: {exc}") from exc
-    if path:
-        raise QCError(2, f"설정 파일이 없습니다: {path}")
-    return {}
 
 
 def frame_timestamps(path, ffprobe, generated=False):
@@ -134,18 +112,7 @@ def probe(path, config):
 
 
 def layout_names(config):
-    layout = config.get("layout", {})
-    if not isinstance(layout, dict):
-        raise QCError(2, "설정의 layout은 TOML 테이블이어야 합니다")
-    raw, prores = layout.get("raw", "raw"), layout.get("prores", "prores")
-    def valid(name):
-        return (isinstance(name, str) and name not in ("", ".", "..")
-                and name[-1] not in (" ", ".")
-                and not any(c in name for c in ("/", "\\", ":"))
-                and not any(ord(c) < 32 for c in name))
-    if not valid(raw) or not valid(prores) or raw.casefold() == prores.casefold():
-        raise QCError(2, "raw/prores 설정은 서로 다른 단일 폴더 이름이어야 합니다")
-    return raw, prores
+    return SceneLayout.from_config(config).names()
 
 
 def convert(source, scene, config, suffix="", dry_run=False):
