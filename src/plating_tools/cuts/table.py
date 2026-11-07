@@ -5,7 +5,7 @@ from html import unescape
 from html.parser import HTMLParser
 
 from ..errors import InputError
-from ..profile_plating import COLOR_STATES, COLUMNS
+from ..profile_plating import COLOR_STATES, COLUMNS, is_cut_table_header
 
 
 @dataclass(frozen=True, slots=True)
@@ -143,9 +143,10 @@ class ParsedTable:
     is_cut_table: bool
     nested: bool
     rows: tuple[tuple[Node, tuple[Cell, ...]], ...]
+    header_row_present: bool
 
 
-def parse_table(html: HtmlDocument, node: Node, nested: bool) -> ParsedTable:
+def parse_table(html: HtmlDocument, node: Node, nested: bool, *, in_scene: bool) -> ParsedTable:
     index = html.nodes.index(node)
     rows = [n for n in html.nodes if n.tag == "tr" and n.ancestors and n.ancestors[-1] == index]
     result = []
@@ -163,4 +164,5 @@ def parse_table(html: HtmlDocument, node: Node, nested: bool) -> ParsedTable:
             parsed.append(Cell(name, COLUMNS.get(name, "extra"), html.raw(cell), plain(html.raw(cell)), html.colors(cell.start, cell.stop), annotations, cell.line))
         result.append((row, tuple(parsed)))
     return ParsedTable(node.line, html.text.count("\n", 0, node.stop) + 1, header,
-                       bool(dict(node.attrs).get("header-row") == "true" and header and header[0] == "컷" and "TC" in header), nested, tuple(result[1:]))
+                       is_cut_table_header(header, in_scene=in_scene), nested, tuple(result[1:]),
+                       "header-row" in dict(node.attrs))

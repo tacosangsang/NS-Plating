@@ -55,7 +55,7 @@ def parse_sections(src: CutTableSource) -> list[SceneSection]:
                 continue
             nested = any(html.nodes[a].tag in {"toggle", "table"} and html.nodes[a] is not toggle for a in node.ancestors)
             nested = nested or any(re.match(r"^#{4,6} ", line) for line in doc.lines[title_line:node.line - 1])
-            tables.append(parse_table(html, node, nested))
+            tables.append(parse_table(html, node, nested, in_scene=scene is not None))
         title_nodes = [n for n in html.nodes if n.line == title_line]
         title_colors = tuple(c for c in html.colors() if c.line == title_line)
         annotations = tuple(Annotation(n.tag, n.attrs, plain(html.raw(n)), n.line, n.col) for n in title_nodes if any(k != "color" for k, _ in n.attrs))

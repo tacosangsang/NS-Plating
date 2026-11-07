@@ -107,6 +107,9 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
     rows: list[CutRow] = []
     def finding(code: str, message: str, where: SourceRef = section.where) -> None:
         findings.append(Finding(code, Severity.WARN, message, where))
+    if not table.header_row_present:
+        findings.append(Finding("CT018", Severity.INFO, "header-row 속성 없음: 머리 내용으로 컷표 판정",
+                                src.document.ref(table.line_start, table.line_end, (section.title_text,))))
     if len(set(table.header)) != len(table.header):
         finding("CT004", "열 이름 중복")
     for name in table.header:

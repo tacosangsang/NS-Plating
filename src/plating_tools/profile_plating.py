@@ -9,6 +9,12 @@ COLOR_STATES: Final = {"red_bg": "todo", "green_bg": "done", "gray_bg": "removed
 SCENE_PATTERN: Final = r"^S#(\d{2})(\s|$)"
 CUT_PATTERN: Final = r"^S#\d{2}-C\d{3}(-\d+[A-Z]?)?$"
 
+
+def is_cut_table_header(header: tuple[str, ...], *, in_scene: bool) -> bool:
+    """씬 안에서 첫 두 머리 칸이 컷·TC인 표만 선택한다."""
+    return in_scene and header[:2] == ("컷", "TC")
+
+
 DOC_FILES: Final = {
     "W02": "02_작업규칙과_의사결정.md", "W05": "05_영상_생성_워크플로우.md",
     "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",

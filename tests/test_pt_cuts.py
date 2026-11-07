@@ -1,6 +1,8 @@
 """SYNTH/T2: C1~C22 컷표 계약. 실제 원문 fixture는 저장하지 않는다."""
 import importlib
+import json
 import os
+import subprocess
 import sys
 import unittest
 from tests._pt_support import NetworkBlockedCase
@@ -150,3 +152,63 @@ class CutTests(NetworkBlockedCase):
         text = "### S#01\n" + table([row()])
         results = [self.extract.extract_scene(self.source(text, newline, bom), "01") for newline, bom in (("\n", False), ("\r\n", False), ("\r\n", True))]
         self.assertEqual([r.targets[0].where.line_start for r in results], [4, 4, 4])
+
+    def test_header_content_selects_table_without_header_row(self):
+        for heading in ("### S#01\n", '<toggle heading="h3">\nS#01\n'):
+            with self.subTest(heading=heading):
+                text = heading + table([row()]).replace(' header-row="true"', '')
+                if heading.startswith('<toggle'):
+                    text += '</toggle>\n'
+                result = self.extract.extract_scene(self.source(text), "01")
+                self.assertEqual(len(result.targets), 1)
+                self.assertEqual([(f.code, f.severity) for f in result.findings], [("CT018", "info")])
+                self.assertIsNotNone(result.findings[0].where)
+
+    def test_header_row_value_does_not_select_table(self):
+        for attribute in ('header-row="true"', 'header-row="false"', 'header-row="other"'):
+            with self.subTest(attribute=attribute):
+                text = "### S#01\n" + table([row()]).replace('header-row="true"', attribute)
+                result = self.extract.extract_scene(self.source(text), "01")
+                self.assertEqual(len(result.targets), 1)
+                self.assertFalse(result.findings)
+
+    def test_cut_table_requires_first_two_header_cells(self):
+        for headers in (("컷", "길이", "TC", "화면"), ("TC", "컷", "길이", "화면")):
+            with self.subTest(headers=headers):
+                source = self.source("### S#01\n" + table([row()], headers))
+                with self.assertRaisesRegex(self.errors.InputError, "CT003"):
+                    self.extract.extract_scene(source, "01")
+
+    def test_recording_table_is_outside_scene_and_not_a_cut_table(self):
+        text = "### S#01\n" + table([row()]).replace(' header-row="true"', '')
+        text += "### 녹음 대본\n" + table([row(cut="S#01-C999")])
+        source = self.source(text)
+        sections = importlib.import_module("plating_tools.cuts.sections").parse_sections(source)
+        result = self.extract.extract_scene(source, "01")
+        self.assertEqual([r.cut_id for r in result.targets], ["S#01-C001"])
+        self.assertIsNone(sections[-1].scene_id)
+        self.assertFalse(sections[-1].tables[0].is_cut_table)
+
+    def test_multiple_content_matched_tables_remain_ambiguous(self):
+        text = "### S#01\n" + table([row()]) + table([row()]).replace(' header-row="true"', '')
+        with self.assertRaisesRegex(self.errors.InputError, "CT003"):
+            self.extract.extract_scene(self.source(text), "01")
+
+    def test_cli_info_only_header_finding_keeps_exit_zero(self):
+        inputs = self.root / "inputs"
+        inputs.mkdir()
+        source = inputs / "SYNTH.md"
+        source.write_text("### S#01\n" + table([row()]).replace(' header-row="true"', ''), encoding="utf-8")
+        config = self.root / "plating.toml"
+        config.write_text("[paths]\nwrite_root='.'\noutput_root='out'\n", encoding="utf-8")
+        target = self.root / "out" / "extract"
+        result = subprocess.run(
+            [sys.executable, "-m", "plating_tools", "--config", str(config), "cuts", "extract",
+             "--input", str(source), "--scene", "01", "--out", str(target)],
+            env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
+            capture_output=True, text=True, encoding="utf-8", timeout=30, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["exit_code"], 0)
+        data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
+        self.assertEqual([(f["code"], f["severity"]) for f in data["findings"]], [("CT018", "info")])

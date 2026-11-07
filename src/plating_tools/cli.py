@@ -183,6 +183,7 @@ def execute(args, argv: list[str]):
         from .cuts.extract import extract_scene
         from .cuts.report import cuts_md, cuts_csv
         from .cuts.source import NotionMdFile
+        from .model import Finding, Severity
         source_path = args.input or cfg.cuts_input
         if source_path is None:
             raise InputError("컷표 --input 또는 cuts.input 필요")
@@ -191,9 +192,8 @@ def execute(args, argv: list[str]):
                                section_line=args.section_line, table_line=args.table_line)
         if cfg.cuts_expected_sha256 and source.fingerprint().sha256 != cfg.cuts_expected_sha256:
             from dataclasses import replace
-            from .model import Finding, Severity
             result = replace(result, findings=(*result.findings, Finding("DOC_CHANGED", Severity.WARN, "F의 설정 기준 지문 변경")))
-        code = int(bool(result.findings))
+        code = int(any(f.severity != Severity.INFO for f in result.findings))
         target = args.out or new_target(cfg.output_root, "cuts-extract", result.scene_id)
         with RunDir(target, cfg.policy((source_path,))) as run:
             run.write_json("cuts.json", result)
