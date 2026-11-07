@@ -26,6 +26,9 @@ class CompareTests(unittest.TestCase):
     def test_different_frames_remain_different(self):
         self.assertGreater(normalized_distance(bytes((0, 40, 80, 120)), bytes((120, 80, 40, 0))), 0.15)
 
+    def test_flat_frames_use_original_brightness_distance(self):
+        self.assertAlmostEqual(normalized_distance(bytes([4] * 4), bytes([8] * 4)), 4 / 255)
+
 
 class CompareScenarios(unittest.TestCase):
     def setUp(self):
@@ -59,6 +62,7 @@ class CompareScenarios(unittest.TestCase):
         other = self.video("other_clip", [random.Random(i + 1000).randbytes(64 * 36) for i in range(48)])
         env = os.environ.copy()
         env["PYTHONPATH"] = str(Path(__file__).resolve().parents[1] / "src")
+        env["PLATING_QC_LOG_DIR"] = str(self.root / "logs")
         result = subprocess.run([sys.executable, "-m", "plating_qc", "compare", str(self.source),
                                  str(other)], env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 1)
@@ -76,21 +80,21 @@ class CompareIntegration(QCFixture):
         source = self.raw / "vfr_for_probe.mkv"
         subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=4:duration=2.5", "-vf", "setpts=PTS+if(gte(N\\,4)\\,0.25/TB\\,0)", "-fps_mode", "vfr", "-c:v", "ffv1", str(source)], check=True)
         result = probe(source, {})
-        self.assertEqual(result["timestamp_analysis"]["status"], "observed")
-        self.assertTrue(result["timestamp_analysis"]["vfr_suspect"])
+        self.assertEqual(result.timestamp_analysis.status, "observed")
+        self.assertTrue(result.timestamp_analysis.vfr_suspect)
         comparison = compare(source, source, {}, search=2)
         self.assertTrue(comparison["alignment"]["uncertain"])
         self.assertIsNone(comparison["alignment"]["estimated_missing_head"])
         self.assertEqual(comparison["mixed_frame_suspects"], [])
         output = convert(source, None, {})
-        self.assertEqual(output["output"]["video"]["nb_frames_decoded"], 10)
+        self.assertEqual(output["output"].video.nb_frames_decoded, 10)
         self.assertTrue(output["warnings"])
         ffprobe = shutil.which("ffprobe")
         before = frame_timestamps(source, ffprobe)
-        after = frame_timestamps(Path(output["output"]["path"]), ffprobe)
+        after = frame_timestamps(Path(output["output"].path), ffprobe)
         self.assertTrue(all(abs((a-before[0])-(b-after[0])) <= .001 for a,b in zip(before,after)))
         with self.assertRaises(QCError) as exc:
-            split(Path(output["output"]["path"]), self.scene / "vfr_parts", {})
+            split(Path(output["output"].path), self.scene / "vfr_parts", {})
         self.assertEqual(exc.exception.code, 2)
         self.assertFalse((self.scene / "vfr_parts").exists())
 
@@ -111,7 +115,7 @@ class CompareIntegration(QCFixture):
     def test_compare_identical_and_missing_input(self):
         source = self.make_video("compare.mp4")
         result = compare(source, source, {}, search=2)
-        self.assertEqual(result["original"]["video"]["nb_frames_decoded"], 24)
+        self.assertEqual(result["original"].video.nb_frames_decoded, 24)
         self.assertEqual(result["alignment"]["score"], 0)
         self.assertEqual(result["difference_ranges_candidate_frames"], [])
         with self.assertRaises(QCError) as exc:

@@ -1,11 +1,18 @@
 """명시적으로 요청한 로컬 실행 로그. 기존 파일은 수정하지 않는다."""
 import hashlib
+from dataclasses import asdict, is_dataclass
 import os
 from pathlib import Path
 import subprocess
 
 from .core import QCError, executable, layout_names
 from .layout import checked_path
+
+
+def json_default(value):
+    if is_dataclass(value) and not isinstance(value, type):
+        return asdict(value)
+    raise TypeError(f"JSON으로 변환할 수 없는 값: {type(value).__name__}")
 
 
 def reserve_log(name, config, output_dir=None):

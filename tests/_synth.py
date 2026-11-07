@@ -21,11 +21,14 @@ class QCFixture(unittest.TestCase):
 
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
+        self.log_env = patch.dict(os.environ, {"PLATING_QC_LOG_DIR": str(Path(self.tmp.name) / "logs")})
+        self.log_env.start()
         self.scene = Path(self.tmp.name) / "씬 공백"
         self.raw = self.scene / "raw"
         self.raw.mkdir(parents=True)
 
     def tearDown(self):
+        self.log_env.stop()
         self.tmp.cleanup()
 
     def make_video(self, name, audio=None):

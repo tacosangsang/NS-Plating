@@ -19,7 +19,7 @@ class MediaBackend(ABC):
     def encode_prores(self, request: ProresRequest) -> Path:
         raise QCError(4, "이 백엔드는 ProRes 변환을 지원하지 않습니다")
 
-    def prores_command(self, request: ProresRequest) -> list[str]:
+    def describe_prores(self, request: ProresRequest) -> str:
         raise QCError(4, "이 백엔드는 ProRes 변환을 지원하지 않습니다")
 
     def extract_frames(self, source: Path, width: int, height: int, count: int) -> list[memoryview]:

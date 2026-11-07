@@ -18,6 +18,10 @@ python samples/reproduce.py --config <설정파일경로>
 
 ## 실제 실행 예
 
+### Windows 재실행 (09 구조 수정)
+
+2026-11-07 Windows, Python 3.12.10, `D:\Plating\tools\ffmpeg\bin`을 PATH에 추가해 실행했다. 다섯 명령 모두 종료 0. 원본과 변환본은 각각 48프레임이며, 비교 이미지 1장, 타일 프레임 0·24, 분할 23·22·3프레임, 검증 48프레임이다. 전체 콘솔 로그는 `handoff/logs/win_09_synthetic_reproduce.txt`, 다섯 JSON 로그는 `handoff/logs/synthetic_09/`에 있다. 아래 Linux 예는 이전 실행이다.
+
 Linux, Python 3.12.14, FFmpeg·ffprobe 7.1.5의 합성 테스트 결과입니다. 임시 경로는 `<임시폴더>`로 바꿔 적었습니다. FFmpeg 버전과 인코더에 따라 용량·분할 위치는 달라질 수 있습니다.
 
 ```text

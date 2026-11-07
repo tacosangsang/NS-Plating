@@ -1,9 +1,5 @@
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.12"
-# dependencies = ["anthropic>=0.75,<1"]
-# ///
-# 실행: uv run tools/claude_design.py request.md --output result.md
+#!/usr/bin/env python3
+# 실행: python tools/claude_design.py request.md --output result.md
 from __future__ import annotations
 
 import argparse

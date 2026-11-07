@@ -14,6 +14,8 @@ from plating_qc.core import QCError, analyze_timestamps, convert, frame_timestam
 from plating_qc.review import compare, mixed_frame_hint, tiles, write_comparison
 from plating_qc.split import split
 from _synth import QCFixture
+from dataclasses import replace
+from plating_qc.model import ColorInfo
 
 
 class PublishTests(unittest.TestCase):
@@ -59,13 +61,13 @@ class PublishTests(unittest.TestCase):
 class ConvertIntegration(QCFixture):
     def test_probe_and_convert_without_audio_and_collision(self):
         source = self.make_video("원본.mp4")
-        self.assertEqual(probe(source, {})["video"]["nb_frames_decoded"], 24)
+        self.assertEqual(probe(source, {}).video.nb_frames_decoded, 24)
         output = convert(source, None, {})["output"]
-        self.assertEqual(output["video"]["nb_frames_decoded"], 24)
-        self.assertEqual(output["video"]["profile"], "HQ")
-        self.assertEqual(output["video"]["color"], {"primaries": "bt709", "transfer": "bt709", "space": "bt709"})
-        self.assertIsNone(output["audio"])
-        out = Path(output["path"])
+        self.assertEqual(output.video.nb_frames_decoded, 24)
+        self.assertEqual(output.video.profile, "HQ")
+        self.assertEqual(output.video.color, ColorInfo("bt709", "bt709", "bt709"))
+        self.assertIsNone(output.audio)
+        out = Path(output.path)
         before = out.read_bytes()
         with self.assertRaises(QCError) as exc:
             convert(source, None, {})
@@ -76,8 +78,8 @@ class ConvertIntegration(QCFixture):
     def test_short_audio_is_padded(self):
         source = self.make_video("short.mp4", "0.4")
         output = convert(source, None, {})["output"]
-        self.assertEqual(output["video"]["nb_frames_decoded"], 24)
-        self.assertGreaterEqual(float(output["audio"]["duration_s"]), .999)
+        self.assertEqual(output.video.nb_frames_decoded, 24)
+        self.assertGreaterEqual(float(output.audio.duration_s), .999)
 
     def test_raw_output_and_invalid_suffix_rejected(self):
         source = self.make_video("test.mp4")
@@ -109,9 +111,10 @@ class ConvertIntegration(QCFixture):
     def test_generated_pts_convert_uses_genpts_option(self):
         source = self.make_video("genpts_option.mp4")
         info = probe(source, {})
-        info["timestamp_analysis"]["status"] = "generated"
+        info = replace(info, timestamp_analysis=replace(info.timestamp_analysis, status="generated"))
         with patch("plating_qc.core.probe", return_value=info):
             result = convert(source, None, {}, dry_run=True)
+        self.assertIsInstance(result["command"], str)
         self.assertIn("-fflags", result["command"])
         self.assertIn("+genpts", result["command"])
 
@@ -119,10 +122,10 @@ class ConvertIntegration(QCFixture):
         source = self.raw / "offset_start.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=24:duration=1", "-vf", "setpts=PTS+2/TB", "-c:v", "mpeg4", str(source)], check=True)
         output = convert(source, None, {})
-        self.assertAlmostEqual(float(output["input"]["video"]["start_time_s"]), 2.0, places=3)
-        self.assertAlmostEqual(float(output["output"]["video"]["start_time_s"]), 0.0, places=3)
+        self.assertAlmostEqual(float(output["input"].video.start_time_s), 2.0, places=3)
+        self.assertAlmostEqual(float(output["output"].video.start_time_s), 0.0, places=3)
         self.assertTrue(any("절대 시작 시각" in x for x in output["warnings"]))
-        self.assertEqual(output["output"]["video"]["nb_frames_decoded"], 24)
+        self.assertEqual(output["output"].video.nb_frames_decoded, 24)
 
     def test_convert_warns_on_audio_start_offset_change(self):
         source = self.make_video("audio_start.mp4", "1")
@@ -134,12 +137,12 @@ class ConvertIntegration(QCFixture):
             info = real_probe(path, config)
             calls += 1
             if calls == 2:
-                info["audio"]["start_time_s"] = str(float(info["audio"]["start_time_s"]) + .1)
+                info = replace(info, audio=replace(info.audio, start_time_s=str(float(info.audio.start_time_s) + .1)))
             return info
         with patch("plating_qc.core.probe", side_effect=shift_output_audio):
             result = convert(source, None, {})
         self.assertTrue(any("상대 시작 시각이 달라졌습니다" in x for x in result["warnings"]))
-        self.assertTrue(Path(result["output"]["path"]).exists())
+        self.assertTrue(Path(result["output"].path).exists())
 
     def test_convert_checks_relative_pts_and_cleans_mismatch(self):
         source = self.make_video("pts_compare.mp4")

@@ -10,6 +10,7 @@ from .core import QCError, layout_names, probe
 from .layout import checked_path
 from .model import CutRenderRequest, PairRenderRequest, TileRenderRequest
 from .publish import publish
+from .runlog import json_default
 
 
 from .compare import compare, distance, frames, mixed_frame_hint, normalized_distance
@@ -19,9 +20,9 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
     if not 0 < fps <= 30 or not 16 <= width <= 4096 or not 1 <= columns <= 20 or not 1 <= rows <= 20 or columns*rows > 100 or not 0 <= around <= 10 or not 0 <= scene_threshold <= 1:
         raise QCError(2, "타일 설정 범위가 올바르지 않습니다")
     info = probe(source, config)
-    if info["timestamp_analysis"]["status"] != "observed":
+    if info.timestamp_analysis.status != "observed":
         raise QCError(2, "원본 PTS가 없거나 검사되지 않아 정확한 타일 시간을 표시할 수 없습니다")
-    count = info["video"]["nb_frames_decoded"]
+    count = info.video.nb_frames_decoded
     if count > 100000:
         raise QCError(2, "타임스탬프 검증을 위해 100000프레임 이하의 영상만 처리합니다")
     if any(not isinstance(c, int) or c < 0 or c >= count for c in cuts):
@@ -46,7 +47,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             stage = Path(work)
             # 원본 프레임의 n과 PTS를 select 전에 그린다. 선택 후 번호를 붙이면 원본 번호가 아니다.
             label_mode = "drawtext"
-            render = TileRenderRequest(Path(info["path"]), stage, fps, width, columns, rows, True)
+            render = TileRenderRequest(Path(info.path), stage, fps, width, columns, rows, True)
             try:
                 log = backend.render_tiles(render)
             except QCError as exc:
@@ -58,7 +59,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
                 for partial in stage.glob("tiles_*.png"):
                     partial.unlink()
                 label_mode = "manifest"
-                render = TileRenderRequest(Path(info["path"]), stage, fps, width, columns, rows, False)
+                render = TileRenderRequest(Path(info.path), stage, fps, width, columns, rows, False)
                 log = backend.render_tiles(render)
             timebase_match = re.search(r"showinfo@source[^\n]*config in time_base: (\d+/\d+)", log)
             source_frames = re.findall(r"showinfo@source[^\n]* n:\s*(\d+) pts:\s*(-?\d+)\s+pts_time:", log)
@@ -85,12 +86,12 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             for cut in sorted(set(cuts)):
                 lo, hi = max(0,cut-around), min(count-1,cut+around)
                 name = f"cut_{cut:06d}_{lo:06d}-{hi:06d}.png"
-                backend.render_cut(CutRenderRequest(Path(info["path"]), stage, lo, hi, name, label_mode == "drawtext"))
+                backend.render_cut(CutRenderRequest(Path(info.path), stage, lo, hi, name, label_mode == "drawtext"))
                 if not (stage / name).is_file():
                     raise QCError(5, f"컷 {cut} 이미지를 만들지 못했습니다")
                 created.append(name)
             # 장면 전환 점수는 후보일 뿐이며, 원본 PTS를 통해 프레임 번호와 매칭한다.
-            scene_log = backend.scene_candidates(Path(info["path"]), stage, scene_threshold)
+            scene_log = backend.scene_candidates(Path(info.path), stage, scene_threshold)
             scene_base = re.search(r"showinfo@scene[^\n]*config in time_base: (\d+/\d+)", scene_log)
             if not scene_base or Fraction(scene_base.group(1)) != timebase:
                 raise QCError(5, "장면 후보의 시간 기준을 확인하지 못했습니다")
@@ -106,7 +107,7 @@ def tiles(source, out, config, fps=1, width=320, columns=5, rows=2, cuts=(), aro
             (stage / "scene_candidates.txt").write_text("\n".join(scene_lines) + "\n", encoding="utf-8")
             created.append("scene_candidates.txt")
             cut_frames = {str(cut): [{"frame": n, "pts": int(source_frames[n][1]), "time_base": str(timebase), "seconds": float(int(source_frames[n][1]) * timebase)} for n in range(max(0, cut-around), min(count-1, cut+around)+1)] for cut in sorted(set(cuts))}
-            report = {"input": info["path"], "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "scene_threshold": scene_threshold, "scene_candidates": candidates, "files": created, "samples": samples, "label_mode": label_mode, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info["warnings"]}
+            report = {"input": info.path, "fps": fps, "grid": [columns,rows], "width": width, "cuts": list(sorted(set(cuts))), "cut_frames": cut_frames, "around": around, "scene_threshold": scene_threshold, "scene_candidates": candidates, "files": created, "samples": samples, "label_mode": label_mode, "time_origin": "원본 PTS; F는 0부터 시작하는 디코딩 프레임 번호, T는 원본 PTS 초(소수 6자리)", "warnings": info.warnings}
             (stage / "manifest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             # 하드링크는 같은 이름의 기존 파일이 생겨도 덮어쓰지 않는다.
             for name in [*created, "manifest.json"]:
@@ -159,22 +160,22 @@ def write_comparison(report, out, config):
             if not alignment["uncertain"]:
                 offset = alignment["offset_candidate_to_original"]
                 positions = [(lo + hi) // 2 for lo, hi in ranges[:10]] if ranges else [max(0, -offset)]
-                width, height = a["video"]["width"], a["video"]["height"]
+                width, height = a.video.width, a.video.height
                 if not width or not height:
                     raise QCError(5, "원본 크기를 확인하지 못했습니다")
                 for frame in positions:
                     src = frame + offset
                     name = f"pair_original_{src:06d}_candidate_{frame:06d}.png"
                     # 왼쪽 원본은 그대로, 오른쪽 후보는 원본 크기로 축소한다.
-                    backend.render_pair(PairRenderRequest(Path(a["path"]), Path(b["path"]), stage, src, frame, width, height, name))
+                    backend.render_pair(PairRenderRequest(Path(a.path), Path(b.path), stage, src, frame, width, height, name))
                     if not (stage / name).is_file():
                         raise QCError(5, "비교 이미지 생성 실패")
                     images.append({"file": name, "original_frame": src, "candidate_frame": frame})
             report["comparison_images"] = images
             report["comparison_images_truncated"] = len(ranges) > 10
             report["comparison_image_note"] = "왼쪽 원본, 오른쪽 원본 해상도로 맞춘 후보. 번호는 0부터 시작합니다." if images else "정렬이 불확실하여 비교 이미지를 만들지 않았습니다."
-            (stage / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-            lines = ["PLATING 프레임 비교", f"원본: {a['path']}", f"후보: {b['path']}", f"디코딩 프레임 수: 원본 {a['video']['nb_frames_decoded']}, 후보 {b['video']['nb_frames_decoded']}", f"해상도: 원본 {a['video']['width']}x{a['video']['height']}, 후보 {b['video']['width']}x{b['video']['height']}", f"평균 프레임 속도: 원본 {a['video']['avg_frame_rate']}, 후보 {b['video']['avg_frame_rate']}", f"정렬 점수: {alignment['score']}, 차순위 점수: {alignment['second_score']}", f"원본 대비 후보 정렬 오프셋: {alignment['offset_candidate_to_original']}", f"앞 누락 추정: {alignment['estimated_missing_head']}, 뒤 누락 추정: {alignment['estimated_missing_tail']}", f"차이 구간(후보 프레임, 0부터): {ranges}", f"혼합 의심 프레임: {report['mixed_frame_suspects']}", report["notice"], report["comparison_image_note"], *["경고: " + warning for warning in report["warnings"]], *["이미지: " + image["file"] for image in images]]
+            (stage / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2, default=json_default), encoding="utf-8")
+            lines = ["PLATING 프레임 비교", f"원본: {a.path}", f"후보: {b.path}", f"디코딩 프레임 수: 원본 {a.video.nb_frames_decoded}, 후보 {b.video.nb_frames_decoded}", f"해상도: 원본 {a.video.width}x{a.video.height}, 후보 {b.video.width}x{b.video.height}", f"평균 프레임 속도: 원본 {a.video.avg_frame_rate}, 후보 {b.video.avg_frame_rate}", f"정렬 점수: {alignment['score']}, 차순위 점수: {alignment['second_score']}", f"원본 대비 후보 정렬 오프셋: {alignment['offset_candidate_to_original']}", f"앞 누락 추정: {alignment['estimated_missing_head']}, 뒤 누락 추정: {alignment['estimated_missing_tail']}", f"차이 구간(후보 프레임, 0부터): {ranges}", f"혼합 의심 프레임: {report['mixed_frame_suspects']}", report["notice"], report["comparison_image_note"], *["경고: " + warning for warning in report["warnings"]], *["이미지: " + image["file"] for image in images]]
             if report["comparison_images_truncated"]:
                 lines.append("이미지는 최대 10개만 저장했습니다. 전체 차이 구간은 JSON을 확인하세요.")
             (stage / "report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")

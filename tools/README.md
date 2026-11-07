@@ -1,9 +1,9 @@
 # Claude 설계 호출
 
-Python 3.12 이상과 [uv](https://docs.astral.sh/uv/getting-started/installation/), `ANTHROPIC_API_KEY` 환경 변수가 필요하다. uv가 스크립트에 명시된 Anthropic SDK를 자동으로 준비한다.
+Python 3.12 이상, 해당 Python에서 가져올 수 있는 Anthropic SDK와 `ANTHROPIC_API_KEY` 환경 변수가 필요하다. 패키지는 자동 설치하지 않는다. SDK 확인: `python -c "import anthropic; print(anthropic.__version__)"`.
 
 ```powershell
-uv run --script tools/claude_design.py design/requests/plating-qc.md --output design/plating-qc-draft.md --balance 99.99
+python tools/claude_design.py design/requests/plating-qc.md --output design/plating-qc-draft.md --balance 99.99
 ```
 
 `--balance`는 당일 Console에서 확인한 프로모션 잔액이며 당일 첫 실행 시 또는 잔액 보정 시 입력한다. 같은 날 이후 생략할 수 있다. 예시 값은 실행 시 실제 잔액으로 바꾼다. `--effort high|xhigh|max`와 `--max-tokens`를 선택할 수 있다.

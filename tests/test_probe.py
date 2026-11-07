@@ -30,7 +30,9 @@ class ProbeTests(unittest.TestCase):
 
     def test_reports_packet_count(self):
         info = probe(self.source, {})
-        self.assertEqual(info["video"]["nb_read_packets"], 24)
+        self.assertIsInstance(info, MediaInfo)
+        self.assertIsInstance(info.warnings, tuple)
+        self.assertEqual(info.video.nb_read_packets, 24)
 
     def test_backend_returns_media_info(self):
         info = FfmpegBackend({}).probe(self.source)
@@ -83,9 +85,9 @@ class ProbeIntegration(QCFixture):
         source = self.raw / "missing_pts.h264"
         subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=24:duration=1", "-c:v", "libx264", "-f", "h264", str(source)], check=True)
         result = probe(source, {})
-        self.assertEqual(result["timestamp_analysis"]["status"], "unavailable")
-        self.assertEqual(result["timestamp_analysis"]["missing_count"], 24)
-        self.assertTrue(result["warnings"])
+        self.assertEqual(result.timestamp_analysis.status, "unavailable")
+        self.assertEqual(result.timestamp_analysis.missing_count, 24)
+        self.assertTrue(result.warnings)
         with self.assertRaises(QCError) as exc:
             convert(source, None, {})
         self.assertEqual(exc.exception.code, 2)

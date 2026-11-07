@@ -1,7 +1,9 @@
 """FFmpeg 기반 미디어 검사."""
 
 import json
+import os
 from pathlib import Path
+import shlex
 import subprocess
 
 from .base import MediaBackend
@@ -21,7 +23,7 @@ class FfmpegBackend(MediaBackend):
     def timestamps(self, path: Path, generated: bool = False) -> list[float | None]:
         return frame_timestamps(path, executable("ffprobe", self.config), generated)
 
-    def prores_command(self, request: ProresRequest) -> list[str]:
+    def _prores_command(self, request: ProresRequest) -> list[str]:
         timestamp_options = ["-fflags", "+genpts"] if request.generate_pts else []
         args = [executable("ffmpeg", self.config), "-v", "error", "-nostdin",
                 *timestamp_options, "-i", str(request.source), "-map", "0:v:0",
@@ -40,8 +42,12 @@ class FfmpegBackend(MediaBackend):
     def encode_prores(self, request: ProresRequest) -> Path:
         if request.output is None:
             raise QCError(2, "변환 출력 경로가 없습니다")
-        run(self.prores_command(request))
+        run(self._prores_command(request))
         return request.output
+
+    def describe_prores(self, request: ProresRequest) -> str:
+        command = self._prores_command(request)
+        return subprocess.list2cmdline(command) if os.name == "nt" else shlex.join(command)
 
     def extract_frames(self, source: Path, width: int, height: int, count: int) -> list[memoryview]:
         if width * height * count > 128 * 1024 * 1024:
@@ -174,4 +180,4 @@ class FfmpegBackend(MediaBackend):
         audio_info = None if audio is None else AudioInfo(audio.get("codec_name"),
                          audio.get("sample_rate"), audio.get("channels"), audio.get("duration"),
                          audio.get("start_time"))
-        return MediaInfo(str(path), TimingInfo(**timing), video_info, audio_info, warnings)
+        return MediaInfo(str(path), TimingInfo(**timing), video_info, audio_info, tuple(warnings))

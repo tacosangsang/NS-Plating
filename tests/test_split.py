@@ -17,7 +17,7 @@ from _synth import QCFixture
 class SplitIntegration(QCFixture):
     def test_split_prores_verifies_all_frames_and_preserves_existing(self):
         source = self.make_video("split.mp4", "0.4")
-        converted = Path(convert(source, None, {})["output"]["path"])
+        converted = Path(convert(source, None, {})["output"].path)
         size = converted.stat().st_size
         target = self.scene / "parts%03d"
         result = split(converted, target, {}, max_part_mb=size / (1024 * 1024) * .55)
@@ -40,7 +40,7 @@ class SplitIntegration(QCFixture):
 
     def test_split_cli_warns_if_audio_boundary_unverified(self):
         source = self.make_video("warning.mp4", "0.4")
-        converted = Path(convert(source, None, {})["output"]["path"])
+        converted = Path(convert(source, None, {})["output"].path)
         dest = self.scene / "warning_parts"
         env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
         p = subprocess.run([sys.executable, "-m", "plating_qc", "split", str(converted), "--out", str(dest)], env=env, capture_output=True, text=True)
@@ -53,7 +53,7 @@ class SplitIntegration(QCFixture):
 
     def test_split_frame_mismatch_removes_partial_output(self):
         source = self.make_video("split_fail.mp4")
-        converted = Path(convert(source, None, {})["output"]["path"])
+        converted = Path(convert(source, None, {})["output"].path)
         target = self.scene / "bad_parts"
         with patch("plating_qc.split.frame_hashes", return_value=["0" * 32]):
             with self.assertRaises(QCError) as exc:
@@ -69,7 +69,7 @@ class SplitIntegration(QCFixture):
             split(source, target, {})
         self.assertEqual(exc.exception.code, 2)
         self.assertFalse(target.exists())
-        converted = Path(convert(source, None, {})["output"]["path"])
+        converted = Path(convert(source, None, {})["output"].path)
         with self.assertRaises(QCError) as exc:
             split(converted, self.raw / "parts", {})
         self.assertEqual(exc.exception.code, 2)

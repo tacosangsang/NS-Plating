@@ -100,4 +100,4 @@ class MediaInfo:
     timestamp_analysis: TimingInfo
     video: VideoInfo
     audio: AudioInfo | None
-    warnings: list[str]
+    warnings: tuple[str, ...]

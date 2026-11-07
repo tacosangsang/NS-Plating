@@ -32,6 +32,16 @@ class ConfigTests(unittest.TestCase):
             with chdir(directory):
                 self.assertEqual(cli.main(["--backend", "blender", "probe", "input.mp4"]), 4)
 
+    def test_auto_log_uses_environment_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            logs = root / "test-logs"
+            with chdir(root), patch.dict(os.environ, {"PLATING_QC_LOG_DIR": str(logs)}), patch("plating_qc.cli.compare", return_value={"warnings": []}), redirect_stdout(io.StringIO()):
+                result = cli.main(["compare", "a", "b"])
+            self.assertEqual(result, 0)
+            self.assertEqual(len(list(logs.glob("*.json"))), 1)
+            self.assertFalse((root / "plating-qc-logs").exists())
+
     def test_split_limit_uses_toml(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -8,7 +9,7 @@ from .core import QCError, convert, layout_names, load_config, probe
 from .layout import checked_path
 from .review import compare, tiles, write_comparison
 from .split import split
-from .runlog import reserve_log, source_hashes, tool_versions
+from .runlog import json_default, reserve_log, source_hashes, tool_versions
 
 
 def main(argv=None):
@@ -55,7 +56,7 @@ def main(argv=None):
         if args.log:
             log_path = args.log
         else:
-            log_dir = checked_path(Path.cwd() / "plating-qc-logs")
+            log_dir = checked_path(Path(os.environ.get("PLATING_QC_LOG_DIR") or Path.cwd() / "plating-qc-logs"))
             raw, _ = layout_names(config)
             if any(part.name.casefold() == raw.casefold() for part in (log_dir, *log_dir.parents)):
                 raise QCError(2, "raw 폴더에는 로그를 쓸 수 없습니다")
@@ -78,7 +79,7 @@ def main(argv=None):
             raise QCError(4, "Blender 백엔드는 아직 지원하지 않습니다")
         if args.command == "probe":
             result = [probe(path, config) for path in args.files]
-            warnings = any(item["warnings"] for item in result)
+            warnings = any(item.warnings for item in result)
         elif args.command == "compare":
             compare_config = config.get("compare", {})
             if not isinstance(compare_config, dict):
@@ -114,17 +115,17 @@ def main(argv=None):
         record = {"started_utc": started, "duration_s": round(time.monotonic()-start_clock, 6), "cwd": str(Path.cwd()), "argv": arguments, "tools": versions, "source_sha256": hashes, "exit_code": status, "result": result, "error": error}
         try:
             with log:
-                json.dump(record, log, ensure_ascii=False, indent=2, allow_nan=False)
+                json.dump(record, log, ensure_ascii=False, indent=2, allow_nan=False, default=json_default)
                 log.write("\n")
         except (OSError, TypeError, ValueError) as exc:
             if result is not None:
-                print(json.dumps(result, ensure_ascii=False, indent=2))
+                print(json.dumps(result, ensure_ascii=False, indent=2, default=json_default))
             print(f"작업 종료 코드 {status}; 로그 기록 실패: {exc}", file=sys.stderr)
             return 5
     if error is not None:
         print(error, file=sys.stderr)
     else:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(result, ensure_ascii=False, indent=2, default=json_default))
     return status
 
 
