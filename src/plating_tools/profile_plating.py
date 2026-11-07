@@ -21,13 +21,14 @@ DOC_FILES: Final = {
     "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",
     "W10": "10_고정_프롬프트_블록.md", "W11": "11_설정_고정값.md",
 }
+# 작성 기준 본문 지문(줄바꿈 무관, NS-Plating 25f38dc). textio.read_document의 content_sha256과 비교한다.
 AUTHORED_SHA256: Final = {
-    "W02": "2bc6c5d77cfbeddd62c9c22efdcb18a4d38f24091abe96b913d7790d6c8af8d6",
-    "W05": "30129dded003070f57b209471cfe137fe0911ef805db0d3dabec20543a36d997",
-    "W06": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
-    "W07": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
-    "W10": "ba12aab620bb1ae7010ca973b6e4c131203591a0eb244635761ad4e168443b44",
-    "W11": "5a918111676c1239a47bd5636895d70bb64c916628a6539fbcee5acbeb7b676c",
+    "W02": "4c2489018653380fd33a3626896bdfb105f67248f5a416af0b237c562d13ea77",
+    "W05": "42927794bf5089af68ce0d580bf4497906b0d12d004a55589b47dbf92c55923b",
+    "W06": "cbd2e1035e2a0e5d2378bd8d53b5e794f72d75e343fa77b7d964faf25f639767",
+    "W07": "669ff1ef6c6f3fa268c22aec9e74166d0a2700ec9fe793a19e3a05723de6e762",
+    "W10": "f1c9b16a8f690be9ea769936682bfee7b7459082247b9d2481df7d983b5c72cb",
+    "W11": "fe4d21a52857bf56fe9da13fc1ea6a70fa161b48f91c07d3a4c91d14dd0f5178",
 }
 DOC_TITLES: Final = {
     "W02": "02. 작업 규칙과 의사결정", "W05": "05. 영상 생성 워크플로우 (Seedance 2.5, 레퍼런스 투 비디오)",

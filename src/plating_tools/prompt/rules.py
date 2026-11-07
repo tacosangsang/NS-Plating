@@ -84,6 +84,6 @@ def read_rules(store: DocStore) -> RuleBook:
         conflict_message = "SCENE_D 충돌 기록 재확인 필요"
     conflict = Finding("PR_CONFLICT", Severity.ERROR, conflict_message, settings.where)
     changed = tuple(Finding("DOC_CHANGED", Severity.WARN, f"작성 기준 지문 변경: {key}") for key, doc in docs.items()
-                    if doc.fingerprint.authored_sha256 and doc.fingerprint.sha256 != doc.fingerprint.authored_sha256)
+                    if doc.fingerprint.changed_since_authored)
     return RuleBook(order, order_ext.where, catalog, checklist, int(limit_match[1]), limit.where,
                     (conflict,), tuple(d.fingerprint for d in docs.values()), {k: Path(d.fingerprint.path) for k, d in docs.items()}, changed)

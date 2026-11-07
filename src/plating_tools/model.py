@@ -36,6 +36,11 @@ class DocFingerprint:
     authored_sha256: str | None = None
     declared_commit: str | None = None
     newline: str | None = None
+    content_sha256: str | None = None  # 줄바꿈(CRLF/LF)·BOM과 무관한 본문 지문. authored_sha256과 비교하는 값.
+
+    @property
+    def changed_since_authored(self) -> bool:
+        return self.authored_sha256 is not None and self.content_sha256 != self.authored_sha256
 
 
 @dataclass(frozen=True, slots=True)

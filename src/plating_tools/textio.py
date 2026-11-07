@@ -39,7 +39,8 @@ def read_document(path: Path, key: str) -> Document:
     newline = "CRLF" if b"\r\n" in data else "LF"
     if b"\r\n" in data and b"\n" in data.replace(b"\r\n", b""):
         newline = "mixed"
-    return Document(DocFingerprint(key, str(path.resolve()), len(data), sha256(data).hexdigest(), newline=newline), lines, newline)
+    content = sha256("\n".join(lines).encode("utf-8")).hexdigest()
+    return Document(DocFingerprint(key, str(path.resolve()), len(data), sha256(data).hexdigest(), newline=newline, content_sha256=content), lines, newline)
 
 
 def normalized(text: str) -> str:
