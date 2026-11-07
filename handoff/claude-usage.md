@@ -12,3 +12,7 @@
 - 2026-11-07T18:51:00.444242+09:00: design\requests\plating-tools.md, 상태 incomplete, 종료 사유 max_tokens, 입력 17032, 출력 64000, 캐시 읽기 0, 예상 비용 $1.348128, 누적 $1.349800, 결과 `design\plating-tools.draft.md`.
 
 - 2026-11-07T19:10:02.243907+09:00: design\requests\plating-tools.md, 상태 success, 종료 사유 end_turn, 입력 17032, 출력 117075, 캐시 읽기 0, 예상 비용 $2.409628, 누적 $3.759428, 결과 `design\plating-tools.draft.md`.
+
+- 2026-11-07T21:08:18.164752+09:00: C:\Users\uicus\Dev\dot-runs\cmmi_design_request_post-learning.md, 상태 success, 종료 사유 end_turn, 입력 29478, 출력 71396, 캐시 읽기 0, 예상 비용 $1.545832, 누적 $5.305260, 결과 `C:\Users\uicus\Dev\CMMI_Blog\design\post-learning.draft.md`.
+
+- 레인 구분(2026-11-07 21:45 KST 기록): 21:08:18 항목은 CMMI 레인 호출(post-learning 설계)이다. 같은 도구라 이 장부에 함께 쌓였다. 레인별 누적: Plating $3.759428(15:36 시험 + 18:51 + 19:10), CMMI $1.545832(21:08). 합계 $5.305260. 다음부터 다른 레인은 도구 사본을 별도 폴더에서 실행해 장부를 분리한다.
