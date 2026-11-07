@@ -1,14 +1,19 @@
 import argparse
 import json
 import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
 from .core import QCError, convert, load_config, probe
 from .review import compare, tiles, write_comparison
 from .split import split
+from .runlog import reserve_log, source_hashes, tool_versions
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="plating-qc")
     parser.add_argument("--config")
+    parser.add_argument("--log", help="새 JSON 로그 파일 경로(raw·새 출력 폴더 밖)")
     subs = parser.add_subparsers(dest="command", required=True)
     p = subs.add_parser("probe")
     p.add_argument("files", nargs="+")
@@ -40,9 +45,20 @@ def main(argv=None):
     part.add_argument("--out", required=True)
     part.add_argument("--max-part-mb", type=float, default=400)
     part.add_argument("--verify", action="store_true", help="호환 옵션: 프레임 검증은 항상 실행")
-    args = parser.parse_args(argv)
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    args = parser.parse_args(arguments)
     try:
         config = load_config(args.config)
+        log = reserve_log(args.log, config, getattr(args, "out", None)) if args.log else None
+    except QCError as exc:
+        print(str(exc), file=sys.stderr)
+        return exc.code
+    started = datetime.now(timezone.utc).isoformat()
+    start_clock = time.monotonic()
+    versions = tool_versions(config) if log else None
+    hashes = source_hashes() if log else None
+    result, error, status = None, None, 0
+    try:
         if args.command == "probe":
             result = [probe(path, config) for path in args.files]
             warnings = any(item["warnings"] for item in result)
@@ -65,11 +81,25 @@ def main(argv=None):
         else:
             result = convert(args.input, args.scene, config, args.suffix, args.dry_run)
             warnings = bool(result.get("warnings"))
-        print(json.dumps(result, ensure_ascii=False, indent=2))
-        return 1 if warnings else 0
+        status = 1 if warnings else 0
     except QCError as exc:
-        print(str(exc), file=sys.stderr)
-        return exc.code
+        error, status = str(exc), exc.code
+    if log:
+        record = {"started_utc": started, "duration_s": round(time.monotonic()-start_clock, 6), "cwd": str(Path.cwd()), "argv": arguments, "tools": versions, "source_sha256": hashes, "exit_code": status, "result": result, "error": error}
+        try:
+            with log:
+                json.dump(record, log, ensure_ascii=False, indent=2, allow_nan=False)
+                log.write("\n")
+        except (OSError, TypeError, ValueError) as exc:
+            if result is not None:
+                print(json.dumps(result, ensure_ascii=False, indent=2))
+            print(f"작업 종료 코드 {status}; 로그 기록 실패: {exc}", file=sys.stderr)
+            return 5
+    if error is not None:
+        print(error, file=sys.stderr)
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    return status
 
 
 if __name__ == "__main__":
