@@ -15,6 +15,7 @@ from typing import Final
 from uuid import uuid4
 
 REPO: Final = Path(__file__).resolve().parents[2]
+EXTERNAL_COLLECTIONS: Final = ("images", "libraries", "movieclips", "sounds", "fonts", "cache_files", "volumes")
 
 
 class SaveError(RuntimeError):
@@ -53,7 +54,17 @@ def main(argv: list[str] | None = None) -> int:
     directory.mkdir(parents=True, exist_ok=False)
     snapshot = directory / f"{args.asset}.blend"
     print(f"블록아웃 임시 사본: {snapshot}")
-    saved = bpy.ops.wm.save_as_mainfile(filepath=str(snapshot), copy=True, relative_remap=False, check_existing=False)
+    # 사본은 versions/vNNN/로 옮겨지므로 원본 기준 상대 경로는 깨진다. 저장하는 동안만 절대 경로로 바꾸고 되돌린다.
+    external = [item for collection in EXTERNAL_COLLECTIONS for item in getattr(bpy.data, collection)
+                if item.library is None and item.filepath.startswith("//")]
+    original = [item.filepath for item in external]
+    try:
+        for item in external:
+            item.filepath = bpy.path.abspath(item.filepath)
+        saved = bpy.ops.wm.save_as_mainfile(filepath=str(snapshot), copy=True, relative_remap=False, check_existing=False)
+    finally:
+        for item, path in zip(external, original):
+            item.filepath = path
     if "FINISHED" not in saved or not snapshot.is_file():
         raise SaveError(snapshot, "Blender 임시 저장 실패")
     command = [str(python), "-m", "plating_tools", "--config", str(config), "blockout", "new-version", args.asset,
@@ -61,7 +72,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.set_current:
         command.append("--set-current")
     inherited = os.environ.get("PYTHONPATH", "")
-    env = {**os.environ, "PYTHONPATH": str(REPO / "src") + (os.pathsep + inherited if inherited else "")}
+    env = {**os.environ, "PYTHONPATH": str(REPO / "src") + (os.pathsep + inherited if inherited else ""),
+           "PYTHONIOENCODING": "utf-8"}
     result = subprocess.run(command, cwd=REPO, env=env, shell=False, check=False,
                             capture_output=True, text=True, encoding="utf-8")
     print(result.stdout, end="")

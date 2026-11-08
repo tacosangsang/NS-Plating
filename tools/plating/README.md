@@ -82,7 +82,7 @@ save_next([
 ])
 ```
 
-이 스크립트는 `copy=True`로 저장소 `out/blockout-save/<uuid>/<asset>.blend`에 임시 저장한 뒤 CLI를 argv·`shell=False`로 호출한다. 상대 경로를 임시 폴더 기준으로 바꾸지 않도록 `relative_remap=False`를 사용한다. 기본 설정은 이 저장소 `plating.toml`이며 `--config`로 바꿀 수 있다. 성공하면 자신의 임시 파일·빈 폴더만 정리하고 실패하면 사본을 보존한다. 자식 프로세스에만 소스 경로를 전달하므로 패키지 재설치는 필요 없다. **Blender 실제 저장 실행은 미검증이다.**
+이 스크립트는 `copy=True`로 저장소 `out/blockout-save/<uuid>/<asset>.blend`에 임시 저장한 뒤 CLI를 argv·`shell=False`로 호출한다. 사본은 `versions/vNNN/`로 옮겨지므로, 저장하는 동안만 이미지·라이브러리 등 외부 파일의 `//` 상대 경로를 절대 경로로 바꾸고 저장 뒤 원래 값으로 되돌린다(`relative_remap=False`). 자식 프로세스는 `PYTHONIOENCODING=utf-8`로 실행한다. 기본 설정은 이 저장소 `plating.toml`이며 `--config`로 바꿀 수 있다. 성공하면 자신의 임시 파일·빈 폴더만 정리하고 실패하면 사본을 보존한다. 자식 프로세스에만 소스 경로를 전달하므로 패키지 재설치는 필요 없다. **Blender 실제 저장 실행은 미검증이다.**
 
 이미 저장해 둔 파일을 등록할 때는 CLI를 직접 쓴다. `--from` 뒤에 여러 파일을 주거나 옵션을 반복할 수 있다.
 
