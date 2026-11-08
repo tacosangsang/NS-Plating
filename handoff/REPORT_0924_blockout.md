@@ -2,8 +2,8 @@
 
 ## 1. 한 줄 상태
 
-- 현재 단계: 브리핑 B, 18번 1단계 재검토·191건 검증 완료, 커밋 준비. 2~5단계 진행 예정.
-- 다음 행동: 1단계 로컬 커밋 후 init·new-version 구현.
+- 현재 단계: 브리핑 B, 18번 1단계 커밋 ee20db7, 2단계 구현·전체 202건 검증 완료. 3~5단계 진행 예정.
+- 다음 행동: 2단계 커밋 후 check·pin 구현.
 - 막힘: 없음. 독립 클론 `C:/Users/uicus/Dev/pqw-bo`, `.git`은 작업 폴더 내부다. 이전 worktree의 Git 권한 문제는 과거 기록으로 보존한다.
 
 ## 2. 작업 체크리스트
@@ -28,8 +28,8 @@
 
 | 18번 단계 | 상태 | 근거 | 검수 |
 | --- | --- | --- | --- |
-| 1 모델·manifest·버전 규칙 | 검증 완료 | `src/plating_tools/blockout/{model,manifest}.py`, `tests/test_pt_blockout_model.py` | 전체 191건 / 실패 0 / 오류 0 / skip 0 |
-| 2 init·new-version | 미착수 | 해당 없음 | 합성 파일·out/pt-tests 한정 예정 |
+| 1 모델·manifest·버전 규칙 | 완료 | ee20db7, `tests/test_pt_blockout_model.py` | 전체 191건 / 실패 0 / 오류 0 / skip 0 |
+| 2 init·new-version | 검증 완료 | `blockout/storage.py`, `blockout/__init__.py`, CLI, `tests/test_pt_blockout_commands.py` | 집중 11건·전체 202건 / 실패 0 / 오류 0 / skip 0 |
 | 3 check·pin | 미착수 | 해당 없음 | 네 가지 판정·1바이트 변조 검증 예정 |
 | 4 Blender 저장 스크립트 | 미착수 | 해당 없음 | Blender 실행은 지시대로 미검증 |
 | 5 README | 미착수 | 해당 없음 | blockout 절 추가 예정 |
@@ -72,3 +72,5 @@
 - handoff/claude-usage.*·claude-balance.json 수정·stage·커밋 없음: 예.
 - 테스트 단독 명령·출력 수신 후 로그 저장·테스트 코드만 작성 준수: 예.
 - 합성 파일·tempfile은 out/pt-tests 안: 예.
+
+2단계 검증 로그: handoff/logs/win_ee20db7_20261108_092834_351.txt. 집중 11건, 전체 202건(21.051초), 실패·오류·skip 0. staging 공개·파일 목록/SHA-256·NOTES.md·명시적 current·원본 보존·충돌·실패·자산 쓰기 잠금을 검증했다. 실패 staging과 manifest 저장 실패 뒤 고아 버전은 삭제하지 않고 check에서 진단할 수 있게 보존한다.

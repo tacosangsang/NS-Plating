@@ -16,3 +16,4 @@
 | 2026-11-07 22:46 | 16번 P1 2단계 합성 versions V1~V10·171건 통과, 커밋 b8755fc | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정); 런타임 독립 확인 미확인 | 이번 미측정 |
 | 2026-11-07 22:51 | 16번 P1 3단계 QC 하위 프로세스 위임 Q1~Q6·184건 통과, 커밋 cbe3519 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정); 런타임 독립 확인 미확인 | 이번 미측정 |
 | 2026-11-07 22:56 | 16번 P1 4단계 P0 격리·테스트 tempfile 범위 수정·185건 통과·REPORT 작성, 커밋 a259cf0 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정); 런타임 독립 확인 미확인 | 이번 미측정 |
+| 2026-11-08 09:28 | 18번 2단계 init·new-version·집중 11건·전체 202건 통과 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정) | 이번 미측정 |
