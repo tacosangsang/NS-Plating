@@ -5,10 +5,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from decimal import Decimal
 
+from ..cuts.extract import FIRST_SCENE_NO_PREV, SCENE_NEIGHBOR_ROLES
 from ..docs import Anchor, DocStore, resolve
 from ..errors import InputError
 from ..model import Finding, Severity, SourceRef, Unknown, json_text
-from ..profile_plating import ANCHOR_SPECS, APPROVAL_PATTERNS, DOC_TITLES
+from ..profile_plating import ANCHOR_SPECS, APPROVAL_NEGATION, APPROVAL_PATTERNS, APPROVAL_TRAILING, DOC_TITLES
 from ..textio import read_document
 from .cost import CostSummary
 
@@ -52,6 +53,7 @@ class ApprovalResult:
     vocabulary_hits: tuple[str, ...]
     bound_to_prompt: bool
     evidence: ApprovalEvidence | None
+    how_to_approve: str = ""  # 승인이 아닐 때 사용자에게 그대로 보여 줄 승인 문장 안내
 
 
 @dataclass(frozen=True, slots=True)
@@ -158,13 +160,17 @@ def evaluate_gate(lines, inputs, context: GateContext, approval: ApprovalEvidenc
         status = "기계 소견과 충돌" if any(f.severity == Severity.ERROR for f in machine) else "미완료" if problems else "완료"
         results.append(ItemResult(line, item, machine, ("사람의 항목별 판단과 근거",), status, tuple(problems)))
     bound = approval is not None and approval.prompt_sha256 == context.prompt_sha256
-    hits = tuple(word for word in context.approval_words if approval is not None and word in approval.quote)
+    quote = approval.quote.strip().rstrip(APPROVAL_TRAILING) if approval is not None else ""
+    hits = () if re.search(APPROVAL_NEGATION, quote) else tuple(word for word in context.approval_words if quote.endswith(word))
     approval_status = "승인 기록 없음"
     if approval is not None:
         approval_status = "승인 기록 있음" if all((approval.quote, approval.where, approval.by, approval.at, approval.prompt_sha256)) and bound and hits else "승인 기록 불일치" if not bound else "어휘 불명확"
+    how = "" if approval_status == "승인 기록 있음" else (
+        "승인하려면 문장을 " + " / ".join(f'"{w}"' for w in context.approval_words)
+        + f' 중 하나로 끝내 말하세요(예: "이 프롬프트로 {context.approval_words[0]}"). 안·말고·하지 마가 들어가면 승인이 아닙니다.')
     complete = all(item.status == "완료" for item in results)
     label = "[점검 미완료]" if not complete else "[점검 완료·승인 기록 있음]" if approval_status == "승인 기록 있음" else "[점검 완료·승인 기록 없음]"
-    return GateResult(tuple(results), complete, ApprovalResult(approval_status, hits, bound, approval), context.cost, context.cuts_fresh, label)
+    return GateResult(tuple(results), complete, ApprovalResult(approval_status, hits, bound, approval, how), context.cost, context.cuts_fresh, label)
 
 
 def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_sha: str, *, max_seconds: Decimal | None = None):
@@ -199,12 +205,19 @@ def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_
         add(4, "GATE_CUTS", Severity.WARN, "컷표 추출 결과 없음")
     if cuts is None or not cuts.get("context"):
         add(6, "GATE_CONTEXT", Severity.WARN, "연결 문맥 미확인")
+    else:
+        for c in cuts["context"]:
+            if c.get("role") in SCENE_NEIGHBOR_ROLES and c.get("row") is None and c.get("note") != FIRST_SCENE_NO_PREV:
+                add(6, "GATE_CONTEXT", Severity.WARN, f"연결 문맥 미확인: {c.get('role')} ({c.get('note')})")
     if refs is None:
         add(7, "GATE_REFS", Severity.WARN, "레퍼런스 검사 결과 없음")
     else:
         results = refs.get("results", [])
         if not results or any(r.get("best_original") != "최대 원본 확인됨" for r in results):
             add(7, "GATE_ORIGINAL", Severity.WARN, "최대 원본 미확인")
+        for finding in refs.get("findings", []):
+            if finding.get("severity") != Severity.INFO:
+                add(7, finding.get("code", "GATE_REFS"), Severity(finding.get("severity", "warn")), finding.get("message", "미확인"))
     if check is None:
         add(4, "GATE_CHECK", Severity.WARN, "프롬프트 검사 결과 없음")
     else:

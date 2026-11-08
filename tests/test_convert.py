@@ -104,7 +104,7 @@ class ConvertIntegration(QCFixture):
         self.assertEqual(exc.exception.code, 5)
         self.assertEqual((self.scene / "prores").read_text(encoding="utf-8"), "기존 파일")
         env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
-        result = subprocess.run([sys.executable, "-m", "plating_qc", "convert", str(source)], env=env, capture_output=True, text=True)
+        result = subprocess.run([sys.executable, "-m", "plating_qc", "convert", str(source)], env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 5, result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 

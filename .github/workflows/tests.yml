@@ -12,8 +12,19 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      # NS-Plating(비공개) 읽기 토큰이 있을 때만 실제 workflow 문서로 W 의존 테스트를 돌린다. 없으면 그 테스트는 스킵된다.
+      HAS_NS_PLATING_TOKEN: ${{ secrets.NS_PLATING_READ_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check out NS-Plating workflow docs
+        if: env.HAS_NS_PLATING_TOKEN == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: tacosangsang/NS-Plating
+          token: ${{ secrets.NS_PLATING_READ_TOKEN }}
+          path: ns-plating
+          sparse-checkout: workflow
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,4 +37,5 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: src
+          PLATING_TOOLS_WORKFLOW_DIR: ${{ github.workspace }}/ns-plating/workflow
         run: python -m unittest discover -s tests -v

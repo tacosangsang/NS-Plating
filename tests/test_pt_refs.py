@@ -99,8 +99,12 @@ class ReferenceTests(NetworkBlockedCase):
     def cli(self, *extra):
         cli = importlib.import_module("plating_tools.cli")
         cfg = self.root / "plating.toml"
-        workflow = r"C:\Users\uicus\Dev\NS-Plating\workflow"
-        cfg.write_text(f"[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='{workflow}'\n", encoding="utf-8")
+        workflow = self.root / "workflow"
+        workflow.mkdir(exist_ok=True)
+        profile = importlib.import_module("plating_tools.profile_plating")
+        items = "\n".join(f"{n}. SYNTH 점검 {n}" + (" (안전선 3~5장)" if n == 2 else "") for n in range(1, 9))
+        (workflow / profile.DOC_FILES["W02"]).write_text(f"# {profile.DOC_TITLES['W02']}\n\n## 4. 크레딧 쓰기 전 점검 8줄\n\n{items}\n", encoding="utf-8")
+        cfg.write_text(f"[paths]\nwrite_root='.'\noutput_root='out'\nworkflow_dir='{workflow.as_posix()}'\n", encoding="utf-8")
         refs = self.inputs / "refs.toml"
         refs.write_text(f"[[reference]]\nindex=1\nrole='SYNTH 역할'\nlocal_path='{self.local}'\nurl='https://synth.invalid/image'\n", encoding="utf-8")
         stdout = io.StringIO()

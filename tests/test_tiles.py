@@ -57,7 +57,7 @@ class TilesIntegration(QCFixture):
         subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=4:duration=2.5", "-vf", "setpts=PTS+2/TB", "-c:v", "mpeg4", str(source)], check=True)
         dest = self.scene / "timed_review"
         result = tiles(source, dest, {}, fps=1, width=320, columns=2, rows=1, cuts=[4], around=1)
-        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True)
+        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True, encoding="utf-8")
         source_frames = json.loads(raw.stdout)["frames"]
         self.assertEqual([x["frame"] for x in result["samples"]], [0, 4, 8])
         for sample in result["samples"]:
@@ -76,7 +76,7 @@ class TilesIntegration(QCFixture):
         source = self.raw / "vfr.mkv"
         subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=4:duration=2.5", "-vf", "setpts=PTS+if(gte(N\\,4)\\,0.25/TB\\,0)", "-fps_mode", "vfr", "-c:v", "ffv1", str(source)], check=True)
         result = tiles(source, self.scene / "vfr_review", {}, fps=1, width=320, columns=3, rows=1)
-        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True)
+        raw = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", str(source)], check=True, capture_output=True, text=True, encoding="utf-8")
         frames = json.loads(raw.stdout)["frames"]
         self.assertEqual([x["frame"] for x in result["samples"]], [0, 4, 8])
         for sample in result["samples"]:
@@ -123,7 +123,7 @@ class TilesIntegration(QCFixture):
         config = self.scene / "invalid_layout.toml"
         config.write_text('[layout]\nraw = "raw/"\n', encoding="utf-8")
         env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"), PYTHONDONTWRITEBYTECODE="1")
-        result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "tiles", str(source), "--out", str(target)], env=env, capture_output=True, text=True)
+        result = subprocess.run([sys.executable, "-m", "plating_qc", "--config", str(config), "tiles", str(source), "--out", str(target)], env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertFalse(target.exists())
 

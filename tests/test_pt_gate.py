@@ -114,3 +114,67 @@ class GateTests(NetworkBlockedCase):
     def test_generation_above_document_limit_requires_split(self):
         machine, _ = self.gate.machine_findings(self.clip(gen_seconds=self.rules.max_seconds + 1), None, None, None, None, "a" * 64, max_seconds=self.rules.max_seconds)
         self.assertTrue(any(f.code == "GATE_DURATION" and f.severity.value == "error" for f in machine[2]))
+
+
+
+class MachineFindingTests(NetworkBlockedCase):
+    """실제 W 없이 machine_findings만 검사."""
+    def setUp(self):
+        super().setUp()
+        self.gate = importlib.import_module("plating_tools.gate.checklist")
+
+    def test_unresolved_neighbor_scene_context_warns(self):
+        cuts = {"source": {"sha256": "a" * 64}, "targets": [], "context": [
+            {"role": "prev_scene_last", "row": None, "note": "SYNTH 경계 없음"},
+            {"role": "next_scene_first", "row": None, "note": "SYNTH 경계 없음"}]}
+        machine, _ = self.gate.machine_findings(None, cuts, None, None, "a" * 64, "a" * 64)
+        self.assertEqual(sum(f.code == "GATE_CONTEXT" for f in machine[6]), 2)
+
+    def test_first_scene_without_previous_is_not_flagged(self):
+        extract = importlib.import_module("plating_tools.cuts.extract")
+        row = {"cut_id": "SYNTH-1"}
+        cuts = {"source": {"sha256": "a" * 64}, "targets": [], "context": [
+            {"role": "prev_scene_last", "row": None, "note": extract.FIRST_SCENE_NO_PREV},
+            {"role": "next_scene_first", "row": row, "note": "생성 대상 아님"}]}
+        machine, _ = self.gate.machine_findings(None, cuts, None, None, "a" * 64, "a" * 64)
+        self.assertFalse(machine.get(6))
+
+    def test_reference_errors_reach_gate_even_with_best_original(self):
+        refs = {"results": [{"best_original": "최대 원본 확인됨"}],
+                "findings": [{"code": "REF_MISMATCH", "severity": "error", "message": "SYNTH 불일치"}, {"code": "REF_NOTE", "severity": "info", "message": "SYNTH"}]}
+        machine, _ = self.gate.machine_findings(None, None, None, refs, None, "a" * 64)
+        codes = {f.code: f.severity.value for f in machine[7]}
+        self.assertEqual(codes, {"REF_MISMATCH": "error"})
+
+
+class ApprovalWordingTests(NetworkBlockedCase):
+    """실제 W 없이 승인 문장 판정만 검사(ts 확정 2026-11-08)."""
+    def setUp(self):
+        super().setUp()
+        self.gate = importlib.import_module("plating_tools.gate.checklist")
+        self.model = importlib.import_module("plating_tools.model")
+        where = self.model.SourceRef("W02", 1, 1)
+        self.lines = tuple(self.gate.ChecklistLine(i, f"{i}. SYNTH", where) for i in range(1, 9))
+        self.context = self.gate.GateContext("a" * 64, ("생성해", "돌려", "씬 하나 다 만들어 둬"), {}, None, self.model.Unknown("SYNTH"))
+
+    def status(self, quote):
+        proof = self.gate.ApprovalEvidence(quote, "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        return self.gate.evaluate_gate(self.lines, (), self.context, proof).approval.status
+
+    def test_sentence_ending_in_approval_word_is_approval(self):
+        for quote in ("생성해", "S#02 A 클립 돌려.", "씬 하나 다 만들어 둬!"):
+            with self.subTest(quote=quote):
+                self.assertEqual(self.status(quote), "승인 기록 있음")
+
+    def test_negated_or_non_final_word_is_not_approval(self):
+        for quote in ("생성해도 안 돼", "돌려 말고 프롬프트만", "아직 생성해 하지 마", "안 돌려", "돌려보기 전에 보여줘"):
+            with self.subTest(quote=quote):
+                self.assertEqual(self.status(quote), "어휘 불명확")
+
+    def test_unapproved_result_tells_how_to_approve(self):
+        proof = self.gate.ApprovalEvidence("돌려줘", "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        result = self.gate.evaluate_gate(self.lines, (), self.context, proof).approval
+        self.assertIn('"생성해"', result.how_to_approve)
+        self.assertIn('"돌려"', result.how_to_approve)
+        approved = self.gate.ApprovalEvidence("돌려", "SYNTH 대화", "SYNTH", "2026-11-08", "a" * 64)
+        self.assertEqual(self.gate.evaluate_gate(self.lines, (), self.context, approved).approval.how_to_approve, "")

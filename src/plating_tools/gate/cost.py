@@ -95,7 +95,7 @@ def read_cost_table(store: DocStore) -> CostTable:
 def cost_for(clip: ClipPlan, table: CostTable) -> CostSummary:
     matching = [r for r in table.rates if (r.model, r.mode, r.resolution) == (clip.model, clip.mode, clip.resolution)]
     findings = [Finding("DOC_CHANGED", Severity.WARN, f"작성 기준 지문 변경: {doc.key}") for doc in table.doc_versions
-                if doc.authored_sha256 and doc.authored_sha256 != doc.sha256]
+                if doc.changed_since_authored]
     requested = CostLine("요청안", Unknown("문서에 없음"), "Crons", "미확인", {"model": str(clip.model), "mode": str(clip.mode), "resolution": str(clip.resolution)}, None)
     seconds = clip.edit_input_seconds if clip.mode == "edit" else clip.gen_seconds
     if matching and isinstance(seconds, Decimal):
