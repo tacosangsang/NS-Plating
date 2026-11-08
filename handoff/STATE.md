@@ -1,3 +1,29 @@
+# STATE (갱신 2026-11-08 09:24 KST)
+
+다음 행동: 18번 1단계를 커밋한 뒤 2단계 init·new-version을 구현한다.
+
+현재 단계: 세 번째 실행. 독립 클론 C:/Users/uicus/Dev/pqw-bo, dot/blockout-convention, 기준 HEAD 3ea3022. 1단계 재검토·전체 191건 통과, 실패·오류·skip 0. 로그 handoff/logs/win_3ea3022_20261108_092404_659.txt. Git 메타데이터는 작업 폴더 내부 .git.
+
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 주간 잔여 미확인. 네트워크·push·API·설치 없음.
+
+보고서: handoff/REPORT_0924_blockout.md. 설계 변경 제안 0건. Blender 직접 저장이 새 버전 생성의 주 경로. Drive 최신 5개 보관은 이번 범위 밖, 기록만.
+
+## 이전 실행 기록
+
+# STATE (갱신 2026-11-08 08:23 KST)
+
+다음 행동: 세션 밖에서 C:/Users/uicus/Dev/plating-qc-workflows/.git/worktrees/pqw-blockout의 유효 쓰기 권한과 샌드박스 ACL을 해결한다. 이후 남은 1단계 파일·로그 커밋부터 재개한다.
+
+현재 단계: 18번 블록아웃 규약 도구 1단계 재검토·전체 191건 통과. git add에서 index.lock 생성 Permission denied. 지시대로 Git 쓰기 1회 실패 후 읽기 전용 진단 1회, 2~5단계 중단. 이번 새 커밋 없음. 브랜치 dot/blockout-convention, HEAD 3ea3022.
+
+검증: python -m unittest discover -s tests -v 단독 실행. 191건 / 실패 0 / 오류 0 / skip 0, 38.412초. 로그 handoff/logs/win_3ea3022_20261108_082314_077.txt. Git 진단 handoff/logs/win_3ea3022_20261108_082338_046.txt.
+
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 주간 잔여 미확인. 네트워크·push·API·설치 없음.
+
+보고서: handoff/REPORT_0823_blockout.md. 설계 변경 제안 0건. 기존 1단계 파일 4개와 과거 로그 3개 보존. 제품 코드·tests·src/plating_qc·기존 versions·Claude usage/balance 변경 없음. 폴더 ACL에 Write Deny 항목 존재, 현재 토큰 적용·부모 상속 원인은 미확인.
+
+## 이전 실행 기록
+
 # STATE (갱신 2026-11-07 22:56 KST)
 
 다음 행동: 클로드 프로젝트가 handoff/REPORT_2256_P1.md와 로컬 단계 커밋 7612db8·b8755fc·cbe3519·a259cf0를 검수한다. 이번 push 없음.

@@ -1,0 +1,71 @@
+command: python -m unittest tests.test_pt_blockout_model -v
+HEAD: 3ea3022
+phase: stage1_red
+test_empty_manifest_round_trip (tests.test_pt_blockout_model.BlockoutModelTests.test_empty_manifest_round_trip) ... ERROR
+test_invalid_manifest_references_types_and_hashes_are_input_errors (tests.test_pt_blockout_model.BlockoutModelTests.test_invalid_manifest_references_types_and_hashes_are_input_errors) ... ERROR
+test_manifest_round_trip_preserves_unicode_quotes_hashes_and_pins (tests.test_pt_blockout_model.BlockoutModelTests.test_manifest_round_trip_preserves_unicode_quotes_hashes_and_pins) ... ERROR
+test_manifest_write_rejects_outside_policy (tests.test_pt_blockout_model.BlockoutModelTests.test_manifest_write_rejects_outside_policy) ... ERROR
+test_next_version_uses_numeric_max_and_rejects_overflow (tests.test_pt_blockout_model.BlockoutModelTests.test_next_version_uses_numeric_max_and_rejects_overflow) ... ERROR
+test_version_number_requires_three_digits_without_suffix (tests.test_pt_blockout_model.BlockoutModelTests.test_version_number_requires_three_digits_without_suffix) ... ERROR
+
+======================================================================
+ERROR: test_empty_manifest_round_trip (tests.test_pt_blockout_model.BlockoutModelTests.test_empty_manifest_round_trip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+======================================================================
+ERROR: test_invalid_manifest_references_types_and_hashes_are_input_errors (tests.test_pt_blockout_model.BlockoutModelTests.test_invalid_manifest_references_types_and_hashes_are_input_errors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+======================================================================
+ERROR: test_manifest_round_trip_preserves_unicode_quotes_hashes_and_pins (tests.test_pt_blockout_model.BlockoutModelTests.test_manifest_round_trip_preserves_unicode_quotes_hashes_and_pins)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+======================================================================
+ERROR: test_manifest_write_rejects_outside_policy (tests.test_pt_blockout_model.BlockoutModelTests.test_manifest_write_rejects_outside_policy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+======================================================================
+ERROR: test_next_version_uses_numeric_max_and_rejects_overflow (tests.test_pt_blockout_model.BlockoutModelTests.test_next_version_uses_numeric_max_and_rejects_overflow)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+======================================================================
+ERROR: test_version_number_requires_three_digits_without_suffix (tests.test_pt_blockout_model.BlockoutModelTests.test_version_number_requires_three_digits_without_suffix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\pqw-blockout\tests\test_pt_blockout_model.py", line 22, in setUp
+    self.store = self.manifest.FileManifestStore(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'plating_tools.blockout.manifest' has no attribute 'FileManifestStore'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.016s
+
+FAILED (errors=6)
+
+exit=1
+
