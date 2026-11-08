@@ -40,8 +40,8 @@ class FileManifestStore:
             raise InputError(f"manifest 필드 누락 또는 형식 오류: {path}: {exc}") from exc
 
     def write(self, path: Path, manifest: Manifest) -> None:
-        # 필드가 고정된 TOML만 직렬화한다. JSON 문자열 escape는 TOML basic string과 호환된다.
-        quote = lambda text: json.dumps(text, ensure_ascii=False)
+        # 고정 스키마만 직렬화한다. TOML이 금지하는 raw DEL도 escape한다.
+        quote = lambda text: json.dumps(text, ensure_ascii=False).replace("\x7f", "\\u007f")
         lines = [f"asset = {quote(manifest.asset)}", f"current = {quote(manifest.current)}",
                  "variants = [" + ", ".join(quote(v) for v in manifest.variants) + "]"]
         for name, version in sorted(manifest.versions.items()):

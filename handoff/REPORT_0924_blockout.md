@@ -2,8 +2,8 @@
 
 ## 1. 한 줄 상태
 
-- 현재 단계: 브리핑 B, 18번 1단계 커밋 ee20db7, 2단계 구현·전체 202건 검증 완료. 3~5단계 진행 예정.
-- 다음 행동: 2단계 커밋 후 check·pin 구현.
+- 현재 단계: 브리핑 B, 18번 1단계 ee20db7·2단계 80dae48, 3단계 구현·전체 220건 검증 완료. 4~5단계 진행 예정.
+- 다음 행동: 3단계 커밋 후 Blender 저장 스크립트 작성.
 - 막힘: 없음. 독립 클론 `C:/Users/uicus/Dev/pqw-bo`, `.git`은 작업 폴더 내부다. 이전 worktree의 Git 권한 문제는 과거 기록으로 보존한다.
 
 ## 2. 작업 체크리스트
@@ -29,8 +29,8 @@
 | 18번 단계 | 상태 | 근거 | 검수 |
 | --- | --- | --- | --- |
 | 1 모델·manifest·버전 규칙 | 완료 | ee20db7, `tests/test_pt_blockout_model.py` | 전체 191건 / 실패 0 / 오류 0 / skip 0 |
-| 2 init·new-version | 검증 완료 | `blockout/storage.py`, `blockout/__init__.py`, CLI, `tests/test_pt_blockout_commands.py` | 집중 11건·전체 202건 / 실패 0 / 오류 0 / skip 0 |
-| 3 check·pin | 미착수 | 해당 없음 | 네 가지 판정·1바이트 변조 검증 예정 |
+| 2 init·new-version | 완료 | 80dae48, `tests/test_pt_blockout_commands.py` | 집중 11건·전체 202건 / 실패 0 / 오류 0 / skip 0 |
+| 3 check·pin | 검증 완료 | `blockout/{check,renders}.py`, CLI, `tests/test_pt_blockout_check.py` | 집중 18건·전체 220건 / 최종 실패 0 / 오류 0 / skip 0 |
 | 4 Blender 저장 스크립트 | 미착수 | 해당 없음 | Blender 실행은 지시대로 미검증 |
 | 5 README | 미착수 | 해당 없음 | blockout 절 추가 예정 |
 
@@ -74,3 +74,11 @@
 - 합성 파일·tempfile은 out/pt-tests 안: 예.
 
 2단계 검증 로그: handoff/logs/win_ee20db7_20261108_092834_351.txt. 집중 11건, 전체 202건(21.051초), 실패·오류·skip 0. staging 공개·파일 목록/SHA-256·NOTES.md·명시적 current·원본 보존·충돌·실패·자산 쓰기 잠금을 검증했다. 실패 staging과 manifest 저장 실패 뒤 고아 버전은 삭제하지 않고 check에서 진단할 수 있게 보존한다.
+
+3단계 검증 로그: handoff/logs/win_80dae48_20261108_093504_498.txt. 집중 18건 중 DEL 인용문 재읽기 1건 실패를 재현했고 TOML raw DEL escape 수정 뒤 집중 18건·전체 220건(25.541초) 통과, 실패·오류·skip 0. 수정 전 실패 원문도 같은 로그에 보존했다.
+
+검사 구현: STALE(일반 렌더는 current보다 옛 버전, pin 씬은 pin과 불일치), PINNED(명시한 S#NN 씬·고정 판 일치), CONVENTION(미등록·접미사·날짜·중복 정본·렌더 이름 위반), IMMUTABLE(파일 목록·SHA-256·폴더 누락). PINNED만 있으면 종료 0, 위반은 1. 잘못된 명령 입력은 2, 쓰기 충돌 3, 모듈 없음 4, I/O 실패 5다.
+
+렌더 파일명이나 렌더 루트 아래 상대 경로의 정확한 S#NN 토큰만 pin 범위로 읽는다. 씬을 추정하지 않으며 명시하지 않은 렌더는 current와 비교한다. --renders는 기본 자산별 renders 대신 지정한 렌더·시트 루트를 검사한다. 결과 blockout.json·blockout.md·run.json은 설정 output_root의 새 실행 폴더에만 공개한다. 버전은 versions와 archive 양쪽의 파일 목록·해시를 검사하며 자동 이동·삭제하지 않는다.
+
+로그 저장 경위: 출력 전체를 셸 인자로 합치다 Windows CreateProcessAsUserW 206 길이 제한으로 파일 작성 전 실패했다. 테스트 재실행 없이 보존한 출력을 apply_patch로 저장했다.
