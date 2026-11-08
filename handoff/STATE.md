@@ -1,3 +1,21 @@
+# STATE (갱신 2026-11-08 09:44 KST)
+
+다음 행동: 클로드 프로젝트가 handoff/REPORT_0924_blockout.md와 로컬 단계 커밋을 검수한다. Blender 실제 저장은 별도 환경에서 검증한다.
+
+현재 단계: 18번 블록아웃 규약 도구 1~5단계 완료. 단계 커밋: 1 ee20db7 / 2 80dae48 / 3 f03cd95(보완 ff92944) / 4 4321655 / 5 1d0b867. 최종 인계는 이 STATE를 포함한 별도 커밋이다. 독립 클론 C:/Users/uicus/Dev/pqw-bo, dot/blockout-convention. 이번 Git 쓰기 실패 없음.
+
+검증: python -m unittest discover -s tests -v 단독 실행. 최종 222건(기존 185 + 블록아웃 37), 실패·오류·skip 0, 38.915초. 로그 handoff/logs/win_ff92944_20261108_094222_763.txt. 새 패키지·테스트·Blender 스크립트 10파일 정적 검사도 통과했다. Blender 저장 실행·원본 filepath 유지·외부 자산 상대 경로 해석은 미검증이다.
+
+완료: ManifestStore·VersionStore, 세 자리 버전·TOML, init·new-version·check·pin, Blender 임시 사본 저장/CLI 위임 스크립트, README. STALE·PINNED·CONVENTION·IMMUTABLE 및 1바이트 변조 검증. 구현 미완료 단계 없음.
+
+오늘 모델/한도: CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정). 런타임 독립 확인·주간 잔여 미확인. 이번 네트워크·push·API·설치 없음. src/plating_qc·기존 plating_tools/versions·Claude 사용/잔액 장부 변경 없음.
+
+막힘·질문: 없음. 설계 변경 제안 0건. 실제 PLATING 적용·archive/렌더 자동 정리·Drive 동기화는 이번 범위 밖이다. 사용자 확인: Blender 직접 저장이 주 경로, Drive는 최신 5개만 보관하고 이전 판은 프로젝트 폴더에 보관(기록만).
+
+보고서: handoff/REPORT_0924_blockout.md. 과거 worktree의 Git 권한 실패와 REPORT_0823_blockout.md는 아래·별도 파일에 역사로 보존했다.
+
+## 이전 실행 기록
+
 # STATE (갱신 2026-11-08 09:37 KST)
 
 다음 행동: 4단계 커밋 후 5단계 README blockout 절 작성.
