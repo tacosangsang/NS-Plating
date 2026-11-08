@@ -2,8 +2,8 @@
 
 ## 1. 한 줄 상태
 
-- 현재 단계: 브리핑 B, 18번 1단계 ee20db7·2단계 80dae48·3단계 f03cd95, 4단계 스크립트 작성 완료. 5단계 진행 예정.
-- 다음 행동: 4단계 커밋 후 README blockout 절 작성.
+- 현재 단계: 브리핑 B, 18번 1~5단계 구현·문서 작성 완료. 최종 전체 222건 통과, Blender 실행 미검증.
+- 다음 행동: 5단계 커밋 후 최종 인계에 단계별 해시 확정.
 - 막힘: 없음. 독립 클론 `C:/Users/uicus/Dev/pqw-bo`, `.git`은 작업 폴더 내부다. 이전 worktree의 Git 권한 문제는 과거 기록으로 보존한다.
 
 ## 2. 작업 체크리스트
@@ -31,8 +31,8 @@
 | 1 모델·manifest·버전 규칙 | 완료 | ee20db7, `tests/test_pt_blockout_model.py` | 전체 191건 / 실패 0 / 오류 0 / skip 0 |
 | 2 init·new-version | 완료 | 80dae48, `tests/test_pt_blockout_commands.py` | 집중 11건·전체 202건 / 실패 0 / 오류 0 / skip 0 |
 | 3 check·pin | 완료 | f03cd95, `tests/test_pt_blockout_check.py` | 집중 18건·전체 220건 / 최종 실패 0 / 오류 0 / skip 0 |
-| 4 Blender 저장 스크립트 | 작성 완료 | `tools/blender/save_next_version.py` | 전체 회귀 220건 통과·정적 검사 통과. Blender 저장 실행 미검증 |
-| 5 README | 미착수 | 해당 없음 | blockout 절 추가 예정 |
+| 4 Blender 저장 스크립트 | 완료 | 4321655, `tools/blender/save_next_version.py` | 전체 회귀 220건 통과·정적 검사 통과. Blender 저장 실행 미검증 |
+| 5 README | 완료 | `tools/plating/README.md:58` | 명령·Blender 주 경로·보존·판정·검증 한계 문서화, 최종 전체 222건 통과 |
 
 ## 3. 결과물 목록
 
@@ -88,3 +88,5 @@
 Blender 저장 실행은 미검증이다. 이번에는 Blender·bpy를 실행하거나 모의 실행하지 않았다. 정적 검사는 AST 구문·규칙 검사이며 실제 Blender 저장 성공이나 외부 자산의 상대 경로 해석을 보증하지 않는다. 예외 타입 지적 2건을 SaveError의 경로 필드로 수정했고 최종 정적 검사 10파일 통과다.
 
 3단계 보완: 규약 원문의 렌더 파일명 날짜 금지와 --renders 루트 자체가 S#NN·vNNN일 때의 문맥 유지를 보완했다. 수정 전 집중 20건 중 2건 실패 재현, 수정 후 집중 20건·전체 222건(42.127초) 통과, 최종 실패·오류·skip 0. 로그 handoff/logs/win_4321655_20261108_094016_849.txt. 설계 변경 없이 기존 규약의 검사 누락을 수정했다.
+
+5단계 최종 로그: handoff/logs/win_ff92944_20261108_094222_763.txt. 전체 222건(38.915초), 실패·오류·skip 0. 기존 185건 + 블록아웃 37건(모델 6·생성 11·검사 20). 최종 정적 검사 10파일 통과. 금지된 코드·Claude 장부는 기준 3ea3022 대비 변경 파일 없음을 확인했다.
