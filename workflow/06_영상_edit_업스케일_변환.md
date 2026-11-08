@@ -8,7 +8,7 @@
 | 동작·구도·동선이 틀림 | 새 생성. edit은 입력 영상의 움직임을 따라가 틀린 동작도 그대로 남는다 |
 | 연기·동작 변경 | edit 불가(11-04 실증: 구슬 굴리기 → 손가락으로 밀기 edit 3초 330 Crons가 원본과 똑같이). 원본 이음 프레임을 시작 프레임으로 그 구간만 새 생성해 붙인다 |
 | 기존 움직임의 횟수·크기 변경("2~3번 펄럭이게") | edit 불가(11-05, 구조를 바꿔 3번 돌려 모두 원본처럼 한 번). 그 구간만 시작·끝 프레임 새 생성 |
-| 물체가 떠나거나 생기는 등 화면 내용이 바뀌는 사건("포스터가 떨어져 날아감") | edit 됨(매번) |
+| 물체가 떠나거나 생기는 등 화면 내용이 바뀌는 사건("포스터가 떨어져 날아감") | edit 됨(11-05 같은 포스터 시험에서 매번. 다른 사건으로 재검증하지 않았으니 일반 규칙이 아니라 관찰이다. 11-08 Q06) |
 | 작은 소품 추가(480p 기준 약 28px 라디오) | edit 잘 됨. 단 밝기는 시트를 따라 떠 보이니 편집기 마스크 색보정 필요하다고 미리 말한다 |
 | 카메라가 고정된 컷의 배경·소품 교체 | 사용자 합성이 더 싸고 확실. edit 전에 먼저 제안 |
 | 화면 속 작은 흔적만 지우기 | 애프터이펙트 Content-Aware Fill. edit은 모든 프레임을 다시 그려 매듭·손가락이 조금 바뀐다 |
@@ -44,7 +44,7 @@ Apart from these changes, nothing else may be changed, modified or added.
 - **앞머리에 유지 목록을 길게 늘어놓지 않는다.** "Keep everything exactly ... in every frame"을 먼저 나열한 edit은 원본과 똑같이 나왔다. 유지는 끝 한 문장으로.
 - 수정사항 밖의 보조 효과(배경 바람 등)는 넣지 않는다.
 - 항목마다 구체적으로: 옛 상태 이름("It is not porcelain or ceramic"), 레퍼런스 번호, 재질·두께·색·원본 프레임 기준 밝기·크기. 음식은 무엇만 있고 무엇은 없는지. 입력 영상에 있는 바꿀 대상을 직접 이름 붙여("Replace the soup and any other food in the input video with ..."), AVOID에도(no soup, no broth).
-- 질감을 바꿀 때만 `LOOK` 항목에 STYLE 원문 + 앞에 "replacing any stop-motion, clay, felt or puppet look and any stepped frame-by-frame motion with smooth motion"(edit은 옛 질감이 입력에 있으니 이 경우에만 옛 질감 이름을 적는다). 얼굴이 바뀔 위험이 있으니 수정 항목 하나로 얼굴 유지 + 얼굴 핵심 규칙 + 손("lean adult hands with long thin fingers").
+- 질감을 바꿀 때만 `LOOK` 항목에 STYLE 원문 + 앞에 "replacing any stop-motion, clay, felt or puppet look and any stepped frame-by-frame motion with smooth motion". `[예외: 02 문서 1절 6번 "부정문으로도 쓰지 않는다"의 승인된 예외. ts 11-08 Q04. 입력 영상에 옛 질감이 실제로 있어 이름을 불러야 바뀌는 edit에서만. 새 생성·이미지 프롬프트로 이 문장을 복사하지 않는다]` 얼굴이 바뀔 위험이 있으니 수정 항목 하나로 얼굴 유지 + 얼굴 핵심 규칙 + 손("lean adult hands with long thin fingers").
 - 옛 구조(EDIT TASK 유지 목록 → 항목 → KEEP THE PEOPLE → CONSISTENCY → AVOID)는 쓰지 않는다.
 
 ### 첨부 기준
@@ -70,7 +70,7 @@ Apart from these changes, nothing else may be changed, modified or added.
 - 그래서: 480p로 생성하고 Higgsfield Artemis 2K로 업스케일한다(사용자 11-06 결정). 옛 규칙 "1080p가 필요한 컷은 처음부터 1080p"는 폐기.
 
 ### 설정 (Higgsfield 웹앱 Topaz Video, 11-04 확정) `[예외: 사용 서비스]`
-- 프리셋 **Artemis**, 프레임 속도 **원본**, 해상도 **2K**(결과 2048×1152). 1K와 2K는 같은 5크레딧, 4K부터 비쌈. 1080 입력은 1K 거부.
+- 프리셋 **Artemis**, 프레임 속도 **원본**, 해상도 **2K**(결과 2048×1152). 1K와 2K는 같은 5크레딧, 4K부터 비쌈. 5크레딧이 클립당·작업당·초당 중 무엇인지는 미확인이다(ts 11-08 "모름", Q09). 비용 계산에 Crons와 합산하지 않고 "미확인"으로 둔다. 1080 입력은 1K 거부.
 - **입력은 480p 원본(854×480), `video/<씬>/raw/`.** 편집기에서 1080으로 내보낸 파일은 실제 정보가 480p라(PSNR 45dB) Artemis가 거의 못 올린다. 선명도(라플라시안 분산) 1080 내보낸 판 입력 7.4 vs 480p 원본 입력 71.4, 약 10배.
 - **컷이 있는 클립은 숏별로 잘라 올린다.** fps "원본"이어도 보간 모델(apo-8)이 같이 돌아 하드컷을 건너 앞뒤 숏이 섞인 프레임이 생기고 컷 위치가 최대 4프레임 앞당겨진다. 컷 프레임을 1프레임 단위로 찾아 끊고 원본 해상도·fps 그대로.
 - **사람 나오는 숏은 Artemis만.** Starlight Precise 2.5는 생성형이라 매끈한 CG 손을 실사 피부(모공·핏줄·주름)로 바꾸고, 청바지 박음질·핀셋 톱니처럼 없던 무늬와 흐린 라벨 자리에 또렷한 가짜 글씨를 새로 그린다. 사람 없는 숏에서만, 글씨가 생기면 편집에서 덮는다.
