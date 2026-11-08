@@ -19,3 +19,4 @@
 | 2026-11-08 09:28 | 18번 2단계 init·new-version·집중 11건·전체 202건 통과 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정) | 이번 미측정 |
 | 2026-11-08 09:35 | 18번 3단계 check·pin·DEL 회귀 재현 및 수정·집중 18건·전체 220건 통과 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정) | 이번 미측정 |
 | 2026-11-08 09:37 | 18번 4단계 Blender 저장 스크립트·전체 220건 통과·정적 검사 통과, Blender 실행 미검증 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정) | 이번 미측정 |
+| 2026-11-08 09:40 | 18번 3단계 규약 누락 보완·집중 20건·전체 222건 통과 | gpt-6.1-sol | xhigh | CLI 실행, 모델 gpt-6.1-sol, effort xhigh(클로드 프로젝트 지정) | 이번 미측정 |

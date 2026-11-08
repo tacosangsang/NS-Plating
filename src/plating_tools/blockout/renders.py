@@ -9,6 +9,7 @@ from .model import Manifest, VERSION, version_number
 
 SCENE: Final = re.compile(r"(?:^|[/_])(S#[0-9]{2})(?=$|[/_.])")
 DATE_FOLDER: Final = re.compile(r"[0-9]{4}[-_]?[0-9]{2}[-_]?[0-9]{2}")
+DATE_TOKEN: Final = re.compile(r"(?:^|_)[0-9]{4}[-_]?[0-9]{2}[-_]?[0-9]{2}(?=_|$)")
 
 
 def check_renders(root: Path, manifests: Mapping[str, Manifest]) -> tuple[Finding, ...]:
@@ -21,12 +22,15 @@ def check_renders(root: Path, manifests: Mapping[str, Manifest]) -> tuple[Findin
             findings.append(Finding("CONVENTION", Severity.ERROR, f"렌더 링크 금지: {path}"))
             continue
         if path.is_dir():
-            if path != root and (DATE_FOLDER.fullmatch(path.name)
-                                 or (re.match(r"v[0-9]", path.name) and not VERSION.fullmatch(path.name))):
+            if DATE_FOLDER.fullmatch(path.name) or (re.match(r"v[0-9]", path.name) and not VERSION.fullmatch(path.name)):
                 findings.append(Finding("CONVENTION", Severity.ERROR, f"렌더 버전·날짜 폴더 규약 위반: {path}"))
             pending.extend(sorted(path.iterdir(), reverse=True))
             continue
-        relative = path.relative_to(root).as_posix()
+        parts = (root.name, *path.relative_to(root).parts)
+        relative = "/".join(parts)
+        if DATE_TOKEN.search(path.stem):
+            findings.append(Finding("CONVENTION", Severity.ERROR, f"렌더 파일명 날짜 금지: {path}"))
+            continue
         candidates = [name for name in manifests if path.name.startswith(name + "_v")]
         asset = max(candidates, key=len) if candidates else ""
         pattern = re.fullmatch(re.escape(asset) + r"_(v[0-9]{3})_(.+)\.png", path.name)
@@ -38,7 +42,7 @@ def check_renders(root: Path, manifests: Mapping[str, Manifest]) -> tuple[Findin
         if version not in manifest.versions:
             findings.append(Finding("CONVENTION", Severity.ERROR, f"manifest에 없는 렌더 버전 {version}: {path}"))
             continue
-        folders = [part for part in path.relative_to(root).parts[:-1] if VERSION.fullmatch(part)]
+        folders = [part for part in parts[:-1] if VERSION.fullmatch(part)]
         if any(part != version for part in folders):
             findings.append(Finding("CONVENTION", Severity.ERROR, f"렌더 폴더·파일 버전 불일치: {path}"))
             continue

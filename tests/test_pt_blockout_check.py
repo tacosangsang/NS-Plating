@@ -208,3 +208,19 @@ class BlockoutCheckTests(NetworkBlockedCase):
         (self.asset / "manifest.toml").write_text(text.replace('current = "v002"', 'current = ""'), encoding="utf-8")
         self.render("v002")
         self.assertEqual(self.check()[0], 1)
+
+    def test_dates_in_render_filenames_are_convention_violations(self):
+        for date in ("2026-11-08", "2026_11_08", "20261108"):
+            self.render("v002", name=f"tower_hall_v002_front_{date}.png")
+        code, report, _ = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(self.codes(report), {"CONVENTION"})
+
+    def test_explicit_render_root_keeps_its_own_scene_and_version_context(self):
+        self.assertEqual(self.pin()[0], 0)
+        path = self.render("v001", "S#10")
+        code, report, _ = self.check("--renders", path.parent)
+        self.assertEqual(code, 0)
+        self.assertEqual(self.codes(report), {"PINNED"})
+        other = self.render("v001", name="tower_hall_v002_front.png")
+        self.assertIn("CONVENTION", self.codes(self.check("--renders", other.parent)[1]))

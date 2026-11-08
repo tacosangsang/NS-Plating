@@ -86,3 +86,5 @@
 4단계 로그: handoff/logs/win_f03cd95_20261108_093736_131.txt. 전체 220건 / 실패·오류·skip 0, 17.018초. 저장 스크립트는 save_as_mainfile(copy=True, relative_remap=False)로 현재 장면을 저장소 out/blockout-save/<uuid>/<asset>.blend에 사본 저장하고 외부 Python 3.12의 CLI를 argv·shell=False로 호출한다. --set-current는 명시적으로만 전달한다. 원본 filepath 유지, 성공 시 자신의 임시 파일·빈 폴더만 정리, 실패 사본은 보존한다. bpy import는 이 스크립트 main 안에만 있다.
 
 Blender 저장 실행은 미검증이다. 이번에는 Blender·bpy를 실행하거나 모의 실행하지 않았다. 정적 검사는 AST 구문·규칙 검사이며 실제 Blender 저장 성공이나 외부 자산의 상대 경로 해석을 보증하지 않는다. 예외 타입 지적 2건을 SaveError의 경로 필드로 수정했고 최종 정적 검사 10파일 통과다.
+
+3단계 보완: 규약 원문의 렌더 파일명 날짜 금지와 --renders 루트 자체가 S#NN·vNNN일 때의 문맥 유지를 보완했다. 수정 전 집중 20건 중 2건 실패 재현, 수정 후 집중 20건·전체 222건(42.127초) 통과, 최종 실패·오류·skip 0. 로그 handoff/logs/win_4321655_20261108_094016_849.txt. 설계 변경 없이 기존 규약의 검사 누락을 수정했다.
