@@ -2,8 +2,8 @@
 
 ## 1. 한 줄 상태
 
-- 현재 단계: 브리핑 B, 18번 1단계 ee20db7·2단계 80dae48, 3단계 구현·전체 220건 검증 완료. 4~5단계 진행 예정.
-- 다음 행동: 3단계 커밋 후 Blender 저장 스크립트 작성.
+- 현재 단계: 브리핑 B, 18번 1단계 ee20db7·2단계 80dae48·3단계 f03cd95, 4단계 스크립트 작성 완료. 5단계 진행 예정.
+- 다음 행동: 4단계 커밋 후 README blockout 절 작성.
 - 막힘: 없음. 독립 클론 `C:/Users/uicus/Dev/pqw-bo`, `.git`은 작업 폴더 내부다. 이전 worktree의 Git 권한 문제는 과거 기록으로 보존한다.
 
 ## 2. 작업 체크리스트
@@ -30,8 +30,8 @@
 | --- | --- | --- | --- |
 | 1 모델·manifest·버전 규칙 | 완료 | ee20db7, `tests/test_pt_blockout_model.py` | 전체 191건 / 실패 0 / 오류 0 / skip 0 |
 | 2 init·new-version | 완료 | 80dae48, `tests/test_pt_blockout_commands.py` | 집중 11건·전체 202건 / 실패 0 / 오류 0 / skip 0 |
-| 3 check·pin | 검증 완료 | `blockout/{check,renders}.py`, CLI, `tests/test_pt_blockout_check.py` | 집중 18건·전체 220건 / 최종 실패 0 / 오류 0 / skip 0 |
-| 4 Blender 저장 스크립트 | 미착수 | 해당 없음 | Blender 실행은 지시대로 미검증 |
+| 3 check·pin | 완료 | f03cd95, `tests/test_pt_blockout_check.py` | 집중 18건·전체 220건 / 최종 실패 0 / 오류 0 / skip 0 |
+| 4 Blender 저장 스크립트 | 작성 완료 | `tools/blender/save_next_version.py` | 전체 회귀 220건 통과·정적 검사 통과. Blender 저장 실행 미검증 |
 | 5 README | 미착수 | 해당 없음 | blockout 절 추가 예정 |
 
 ## 3. 결과물 목록
@@ -82,3 +82,7 @@
 렌더 파일명이나 렌더 루트 아래 상대 경로의 정확한 S#NN 토큰만 pin 범위로 읽는다. 씬을 추정하지 않으며 명시하지 않은 렌더는 current와 비교한다. --renders는 기본 자산별 renders 대신 지정한 렌더·시트 루트를 검사한다. 결과 blockout.json·blockout.md·run.json은 설정 output_root의 새 실행 폴더에만 공개한다. 버전은 versions와 archive 양쪽의 파일 목록·해시를 검사하며 자동 이동·삭제하지 않는다.
 
 로그 저장 경위: 출력 전체를 셸 인자로 합치다 Windows CreateProcessAsUserW 206 길이 제한으로 파일 작성 전 실패했다. 테스트 재실행 없이 보존한 출력을 apply_patch로 저장했다.
+
+4단계 로그: handoff/logs/win_f03cd95_20261108_093736_131.txt. 전체 220건 / 실패·오류·skip 0, 17.018초. 저장 스크립트는 save_as_mainfile(copy=True, relative_remap=False)로 현재 장면을 저장소 out/blockout-save/<uuid>/<asset>.blend에 사본 저장하고 외부 Python 3.12의 CLI를 argv·shell=False로 호출한다. --set-current는 명시적으로만 전달한다. 원본 filepath 유지, 성공 시 자신의 임시 파일·빈 폴더만 정리, 실패 사본은 보존한다. bpy import는 이 스크립트 main 안에만 있다.
+
+Blender 저장 실행은 미검증이다. 이번에는 Blender·bpy를 실행하거나 모의 실행하지 않았다. 정적 검사는 AST 구문·규칙 검사이며 실제 Blender 저장 성공이나 외부 자산의 상대 경로 해석을 보증하지 않는다. 예외 타입 지적 2건을 SaveError의 경로 필드로 수정했고 최종 정적 검사 10파일 통과다.
