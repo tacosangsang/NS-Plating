@@ -59,6 +59,28 @@ def parser() -> argparse.ArgumentParser:
     versions.add_argument("--spec", type=Path, required=True)
     versions.add_argument("--pins", type=Path)
     versions.add_argument("--out", type=Path)
+    blockout = groups.add_parser("blockout").add_subparsers(dest="command", required=True)
+    init = blockout.add_parser("init")
+    init.add_argument("asset")
+    init.add_argument("--root", type=Path, required=True)
+    new_version = blockout.add_parser("new-version")
+    new_version.add_argument("asset")
+    new_version.add_argument("--root", type=Path, required=True)
+    new_version.add_argument("--from", dest="sources", type=Path, nargs="+", action="extend", required=True)
+    new_version.add_argument("--change", required=True)
+    new_version.add_argument("--by", required=True)
+    new_version.add_argument("--set-current", action="store_true")
+    blockout_check = blockout.add_parser("check")
+    blockout_check.add_argument("--root", type=Path, required=True)
+    blockout_check.add_argument("--renders", type=Path)
+    pin = blockout.add_parser("pin")
+    pin.add_argument("asset")
+    pin.add_argument("--root", type=Path, required=True)
+    pin.add_argument("--scene", required=True)
+    pin.add_argument("--version", required=True)
+    pin.add_argument("--reason", required=True)
+    pin.add_argument("--by", required=True)
+    pin.add_argument("--date", required=True)
     qc = groups.add_parser("qc").add_subparsers(dest="command", required=True)
     for name, fields in (("probe", ("files",)), ("compare", ("original", "candidate")), ("tiles", ("input",)), ("split", ("input",)), ("convert", ("input",))):
         command = qc.add_parser(name)
@@ -83,7 +105,7 @@ def parser() -> argparse.ArgumentParser:
 
 
 def execute(args, argv: list[str]):
-    if args.group in {"refs", "versions", "qc"}:
+    if args.group in {"refs", "versions", "qc", "blockout"}:
         name = f"plating_tools.{args.group}"
         try:
             module = importlib.import_module(name)
