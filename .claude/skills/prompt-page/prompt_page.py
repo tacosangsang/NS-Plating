@@ -47,7 +47,7 @@ class Kind(ABC):
 
     def check(self, g: dict, where: str) -> list[str]:
         errs: list[str] = []
-        if self.needs_beats():
+        if self.needs_beats() or g.get("beats"):  # 필수가 아니어도 넣었으면 같은 규칙으로 검사
             errs += _check_beats(g, where)
         return errs
 
@@ -230,7 +230,12 @@ def _media(src: Path, out: Path, stem: str, alt: str, caption: str = "", origina
             dims = f"{im.width}×{im.height} · "
             if original is not None:
                 dims = ""
-            im = im.convert("RGB")
+            if im.mode in ("RGBA", "LA", "PA") or (im.mode == "P" and "transparency" in im.info):
+                rgba = im.convert("RGBA")  # 투명 부분은 흰 바탕에 합쳐 JPEG로(검은 배경에 묻히지 않게)
+                im = Image.new("RGB", rgba.size, (255, 255, 255))
+                im.paste(rgba, mask=rgba.getchannel("A"))
+            else:
+                im = im.convert("RGB")
             im.thumbnail((MAX_EDGE, MAX_EDGE))
             im.save(out / view, quality=88)
         tag = f'<img src="{E(view)}" alt="{E(alt)}" loading="lazy">'
