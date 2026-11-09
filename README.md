@@ -14,7 +14,7 @@
 ```
 NS-Plating/
 ├── workflow/                 # 작업 규칙·도구 함정·프롬프트 블록·검수 절차·실패 사례 정리 (재사용용)
-├── .claude/skills/           # 프로젝트 스킬 (caveman, ponytail, i-have-adhd)
+├── .claude/skills/           # 프로젝트 스킬 (caveman, ponytail, i-have-adhd, prompt-page·prompt-check 등)
 ├── 00 resources/             # 리소스 파일 (미디어, 커밋 안 됨 → Drive)
 │   ├── 00 reference/
 │   ├── 00 image/
