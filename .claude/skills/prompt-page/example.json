@@ -1,0 +1,48 @@
+{
+  "title": "RS02-C003 원탁 대사 컷",
+  "cut": "RS#02-C003",
+  "source": "prompts/RS02_C003.md",
+  "generations": [
+    {
+      "id": "A3",
+      "kind": "video",
+      "what": "홍학 대사",
+      "status": "생성 대기",
+      "model": "Seedance 2.5",
+      "length_s": 7,
+      "resolution": "480p",
+      "crons": 140,
+      "inputs": [
+        {"tag": "@image1", "role": "시작 프레임", "path": "keyframes/RS02/start_v2.png", "resolution": "2816×1584", "blockout": "고목방 v3", "file": "img_src/start.jpg", "download": "https://claude.ai/artifact/..."},
+        {"tag": "@image2", "role": "홍학 인물 시트(생김새만)", "path": "sheets/upper/flamingo.png", "resolution": "2048×2048", "file": "img_src/sheet.jpg"}
+      ],
+      "shot": {
+        "샷 크기": "MCU, 홍학 가슴 위",
+        "카메라 위치·높이": "원탁 맞은편 자리, 앉은 눈높이 1.2m",
+        "앵글": "수평",
+        "렌즈": "50mm",
+        "카메라 움직임": "고정",
+        "화면 배치": "왼쪽 홍학, 오른쪽 뒤로 흐린 백조",
+        "빛 방향": "왼쪽 위 램프, 뒤는 어둠",
+        "refs": [{"file": "img_src/ref.jpg", "caption": "구도 레퍼런스: 50mm 수평 MCU"}]
+      },
+      "beats": [
+        {"t": "0–2", "action": "백조가 잔을 내려놓는 소리를 듣고 → 홍학이 고개를 든다", "sound": "<잔 소리>", "end": "홍학 정면"},
+        {"t": "2–7", "action": "모두 자기를 보자 → \"배급을 줄이죠.\"", "sound": "대사", "end": "말을 마치고 입을 닫음"}
+      ],
+      "check": [
+        {"answer": "예", "note": "연기가 새로 생겨 새 생성"},
+        {"answer": "예", "note": "레퍼런스 2장, 하드컷 없음"},
+        {"answer": "해당 없음"},
+        {"answer": "예"},
+        {"answer": "예"},
+        {"answer": "예"},
+        {"answer": "예"},
+        {"answer": "예"}
+      ],
+      "prompt": "REFERENCE ROLES:\n@image1 (start frame) ...\n@image2 ...",
+      "result": {"media": [], "verdict": ""},
+      "notes": ""
+    }
+  ]
+}
