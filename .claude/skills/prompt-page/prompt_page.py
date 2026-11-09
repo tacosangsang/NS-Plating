@@ -222,10 +222,11 @@ def _media(src: Path, out: Path, stem: str, alt: str, caption: str = "", origina
     shutil.copyfile(keep, out / orig)
     size = f"{keep.stat().st_size / 1_048_576:.1f}MB"
     if src.suffix.lower() in IMAGE_EXT:
-        from PIL import Image
+        from PIL import Image, ImageOps
 
         view = f"img/{stem}.jpg"
-        with Image.open(src) as im:
+        with Image.open(src) as raw:
+            im = ImageOps.exif_transpose(raw)  # 보이는 방향 그대로(EXIF 회전 반영)
             dims = f"{im.width}×{im.height} · "
             if original is not None:
                 dims = ""
