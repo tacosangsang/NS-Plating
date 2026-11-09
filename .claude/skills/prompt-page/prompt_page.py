@@ -76,6 +76,11 @@ class ImageGen(Kind):
 KINDS: dict[str, Kind] = {k.name: k for k in (VideoGen(), VideoEdit(), ImageGen())}
 
 
+def _filled(v) -> bool:
+    """null·빈 문자열·공백만 있는 값은 빈 칸. str(None) == "None"으로 통과하는 것을 막는다."""
+    return v is not None and str(v).strip() != ""
+
+
 def _check_beats(g: dict, where: str) -> list[str]:
     beats = g.get("beats") or []
     if not beats:
@@ -83,7 +88,7 @@ def _check_beats(g: dict, where: str) -> list[str]:
     errs = []
     for i, b in enumerate(beats, 1):
         for k in ("t", "action", "end"):
-            if not str(b.get(k, "")).strip():
+            if not _filled(b.get(k)):
                 errs.append(f"{where}: 구간 {i}의 {k} 빈 칸")
     nums = re.findall(r"\d+(?:\.\d+)?", str(beats[-1].get("t", "")))
     if not nums:
@@ -96,7 +101,7 @@ def _check_beats(g: dict, where: str) -> list[str]:
 def validate(page: dict, base: Path) -> list[str]:
     errs: list[str] = []
     for k in ("title", "cut"):
-        if not str(page.get(k, "")).strip():
+        if not _filled(page.get(k)):
             errs.append(f"페이지: {k} 빈 칸")
     gens = page.get("generations") or []
     if not gens:
@@ -114,7 +119,7 @@ def validate(page: dict, base: Path) -> list[str]:
             errs.append(f"{where}: kind는 {'/'.join(KINDS)} 중 하나")
             continue
         for k in ("id", "what", "model", "resolution", "prompt"):
-            if not str(g.get(k, "")).strip():
+            if not _filled(g.get(k)):
                 errs.append(f"{where}: {k} 빈 칸")
         if kind.name != "image" and g.get("length_s") is None:
             errs.append(f"{where}: length_s 빈 칸")
@@ -136,7 +141,7 @@ def _check_inputs(g: dict, where: str, base: Path) -> list[str]:
     for i in inputs:
         t = i.get("tag", "?")
         for k in INPUT_KEYS:
-            if not str(i.get(k, "")).strip():
+            if not _filled(i.get(k)):
                 errs.append(f"{where}: 입력 {t}의 {k} 빈 칸")
         f = i.get("file")
         if f:
@@ -167,7 +172,7 @@ def _check_media(g: dict, where: str, base: Path) -> list[str]:
     """촬영 레퍼런스와 결과 파일이 실제로 있는지 본다(--check가 통과했는데 만들 때 터지지 않게)."""
     errs = []
     for i, r in enumerate((g.get("shot") or {}).get("refs") or [], 1):
-        f = str(r.get("file", "")).strip()
+        f = str(r.get("file") or "").strip()
         if not f:
             errs.append(f"{where}: 촬영 레퍼런스 {i}의 file 빈 칸")
         elif not _resolve(f, base).is_file():
@@ -184,9 +189,9 @@ def _check_media(g: dict, where: str, base: Path) -> list[str]:
 
 def _check_shot(g: dict, where: str) -> list[str]:
     shot = g.get("shot") or {}
-    if str(shot.get("same_as", "")).strip():
+    if _filled(shot.get("same_as")):
         return []
-    return [f"{where}: 촬영 표 '{k}' 빈 칸" for k in SHOT_KEYS if not str(shot.get(k, "")).strip()]
+    return [f"{where}: 촬영 표 '{k}' 빈 칸" for k in SHOT_KEYS if not _filled(shot.get(k))]
 
 
 def _check_answers(g: dict, where: str) -> list[str]:
@@ -198,7 +203,7 @@ def _check_answers(g: dict, where: str) -> list[str]:
         a = c.get("answer")
         if a not in ANSWERS:
             errs.append(f"{where}: 점검 {i}번 답이 예/아니오/해당 없음이 아님")
-        elif a == "아니오" and not str(c.get("note", "")).strip():
+        elif a == "아니오" and not _filled(c.get("note")):
             errs.append(f"{where}: 점검 {i}번 아니오인데 이유·대안 없음")
     return errs
 
@@ -260,7 +265,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
 
     shot = g.get("shot") or {}
     parts.append("<h3>촬영</h3>")
-    if str(shot.get("same_as", "")).strip():
+    if _filled(shot.get("same_as")):
         parts.append(f'<p class="shot-same">{E(shot["same_as"])}</p>')
     else:
         rows = "".join(f"<tr><th>{E(k)}</th><td>{E(str(shot[k]))}</td></tr>" for k in SHOT_KEYS)
@@ -292,7 +297,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
             parts.append(_media(_resolve(m, base), out, f"g{n}_res{i}", "결과", "결과"))
         if res.get("verdict"):
             parts.append(f'<p>{E(res["verdict"])}</p>')
-    if str(g.get("notes", "")).strip():
+    if _filled(g.get("notes")):
         parts.append(f'<details><summary>메모·비평</summary><p class="pre">{E(g["notes"])}</p></details>')
     parts.append("</section>")
     return "\n".join(parts)

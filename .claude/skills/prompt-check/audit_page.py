@@ -36,9 +36,13 @@ def audit(doc: str) -> list[str]:
     prompt = html.unescape("".join(re.findall(r"<pre[^>]*>(.*?)</pre>", first, re.S)))
     body = re.sub(r"<pre.*?</pre>", "", scope, flags=re.S)
     refs = sorted(set(TAG_RE.findall(prompt)))
-    imgs = len(re.findall(r"<img\b", body))
-    if imgs < len(refs):
-        problems.append(f"입력 그림 부족: 프롬프트가 {len(refs)}개(@{', @'.join(refs)})를 부르는데 그림은 {imgs}장")
+    # 태그마다 그 태그가 붙은 그림·영상이 있는지 본다. 레퍼런스·결과 그림은 입력으로 치지 않는다.
+    figures = [f for f in re.findall(r"<figure\b.*?</figure>", body, re.S) if re.search(r"<(?:img|video)\b", f)]
+    alts = re.findall(r"<(?:img|video)\b[^>]*\balt=\"([^\"]*)\"", body)
+    missing = [r for r in refs
+               if not any(re.search(rf"@{r}\b", f) for f in figures) and not any(re.search(rf"@{r}\b", a) for a in alts)]
+    if missing:
+        problems.append(f"입력 그림 없음: @{', @'.join(missing)}에 해당하는 그림이 안 보임(그림 설명에 태그 필요)")
     if re.search(r"grid-template-columns:\s*(repeat\(|1fr\s+1fr)", doc):
         problems.append("그림이 작은 격자(2열 이상)로 배치됨")
     text = html.unescape(re.sub(r"<.*?>", " ", body))
