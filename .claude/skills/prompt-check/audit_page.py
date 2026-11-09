@@ -68,8 +68,12 @@ def audit(doc: str) -> list[str]:
         problems.append("프롬프트 복사 버튼이 없음")
     # 제목과 바로 아래 설명(첫 표·소제목·프롬프트 전까지)만 본다. 점검 표의 "edit인가" 같은 말에 걸리지 않게.
     head = html.unescape(re.sub(r"<.*?>", " ", re.split(r"<(?:h3|table|pre|div class=\"prompt)\b", first)[0]))
-    is_edit = re.search(r"edit", title + head, re.I) or "@video" in prompt
-    is_video = not is_edit and re.search(r"Seedance|영상 생성|video", title + head + prompt[:300], re.I)
+    meta = re.search(r'<p class="meta">(.*?)</p>', first, re.S)
+    if meta:  # 생성기 페이지: 메타 줄의 종류를 그대로 믿는다
+        is_video = html.unescape(meta.group(1)).startswith("영상 생성")
+    else:  # 손으로 만든 옛 페이지: 추정
+        is_edit = re.search(r"edit", title + head, re.I) or "@video" in prompt
+        is_video = not is_edit and re.search(r"Seedance|영상 생성|video", title + head + prompt[:300], re.I)
     if is_video and not re.search(r"<th[^>]*>\s*(초|구간|시간)", body):
         problems.append("영상인데 한글 구간 표(초 단위)가 없음")
     return problems
