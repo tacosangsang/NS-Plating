@@ -43,7 +43,7 @@ def audit(doc: str) -> list[str]:
         problems.append("그림이 작은 격자(2열 이상)로 배치됨")
     text = html.unescape(re.sub(r"<.*?>", " ", body))
     for r in refs:
-        if not re.search(rf"@{r}\b[^\n]{{0,200}}\.(png|jpe?g|webp|mp4)", text):
+        if not re.search(rf"@{r}\b[^\n]{{0,200}}\.(png|jpe?g|webp|mp4)", text, re.I):
             problems.append(f"@{r}의 파일 경로가 프롬프트 밖 본문에 없음")
     hits = [w for w in SHOT_WORDS if w in text]
     if len(hits) < 3 and 'class="shot-same"' not in body:
