@@ -13,6 +13,7 @@ import json
 import re
 import shutil
 import sys
+import tempfile
 from abc import ABC, abstractmethod
 from pathlib import Path
 
@@ -84,9 +85,10 @@ def _check_beats(g: dict, where: str) -> list[str]:
         for k in ("t", "action", "end"):
             if not str(b.get(k, "")).strip():
                 errs.append(f"{where}: 구간 {i}의 {k} 빈 칸")
-    last = str(beats[-1].get("t", ""))
-    nums = re.findall(r"\d+(?:\.\d+)?", last)
-    if g.get("length_s") is not None and nums and float(nums[-1]) != float(g["length_s"]):
+    nums = re.findall(r"\d+(?:\.\d+)?", str(beats[-1].get("t", "")))
+    if not nums:
+        errs.append(f"{where}: 마지막 구간 t에 끝 초(숫자)가 없음. 예: \"2–7\"")
+    elif g.get("length_s") is not None and float(nums[-1]) != float(g["length_s"]):
         errs.append(f"{where}: 마지막 구간 끝({nums[-1]}초)이 길이({g['length_s']}초)와 다름")
     return errs
 
@@ -279,10 +281,35 @@ JS = """document.querySelectorAll('.ph button').forEach(b=>b.addEventListener('c
 navigator.clipboard.writeText(el.textContent).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)}).catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='선택됨'})}));"""
 
 
+def _sources(page: dict, base: Path) -> list[Path]:
+    paths = []
+    for g in page["generations"]:
+        paths += [_resolve(i["file"], base) for i in g.get("inputs") or []]
+        paths += [_resolve(r["file"], base) for r in (g.get("shot") or {}).get("refs") or []]
+        paths += [_resolve(m, base) for m in (g.get("result") or {}).get("media") or []]
+    return [p.resolve() for p in paths]
+
+
 def render(page: dict, base: Path, out: Path) -> Path:
-    if out.exists():
-        shutil.rmtree(out / "img", ignore_errors=True)
+    """임시 폴더에 다 만든 뒤 out/index.html과 out/img만 바꾼다. 원본 그림이 out/img 안에 있으면 거부한다."""
+    img_dir = (out / "img").resolve()
+    inside = [p for p in _sources(page, base) if img_dir == p or img_dir in p.parents]
+    if inside:
+        raise SystemExit(f"원본 그림이 출력 폴더 img/ 안에 있음(덮어써짐): {inside[0]}. 출력 폴더를 따로 정한다.")
     out.mkdir(parents=True, exist_ok=True)
+    tmp = Path(tempfile.mkdtemp(prefix=".prompt_page_", dir=out))
+    try:
+        index = _render_into(page, base, tmp)
+        shutil.rmtree(img_dir, ignore_errors=True)
+        shutil.move(str(tmp / "img"), str(img_dir))
+        shutil.move(str(index), str(out / "index.html"))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    return out / "index.html"
+
+
+def _render_into(page: dict, base: Path, out: Path) -> Path:
+    (out / "img").mkdir(parents=True, exist_ok=True)
     gens = page["generations"]
     body = [_render_gen(gens[0], base, out, 0)]
     if len(gens) > 1:
