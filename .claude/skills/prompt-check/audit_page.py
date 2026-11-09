@@ -52,11 +52,16 @@ def audit(doc: str) -> list[str]:
     if len(answers) < 8:
         problems.append(f"점검 8줄 칸이 없음(표 안의 예/아니오/해당 없음 답 {len(answers)}개)")
     shown = len(re.findall(r"<(?:img|video)\b", body))
-    dls = len(re.findall(r'class="dl"|원본 받기|원본 다운로드', body))
+    # 컨트롤(button·a) 하나를 한 번만 센다. class와 글자가 둘 다 맞아도 1개.
+    controls = re.findall(r"<(button|a)\b([^>]*)>(.*?)</\1>", body, re.S)
+    dls = sum(1 for _, attrs, inner in controls
+              if re.search(r'class="[^"]*\bdl\b', attrs) or re.search(r"원본 (받기|다운로드)", inner))
     if dls < shown:
         problems.append(f"원본 다운로드가 빠짐: 그림·영상 {shown}개에 원본 받기 {dls}개")
-    if "<button" not in first:
-        problems.append("복사 버튼이 없음")
+    copies = [c for c in re.findall(r"<button\b([^>]*)>(.*?)</button>", first, re.S)
+              if "복사" in c[1] or re.search(r"copy", c[0], re.I)]
+    if not copies:
+        problems.append("프롬프트 복사 버튼이 없음")
     # 제목과 바로 아래 설명(첫 표·소제목·프롬프트 전까지)만 본다. 점검 표의 "edit인가" 같은 말에 걸리지 않게.
     head = html.unescape(re.sub(r"<.*?>", " ", re.split(r"<(?:h3|table|pre|div class=\"prompt)\b", first)[0]))
     is_edit = re.search(r"edit", title + head, re.I) or "@video" in prompt
