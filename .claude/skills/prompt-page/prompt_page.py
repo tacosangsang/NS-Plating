@@ -119,6 +119,7 @@ def validate(page: dict, base: Path) -> list[str]:
         if kind.name != "image" and g.get("length_s") is None:
             errs.append(f"{where}: length_s 빈 칸")
         errs += _check_inputs(g, where, base)
+        errs += _check_media(g, where, base)
         errs += _check_shot(g, where)
         errs += _check_answers(g, where)
         errs += kind.check(g, where)
@@ -144,6 +145,21 @@ def _check_inputs(g: dict, where: str, base: Path) -> list[str]:
                 errs.append(f"{where}: 입력 {t}의 file 없음: {p}")
             elif p.suffix.lower() not in IMAGE_EXT:
                 errs.append(f"{where}: 입력 {t}의 file은 그림이어야 함(@video는 첫 프레임을 뽑아 넣기)")
+    return errs
+
+
+def _check_media(g: dict, where: str, base: Path) -> list[str]:
+    """촬영 레퍼런스와 결과 파일이 실제로 있는지 본다(--check가 통과했는데 만들 때 터지지 않게)."""
+    errs = []
+    for i, r in enumerate((g.get("shot") or {}).get("refs") or [], 1):
+        f = str(r.get("file", "")).strip()
+        if not f:
+            errs.append(f"{where}: 촬영 레퍼런스 {i}의 file 빈 칸")
+        elif not _resolve(f, base).is_file():
+            errs.append(f"{where}: 촬영 레퍼런스 {i}의 file 없음: {_resolve(f, base)}")
+    for m in (g.get("result") or {}).get("media") or []:
+        if not _resolve(m, base).is_file():
+            errs.append(f"{where}: 결과 파일 없음: {_resolve(m, base)}")
     return errs
 
 
@@ -221,7 +237,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
     shot = g.get("shot") or {}
     parts.append("<h3>촬영</h3>")
     if str(shot.get("same_as", "")).strip():
-        parts.append(f'<p>{E(shot["same_as"])}</p>')
+        parts.append(f'<p class="shot-same">{E(shot["same_as"])}</p>')
     else:
         rows = "".join(f"<tr><th>{E(k)}</th><td>{E(str(shot[k]))}</td></tr>" for k in SHOT_KEYS)
         parts.append(f'<div class="tw"><table>{rows}</table></div>')

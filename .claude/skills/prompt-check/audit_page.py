@@ -46,7 +46,7 @@ def audit(doc: str) -> list[str]:
         if not re.search(rf"@{r}\b[^\n]{{0,200}}\.(png|jpe?g|webp|mp4)", text):
             problems.append(f"@{r}의 파일 경로가 프롬프트 밖 본문에 없음")
     hits = [w for w in SHOT_WORDS if w in text]
-    if len(hits) < 3:
+    if len(hits) < 3 and 'class="shot-same"' not in body:
         problems.append(f"한글 촬영 정보가 거의 없음(찾은 말: {', '.join(hits) or '없음'})")
     answers = re.findall(r"<td[^>]*>\s*(예|아니오|해당 없음)\s*</td>", body)
     if len(answers) < 8:
