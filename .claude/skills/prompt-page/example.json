@@ -13,7 +13,7 @@
       "resolution": "480p",
       "crons": 140,
       "inputs": [
-        {"tag": "@image1", "role": "시작 프레임", "path": "keyframes/RS02/start_v2.png", "resolution": "2816×1584", "blockout": "고목방 v3", "file": "img_src/start.jpg", "download": "https://claude.ai/artifact/..."},
+        {"tag": "@image1", "role": "시작 프레임", "path": "keyframes/RS02/start_v2.png", "resolution": "2816×1584", "blockout": "고목방 v3", "file": "img_src/start.jpg"},
         {"tag": "@image2", "role": "홍학 인물 시트(생김새만)", "path": "sheets/upper/flamingo.png", "resolution": "2048×2048", "file": "img_src/sheet.jpg"}
       ],
       "shot": {

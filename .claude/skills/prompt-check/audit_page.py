@@ -51,6 +51,10 @@ def audit(doc: str) -> list[str]:
     answers = re.findall(r"<td[^>]*>\s*(예|아니오|해당 없음)\s*</td>", body)
     if len(answers) < 8:
         problems.append(f"점검 8줄 칸이 없음(표 안의 예/아니오/해당 없음 답 {len(answers)}개)")
+    shown = len(re.findall(r"<(?:img|video)\b", body))
+    dls = len(re.findall(r'class="dl"|원본 받기|원본 다운로드', body))
+    if dls < shown:
+        problems.append(f"원본 다운로드가 빠짐: 그림·영상 {shown}개에 원본 받기 {dls}개")
     if "<button" not in first:
         problems.append("복사 버튼이 없음")
     # 제목과 바로 아래 설명(첫 표·소제목·프롬프트 전까지)만 본다. 점검 표의 "edit인가" 같은 말에 걸리지 않게.

@@ -145,7 +145,22 @@ def _check_inputs(g: dict, where: str, base: Path) -> list[str]:
                 errs.append(f"{where}: 입력 {t}의 file 없음: {p}")
             elif p.suffix.lower() not in IMAGE_EXT:
                 errs.append(f"{where}: 입력 {t}의 file은 그림이어야 함(@video는 첫 프레임을 뽑아 넣기)")
+            else:
+                errs += _check_size(p, f"입력 {t}", where)
+        o = i.get("original")
+        if o:
+            op = _resolve(o, base)
+            errs += [f"{where}: 입력 {t}의 original 없음: {op}"] if not op.is_file() else _check_size(op, f"입력 {t}", where)
     return errs
+
+
+MAX_FILE = 15 * 1_048_576  # 아티팩트 파일 하나 상한(바이너리 15MB)
+
+
+def _check_size(p: Path, label: str, where: str) -> list[str]:
+    if p.is_file() and p.stat().st_size > MAX_FILE:
+        return [f"{where}: {label} 원본이 15MB를 넘어 아티팩트에 못 올림({p.stat().st_size / 1_048_576:.1f}MB). 원본 다운로드 칸을 달 수 없으니 나눠 올리거나 드라이브 경로로"]
+    return []
 
 
 def _check_media(g: dict, where: str, base: Path) -> list[str]:
@@ -157,9 +172,13 @@ def _check_media(g: dict, where: str, base: Path) -> list[str]:
             errs.append(f"{where}: 촬영 레퍼런스 {i}의 file 빈 칸")
         elif not _resolve(f, base).is_file():
             errs.append(f"{where}: 촬영 레퍼런스 {i}의 file 없음: {_resolve(f, base)}")
+        else:
+            errs += _check_size(_resolve(f, base), f"촬영 레퍼런스 {i}", where)
     for m in (g.get("result") or {}).get("media") or []:
         if not _resolve(m, base).is_file():
             errs.append(f"{where}: 결과 파일 없음: {_resolve(m, base)}")
+        else:
+            errs += _check_size(_resolve(m, base), "결과", where)
     return errs
 
 
@@ -189,30 +208,35 @@ def _resolve(f: str, base: Path) -> Path:
     return p if p.is_absolute() else base / p
 
 
-def _copy_media(src: Path, out: Path, stem: str) -> str:
-    """그림은 긴 변 1600px JPEG로 줄이고, 그 밖의 파일은 그대로 복사한다. 페이지 기준 상대 경로를 돌려준다."""
-    out.mkdir(parents=True, exist_ok=True)
+def _media(src: Path, out: Path, stem: str, alt: str, caption: str = "", original: Path | None = None) -> str:
+    """보기용(그림은 긴 변 1600px JPEG)과 원본(손대지 않은 복사본)을 함께 두고, 원본 받기 버튼이 달린 figure를 돌려준다."""
+    (out / "img").mkdir(parents=True, exist_ok=True)
+    (out / "orig").mkdir(parents=True, exist_ok=True)
+    keep = original or src  # 받을 파일. @video처럼 보기용 그림과 원본이 다르면 original
+    orig = f"orig/{stem}{keep.suffix.lower()}"
+    shutil.copyfile(keep, out / orig)
+    size = f"{keep.stat().st_size / 1_048_576:.1f}MB"
     if src.suffix.lower() in IMAGE_EXT:
         from PIL import Image
 
-        name = f"{stem}.jpg"
+        view = f"img/{stem}.jpg"
         with Image.open(src) as im:
+            dims = f"{im.width}×{im.height} · "
+            if original is not None:
+                dims = ""
             im = im.convert("RGB")
             im.thumbnail((MAX_EDGE, MAX_EDGE))
-            im.save(out / name, quality=88)
+            im.save(out / view, quality=88)
+        tag = f'<img src="{E(view)}" alt="{E(alt)}" loading="lazy">'
     else:
-        name = f"{stem}{src.suffix.lower()}"
-        shutil.copyfile(src, out / name)
-    return f"img/{name}"
+        dims = ""
+        tag = f'<video src="{E(orig)}" controls playsinline></video>'
+    btn = f'<button type="button" class="dl" data-src="{E(orig)}" data-name="{E(keep.name)}">원본 받기 ({dims}{size})</button>'
+    sep = " · " if caption else ""
+    return f"<figure>{tag}<figcaption>{caption}{sep}{btn}</figcaption></figure>"
 
 
 E = html.escape
-
-
-def _media_tag(rel: str, alt: str) -> str:
-    if rel.endswith((".mp4", ".webm", ".mov")):
-        return f'<video src="{E(rel)}" controls playsinline></video>'
-    return f'<img src="{E(rel)}" alt="{E(alt)}" loading="lazy">'
 
 
 def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
@@ -228,11 +252,11 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
 
     parts.append("<h3>입력 그림</h3>")
     for i, inp in enumerate(g.get("inputs") or []):
-        rel = _copy_media(_resolve(inp["file"], base), out / "img", f"g{n}_in{i}")
-        dl = f' · <a href="{E(inp["download"])}">원본 받기</a>' if inp.get("download") else ""
         bo = f' · 블록아웃 {E(inp["blockout"])}' if inp.get("blockout") else ""
-        parts.append(f'<figure>{_media_tag(rel, inp["tag"])}<figcaption><b>{E(inp["tag"])}</b> · {E(inp["role"])} · '
-                     f'<code>{E(inp["path"])}</code> · {E(inp["resolution"])}{bo}{dl}</figcaption></figure>')
+        cap = (f'<b>{E(inp["tag"])}</b> · {E(inp["role"])} · <code>{E(inp["path"])}</code> · '
+               f'{E(inp["resolution"])}{bo}')
+        original = _resolve(inp["original"], base) if inp.get("original") else None
+        parts.append(_media(_resolve(inp["file"], base), out, f"g{n}_in{i}", inp["tag"], cap, original))
 
     shot = g.get("shot") or {}
     parts.append("<h3>촬영</h3>")
@@ -242,8 +266,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
         rows = "".join(f"<tr><th>{E(k)}</th><td>{E(str(shot[k]))}</td></tr>" for k in SHOT_KEYS)
         parts.append(f'<div class="tw"><table>{rows}</table></div>')
     for i, r in enumerate(shot.get("refs") or []):
-        rel = _copy_media(_resolve(r["file"], base), out / "img", f"g{n}_ref{i}")
-        parts.append(f'<figure>{_media_tag(rel, r.get("caption", ""))}<figcaption>{E(r.get("caption", ""))}</figcaption></figure>')
+        parts.append(_media(_resolve(r["file"], base), out, f"g{n}_ref{i}", r.get("caption", ""), E(r.get("caption", ""))))
 
     if g.get("beats"):
         parts.append("<h3>구간</h3>")
@@ -266,8 +289,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
     if res.get("media") or res.get("verdict"):
         parts.append("<h3>결과</h3>")
         for i, m in enumerate(res.get("media") or []):
-            rel = _copy_media(_resolve(m, base), out / "img", f"g{n}_res{i}")
-            parts.append(f"<figure>{_media_tag(rel, '결과')}</figure>")
+            parts.append(_media(_resolve(m, base), out, f"g{n}_res{i}", "결과", "결과"))
         if res.get("verdict"):
             parts.append(f'<p>{E(res["verdict"])}</p>')
     if str(g.get("notes", "")).strip():
@@ -289,11 +311,17 @@ figcaption{font-size:13.5px;color:var(--muted);margin-top:4px}code{font:12.5px u
 .beats td:first-child{white-space:nowrap}
 .a-아니오{color:var(--no);font-weight:600}
 .prompt{border:1px solid var(--line);border-radius:6px;overflow:hidden}.ph{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--code);font-size:12.5px;color:var(--muted)}
+button.dl{font:600 12px system-ui;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:4px;padding:2px 8px;margin-left:2px;cursor:pointer}button.dl:disabled{opacity:.5;cursor:default}
 .ph button{font:600 12.5px system-ui;color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:5px 12px;cursor:pointer}
 pre{margin:0;padding:12px;font:12.5px/1.6 ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;max-height:480px;overflow:auto}
 .pre{white-space:pre-wrap}details>summary{cursor:pointer;color:var(--accent);font-weight:600}"""
 
-JS = """document.querySelectorAll('.ph button').forEach(b=>b.addEventListener('click',()=>{const el=document.getElementById(b.dataset.t);
+JS = """(async()=>{const dl=await window.claude?.use?.("downloads");document.querySelectorAll('button.dl').forEach(b=>{
+if(!dl){b.disabled=true;b.title='이 화면에서는 저장할 수 없음';return}
+b.addEventListener('click',async()=>{const t=b.textContent;b.textContent='준비 중';try{const r=await fetch(b.dataset.src);
+await dl.save({filename:b.dataset.name,data:await r.blob()});b.textContent='저장함'}catch(e){b.textContent=(e&&e.code==='declined')?'취소함':'저장 실패: '+((e&&e.code)||'오류')}
+setTimeout(()=>b.textContent=t,2500)})})})();
+document.querySelectorAll('.ph button').forEach(b=>b.addEventListener('click',()=>{const el=document.getElementById(b.dataset.t);
 navigator.clipboard.writeText(el.textContent).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)}).catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='선택됨'})}));"""
 
 
@@ -301,6 +329,7 @@ def _sources(page: dict, base: Path) -> list[Path]:
     paths = []
     for g in page["generations"]:
         paths += [_resolve(i["file"], base) for i in g.get("inputs") or []]
+        paths += [_resolve(i["original"], base) for i in g.get("inputs") or [] if i.get("original")]
         paths += [_resolve(r["file"], base) for r in (g.get("shot") or {}).get("refs") or []]
         paths += [_resolve(m, base) for m in (g.get("result") or {}).get("media") or []]
     return [p.resolve() for p in paths]
@@ -308,16 +337,18 @@ def _sources(page: dict, base: Path) -> list[Path]:
 
 def render(page: dict, base: Path, out: Path) -> Path:
     """임시 폴더에 다 만든 뒤 out/index.html과 out/img만 바꾼다. 원본 그림이 out/img 안에 있으면 거부한다."""
-    img_dir = (out / "img").resolve()
-    inside = [p for p in _sources(page, base) if img_dir == p or img_dir in p.parents]
+    owned = [(out / sub).resolve() for sub in ("img", "orig")]
+    inside = [p for p in _sources(page, base) if any(d == p or d in p.parents for d in owned)]
     if inside:
-        raise SystemExit(f"원본 그림이 출력 폴더 img/ 안에 있음(덮어써짐): {inside[0]}. 출력 폴더를 따로 정한다.")
+        raise SystemExit(f"원본 그림이 출력 폴더 img/·orig/ 안에 있음(덮어써짐): {inside[0]}. 출력 폴더를 따로 정한다.")
     out.mkdir(parents=True, exist_ok=True)
     tmp = Path(tempfile.mkdtemp(prefix=".prompt_page_", dir=out))
     try:
         index = _render_into(page, base, tmp)
-        shutil.rmtree(img_dir, ignore_errors=True)
-        shutil.move(str(tmp / "img"), str(img_dir))
+        for sub in ("img", "orig"):
+            shutil.rmtree(out / sub, ignore_errors=True)
+            if (tmp / sub).exists():
+                shutil.move(str(tmp / sub), str(out / sub))
         shutil.move(str(index), str(out / "index.html"))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -355,8 +386,8 @@ def main(argv: list[str]) -> int:
         return 0
     out = Path(argv[2]).resolve()
     index = render(page, src.parent, out)
-    files = {f"img/{p.name}": str(p) for p in sorted((out / "img").glob("*"))}
-    print(json.dumps({"file_path": str(index), "files": files}, ensure_ascii=False, indent=1))
+    files = {f"{sub}/{p.name}": str(p) for sub in ("img", "orig") for p in sorted((out / sub).glob("*"))}
+    print(json.dumps({"file_path": str(index), "files": files, "capabilities": {"downloads": True}}, ensure_ascii=False, indent=1))
     return 0
 
 

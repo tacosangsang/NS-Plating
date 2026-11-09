@@ -19,7 +19,7 @@ description: PLATING 생성 프롬프트(영상 생성·video_edit·이미지 Ed
 2. 그림 파일(`file`)은 JSON 기준 상대 경로나 절대 경로로 적는다. `@video` 입력은 첫 프레임을 jpg로 뽑아 `file`에 넣는다.
 3. 검사만 할 때: `python3 .claude/skills/prompt-page/prompt_page.py page.json --check`
 4. 페이지를 만들 때: `python3 .claude/skills/prompt-page/prompt_page.py page.json <출력폴더>`
-   - 출력되는 JSON의 `file_path`와 `files`를 Artifact publish에 그대로 넘긴다.
+   - 출력되는 JSON의 `file_path`, `files`, `capabilities`(`{"downloads": true}`)를 Artifact publish에 그대로 넘긴다. capabilities를 빼면 원본 받기 버튼이 꺼진다.
    - 같은 페이지를 고칠 때는 같은 `file_path`로 다시 publish한다.
 5. 새 판을 만들면 `generations` 맨 앞에 넣고, 앞의 판은 status를 바꾼다(대안/완료/옛 판/실패). 페이지에서는 맨 위에 지금 돌릴 판 하나만 보이고, 나머지는 접힌다.
 
@@ -29,7 +29,7 @@ description: PLATING 생성 프롬프트(영상 생성·video_edit·이미지 Ed
 | --- | --- |
 | `kind` | `video`(영상 생성) / `video_edit` / `image`(Seedream Edit·Combine) |
 | `status` | 최신 / 생성 대기 / 대안 / 완료 / 옛 판 / 실패. 맨 위는 최신이나 생성 대기여야 하고, 최신은 하나만 |
-| `inputs` | 프롬프트가 부르는 @image·@video 전부: tag, role(시작 프레임/시트/배치만 등), path(프로젝트 경로), resolution, file. 고른다면 blockout(버전)과 download(원본 받기 링크) |
+| `inputs` | 프롬프트가 부르는 @image·@video 전부: tag, role(시작 프레임/시트/배치만 등), path(프로젝트 경로), resolution, file(보이는 그림, 원본 최고화질). 고른다면 blockout(버전), original(받을 파일이 보이는 그림과 다를 때, 예: @video의 원본 mp4) |
 | `shot` | 한글로 쓴다: 샷 크기, 카메라 위치·높이, 앵글, 렌즈, 카메라 움직임, 화면 배치, 빛 방향. 구도를 @image1에서 그대로 쓰면 `same_as`에 한 줄. `refs`에 레퍼런스·블록아웃 렌더 그림 |
 | `beats` | 영상 생성일 때 필수. 초 / 원인 → 행동 / 대사·효과음 / 끝 상태. 마지막 초는 length_s와 같아야 한다 |
 | `check` | 핸드북 "크레딧 쓰기 전 점검" 8줄 순서대로 예/아니오/해당 없음. 아니오면 note에 이유와 대안 |
@@ -40,6 +40,7 @@ description: PLATING 생성 프롬프트(영상 생성·video_edit·이미지 Ed
 ## 페이지가 지키는 것
 
 - 입력 그림은 한 줄에 한 장, 페이지 폭 가득, 긴 변 1600px로 보인다. 작은 격자는 없다.
+- 올리는 그림·영상(입력, 레퍼런스, 결과 전부)마다 **원본 받기** 버튼이 붙는다. 원본은 손대지 않은 파일 그대로 `orig/`에 올라가고 버튼에 해상도·크기가 보인다(사용자 11-09). 파일 하나가 15MB를 넘으면 아티팩트에 못 올리므로 검사에서 걸린다.
 - 그림 아래에는 @번호·역할·경로·해상도가 붙는다.
 - 프롬프트 바로 위에 점검 칸이 있고, 아니오는 빨간색으로 보인다.
 - 복사 버튼이 붙는다.
