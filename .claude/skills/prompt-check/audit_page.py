@@ -53,8 +53,11 @@ def audit(doc: str) -> list[str]:
         problems.append(f"점검 8줄 칸이 없음(표 안의 예/아니오/해당 없음 답 {len(answers)}개)")
     if "<button" not in first:
         problems.append("복사 버튼이 없음")
-    is_video = re.search(r"Seedance|video|영상", title + prompt[:300], re.I) and "edit" not in title.lower() and "@video" not in prompt
-    if is_video and not re.search(r"<table[^>]*>.*?(초|구간)", body, re.S):
+    # 제목과 바로 아래 설명(첫 표·소제목·프롬프트 전까지)만 본다. 점검 표의 "edit인가" 같은 말에 걸리지 않게.
+    head = html.unescape(re.sub(r"<.*?>", " ", re.split(r"<(?:h3|table|pre|div class=\"prompt)\b", first)[0]))
+    is_edit = re.search(r"edit", title + head, re.I) or "@video" in prompt
+    is_video = not is_edit and re.search(r"Seedance|영상 생성|video", title + head + prompt[:300], re.I)
+    if is_video and not re.search(r"<th[^>]*>\s*(초|구간|시간)", body):
         problems.append("영상인데 한글 구간 표(초 단위)가 없음")
     return problems
 
