@@ -14,7 +14,8 @@ from pathlib import Path
 
 TAG_RE = re.compile(r"@(image\d+|video\d*)")
 MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
-                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면", re.I)
+                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
+                       r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
 VAGUE_CAMERA = {"계속", "동일", "같음", "위와 같음", "유지", "-", "continue", "same"}
 SHOT_WORDS = ("샷 크기", "앵글", "렌즈", "mm", "카메라 위치", "눈높이", "화면 배치", "빛 방향")
 

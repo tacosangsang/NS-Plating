@@ -121,7 +121,8 @@ MASKS_BLOCK = (
     "never taken off and never turns into a real bird's head."
 )
 MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
-                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면", re.I)
+                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
+                       r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
 
 
 def cut_groups(page: dict) -> dict[str, list[int]]:
@@ -159,7 +160,8 @@ def validate(page: dict, base: Path) -> list[str]:
         if g.get("status") not in STATUSES:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
         prompt = str(g.get("prompt") or "")
-        if MASKED_RE.search(prompt) and MASKS_BLOCK not in prompt:
+        # 지금 돌릴 판에만. 이미 돌린 옛 판·완료·실패는 실제 쓴 프롬프트 그대로 둔다
+        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and MASKS_BLOCK not in prompt:
             errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항(prompt_page.MASKS_BLOCK) 원문이 프롬프트에 없음")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
