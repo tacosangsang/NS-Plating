@@ -48,7 +48,7 @@ class Kind(ABC):
     def check(self, g: dict, where: str) -> list[str]:
         errs: list[str] = []
         if self.needs_beats() or g.get("beats"):  # 필수가 아니어도 넣었으면 같은 규칙으로 검사
-            errs += _check_beats(g, where)
+            errs += _check_beats(g, where, need_camera=self.needs_beats())
         return errs
 
 
@@ -81,15 +81,26 @@ def _filled(v) -> bool:
     return v is not None and str(v).strip() != ""
 
 
-def _check_beats(g: dict, where: str) -> list[str]:
+VAGUE_CAMERA = {"계속", "동일", "같음", "위와 같음", "유지", "-", "continue", "same"}
+
+
+def _check_beats(g: dict, where: str, need_camera: bool) -> list[str]:
     beats = g.get("beats") or []
     if not beats:
         return [f"{where}: 영상 생성인데 구간 표(beats)가 없음"]
     errs = []
+    keys = ("t", "camera", "action", "end") if need_camera else ("t", "action", "end")
     for i, b in enumerate(beats, 1):
-        for k in ("t", "action", "end"):
+        for k in keys:
             if not _filled(b.get(k)):
                 errs.append(f"{where}: 구간 {i}의 {k} 빈 칸")
+        cam = str(b.get("camera") or "").strip()
+        if cam and cam.rstrip(". ").lower() in VAGUE_CAMERA:
+            errs.append(f"{where}: 구간 {i}의 camera가 빈말({cam}). 무엇이 어느 쪽으로 얼마나 밀리는지 쓴다")
+    if need_camera:
+        n_cam = len(re.findall(r"\bCamera\s*:", str(g.get("prompt") or "")))
+        if n_cam < len(beats):
+            errs.append(f"{where}: 프롬프트 TIMELINE 줄 끝 \"Camera: ...\"가 구간 {len(beats)}개 중 {n_cam}개뿐")
     nums = re.findall(r"\d+(?:\.\d+)?", str(beats[-1].get("t", "")))
     if not nums:
         errs.append(f"{where}: 마지막 구간 t에 끝 초(숫자)가 없음. 예: \"2–7\"")
@@ -281,10 +292,12 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
 
     if g.get("beats"):
         parts.append("<h3>구간</h3>")
-        rows = "".join(f"<tr><td>{E(str(b['t']))}초</td><td>{E(b['action'])}</td><td>{E(b.get('sound', ''))}</td>"
-                       f"<td>{E(b['end'])}</td></tr>" for b in g["beats"])
-        parts.append('<div class="tw"><table class="beats"><tr><th>초</th><th>원인 → 행동</th><th>대사·효과음</th><th>끝 상태</th></tr>'
-                     f"{rows}</table></div>")
+        cam = any(_filled(b.get("camera")) for b in g["beats"])
+        rows = "".join(f"<tr><td>{E(str(b['t']))}초</td>" + (f"<td>{E(b.get('camera') or '')}</td>" if cam else "")
+                       + f"<td>{E(b['action'])}</td><td>{E(b.get('sound', ''))}</td><td>{E(b['end'])}</td></tr>"
+                       for b in g["beats"])
+        head = "<th>초</th>" + ("<th>카메라</th>" if cam else "") + "<th>원인 → 행동</th><th>대사·효과음</th><th>끝 상태</th>"
+        parts.append(f'<div class="tw"><table class="beats"><tr>{head}</tr>{rows}</table></div>')
 
     parts.append("<h3>점검</h3>")
     rows = "".join(f'<tr><td>{i}. {E(item)}</td><td class="a-{E(c["answer"])}">{E(c["answer"])}</td><td>{E(c.get("note", ""))}</td></tr>'
@@ -369,10 +382,13 @@ def render(page: dict, base: Path, out: Path) -> Path:
 def _render_into(page: dict, base: Path, out: Path) -> Path:
     (out / "img").mkdir(parents=True, exist_ok=True)
     gens = page["generations"]
-    body = [_render_gen(gens[0], base, out, 0)]
-    if len(gens) > 1:
-        old = "\n".join(_render_gen(g, base, out, n) for n, g in enumerate(gens[1:], 1))
-        body.append(f'<details><summary>이전 판·대안 {len(gens) - 1}개</summary><div class="wrap">{old}</div></details>')
+    # 지금 돌릴 판(최신·생성 대기)은 모두 펼치고, 대안·완료·옛 판·실패만 접는다(한 페이지에 컷 여러 개)
+    live = [n for n, g in enumerate(gens) if n == 0 or g.get("status") in ("최신", "생성 대기")]
+    rest = [n for n in range(len(gens)) if n not in live]
+    body = [_render_gen(gens[n], base, out, n) for n in live]
+    if rest:
+        old = "\n".join(_render_gen(gens[n], base, out, n) for n in rest)
+        body.append(f'<details><summary>이전 판·대안 {len(rest)}개</summary><div class="wrap">{old}</div></details>')
     sub = f'<p class="sub">{E(page["cut"])}' + (f' · 원본 <code>{E(page["source"])}</code>' if page.get("source") else "") + "</p>"
     doc = (f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
            f'<title>{E(page["title"])}</title><style>{CSS}</style></head><body><div class="wrap"><h1>{E(page["title"])}</h1>{sub}'

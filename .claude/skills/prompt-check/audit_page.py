@@ -2,7 +2,8 @@
 
     python3 audit_page.py index.html [index2.html ...]
 
-맨 위 생성(첫 h2 섹션)을 기준으로 본다. 걸린 항목이 있으면 종료 코드 1.
+prompt-page로 만든 페이지는 펼쳐진 생성(최신·생성 대기) 섹션을 모두 본다.
+손으로 만든 옛 페이지는 맨 위 생성(첫 h2 섹션)만 본다. 걸린 항목이 있으면 종료 코드 1.
 """
 from __future__ import annotations
 
@@ -12,27 +13,67 @@ import sys
 from pathlib import Path
 
 TAG_RE = re.compile(r"@(image\d+|video\d*)")
+VAGUE_CAMERA = {"계속", "동일", "같음", "위와 같음", "유지", "-", "continue", "same"}
 SHOT_WORDS = ("샷 크기", "앵글", "렌즈", "mm", "카메라 위치", "눈높이", "화면 배치", "빛 방향")
 
 
-def current_block(doc: str) -> tuple[str, str] | None:
-    """맨 위 생성의 h2 섹션과, 그 앞에 있는 프롬프트 없는 섹션(메모·입력 목록)을 돌려준다."""
+def live_blocks(doc: str) -> list[tuple[str, str]]:
+    """점검할 (섹션, 범위) 목록. 생성기 페이지는 접힌 '이전 판·대안' 앞의 프롬프트 섹션 전부,
+    옛 페이지는 첫 프롬프트 섹션과 그 앞의 프롬프트 없는 섹션(메모·입력 목록)."""
     chunks = re.split(r"(?=<h2\b)", doc)[1:]
+    if '<p class="meta">' in doc:
+        live = re.split(r"<details><summary>이전 판·대안", doc)[0]
+        return [(c, c) for c in re.split(r"(?=<h2\b)", live)[1:] if re.search(r"<pre\b", c)]
     for i, c in enumerate(chunks):
         if re.search(r"<pre\b", c):
-            return c, "".join(chunks[:i]) + c
-    return None
+            return [(c, "".join(chunks[:i]) + c)]
+    return []
+
+
+def _camera_problems(body: str, prompt: str) -> list[str]:
+    """영상 생성 구간 표의 카메라 칸과 프롬프트 TIMELINE의 Camera: 줄을 본다."""
+    table = next((t for t in re.findall(r"<table\b.*?</table>", body, re.S)
+                  if re.search(r"<th[^>]*>\s*(초|구간|시간)", t)), None)
+    if table is None:
+        return ["영상인데 한글 구간 표(초 단위)가 없음"]
+    heads = [html.unescape(re.sub(r"<.*?>", "", h)).strip() for h in re.findall(r"<th[^>]*>(.*?)</th>", table, re.S)]
+    col = next((i for i, h in enumerate(heads) if h.startswith("카메라") or h.lower().startswith("camera")), None)
+    if col is None:
+        return ["구간 표에 카메라 칸이 없음(구간마다 카메라가 어떻게 바뀌는지)"]
+    problems = []
+    rows = [r for r in re.findall(r"<tr\b.*?</tr>", table, re.S) if "<td" in r]
+    for i, r in enumerate(rows, 1):
+        cells = [html.unescape(re.sub(r"<.*?>", "", c)).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)]
+        cam = cells[col] if col < len(cells) else ""
+        if not cam or cam.rstrip(". ").lower() in VAGUE_CAMERA:
+            problems.append(f"구간 {i}의 카메라 칸이 비었거나 빈말({cam or '빈 칸'})")
+    n_cam = len(re.findall(r"\bCamera\s*:", prompt))
+    if n_cam < len(rows):
+        problems.append(f"프롬프트 TIMELINE의 Camera: 줄이 구간 {len(rows)}개 중 {n_cam}개뿐")
+    return problems
 
 
 def audit(doc: str) -> list[str]:
-    problems: list[str] = []
-    found = current_block(doc)
-    if not found:
+    blocks = live_blocks(doc)
+    if not blocks:
         return ["프롬프트 칸(<pre>)이 있는 섹션이 없음"]
-    first, scope = found
+    problems: list[str] = []
+    if re.search(r"grid-template-columns:\s*(repeat\(|1fr\s+1fr)", doc):
+        problems.append("그림이 작은 격자(2열 이상)로 배치됨")
+    for first, scope in blocks:
+        found = audit_section(first, scope)
+        if len(blocks) > 1:
+            name = html.unescape(re.sub(r"<.*?>", "", (re.search(r"<h2[^>]*>(.*?)</h2>", first, re.S) or [None, "?"])[1]))[:40]
+            found = [f"[{name}] {p}" for p in found]
+        problems += found
+    return problems
+
+
+def audit_section(first: str, scope: str) -> list[str]:
+    problems: list[str] = []
     title = re.sub(r"<.*?>", "", html.unescape((re.search(r"<h2[^>]*>(.*?)</h2>", first, re.S) or [None, ""])[1]))
     if not re.search(r"\[(최신|생성 대기)", title):
-        problems.append(f"맨 위 생성 제목에 [최신]/[생성 대기]가 없음: {title[:60]}")
+        problems.append(f"생성 제목에 [최신]/[생성 대기]가 없음: {title[:60]}")
     prompt = html.unescape("".join(re.findall(r"<pre[^>]*>(.*?)</pre>", first, re.S)))
     body = re.sub(r"<pre.*?</pre>", "", scope, flags=re.S)
     refs = sorted(set(TAG_RE.findall(prompt)))
@@ -43,8 +84,6 @@ def audit(doc: str) -> list[str]:
                if not any(re.search(rf"@{r}\b", f) for f in figures) and not any(re.search(rf"@{r}\b", a) for a in alts)]
     if missing:
         problems.append(f"입력 그림 없음: @{', @'.join(missing)}에 해당하는 그림이 안 보임(그림 설명에 태그 필요)")
-    if re.search(r"grid-template-columns:\s*(repeat\(|1fr\s+1fr)", doc):
-        problems.append("그림이 작은 격자(2열 이상)로 배치됨")
     text = html.unescape(re.sub(r"<.*?>", " ", body))
     for r in refs:
         if not re.search(rf"@{r}\b[^\n]{{0,200}}\.(png|jpe?g|webp|mp4)", text, re.I):
@@ -74,8 +113,8 @@ def audit(doc: str) -> list[str]:
     else:  # 손으로 만든 옛 페이지: 추정
         is_edit = re.search(r"edit", title + head, re.I) or "@video" in prompt
         is_video = not is_edit and re.search(r"Seedance|영상 생성|video", title + head + prompt[:300], re.I)
-    if is_video and not re.search(r"<th[^>]*>\s*(초|구간|시간)", body):
-        problems.append("영상인데 한글 구간 표(초 단위)가 없음")
+    if is_video:
+        problems += _camera_problems(body, prompt)
     return problems
 
 
