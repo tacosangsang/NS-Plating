@@ -109,6 +109,21 @@ def _check_beats(g: dict, where: str, need_camera: bool) -> list[str]:
     return errs
 
 
+# 가면 쓴 인물이 나오는 모든 프롬프트에 STYLE 바로 뒤로 원문 그대로 붙인다(사용자 11-10, 핸드북 4부).
+# 계기: RS02-C003-A3에서 말·웃음을 시키자 홍학 가면 부리가 위아래로 갈라져 입처럼 벌어짐.
+MASKS_BLOCK = (
+    "MASKS (strict, applies to every person in every frame): every mask (the bird masks and the white rabbit mask) "
+    "is a rigid, hard object worn over a human face, like carved and painted wood or metal. A mask never moves, bends, "
+    "stretches or changes shape. A beak is part of the mask: one solid, closed piece that never opens, never splits "
+    "into upper and lower halves, has no jaw, no tongue and no inside. A mask shows no expression of its own. Only the "
+    "wearer's own human eyes seen through the eye holes, and the wearer's own human mouth, chin and neck below or behind "
+    "the mask, move when they speak, smile or laugh. If a beak hides the mouth, the mouth is simply not seen. A mask is "
+    "never taken off and never turns into a real bird's head."
+)
+MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
+                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면", re.I)
+
+
 def cut_groups(page: dict) -> dict[str, list[int]]:
     """generations를 컷별로 묶는다(나온 순서 유지). 같은 컷의 판은 cut 칸이 같다.
     cut 칸이 없으면 페이지 전체가 한 컷(옛 RS#02 페이지의 "layout": "cuts"는 id를 컷으로 본다)."""
@@ -143,6 +158,9 @@ def validate(page: dict, base: Path) -> list[str]:
         where = f"[{g.get('id') or n + 1}]"
         if g.get("status") not in STATUSES:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
+        prompt = str(g.get("prompt") or "")
+        if MASKED_RE.search(prompt) and MASKS_BLOCK not in prompt:
+            errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항(prompt_page.MASKS_BLOCK) 원문이 프롬프트에 없음")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
             errs.append(f"{where}: kind는 {'/'.join(KINDS)} 중 하나")

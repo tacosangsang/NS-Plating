@@ -40,7 +40,7 @@
         {"answer": "예"},
         {"answer": "예"}
       ],
-      "prompt": "REFERENCE ROLES:\n@image1 (start frame) ...\n@image2 ...\n\nTIMELINE:\n0-2s: the swan sets her glass down; the flamingo lifts her head. Camera: locked on the @image1 framing (50mm eye-level MCU, flamingo centered); her head rises to the upper third line.\n2-7s: everyone turns to her; she says \"배급을 줄이죠.\" Camera: stays locked; ends on flamingo MCU facing camera, eyes on the upper third line, round table soft behind.",
+      "prompt": "REFERENCE ROLES:\n@image1 (start frame) ...\n@image2 ...\n\nSTYLE: ...\nMASKS (strict, applies to every person in every frame): every mask (the bird masks and the white rabbit mask) is a rigid, hard object worn over a human face, like carved and painted wood or metal. A mask never moves, bends, stretches or changes shape. A beak is part of the mask: one solid, closed piece that never opens, never splits into upper and lower halves, has no jaw, no tongue and no inside. A mask shows no expression of its own. Only the wearer's own human eyes seen through the eye holes, and the wearer's own human mouth, chin and neck below or behind the mask, move when they speak, smile or laugh. If a beak hides the mouth, the mouth is simply not seen. A mask is never taken off and never turns into a real bird's head.\n\nTIMELINE:\n0-2s: the swan sets her glass down; the flamingo lifts her head. Camera: locked on the @image1 framing (50mm eye-level MCU, flamingo centered); her head rises to the upper third line.\n2-7s: everyone turns to her; she says \"배급을 줄이죠.\" Camera: stays locked; ends on flamingo MCU facing camera, eyes on the upper third line, round table soft behind.",
       "result": {"media": [], "verdict": ""},
       "notes": ""
     }
