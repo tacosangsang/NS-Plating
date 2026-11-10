@@ -2,7 +2,7 @@
 
     python3 audit_page.py index.html [index2.html ...]
 
-prompt-page로 만든 페이지는 펼쳐진 생성(최신·생성 대기) 섹션을 모두 본다.
+prompt-page로 만든 페이지는 최신·생성 대기 섹션을 모두 본다(완료·실패 컷은 보지 않는다).
 손으로 만든 옛 페이지는 맨 위 생성(첫 h2 섹션)만 본다. 걸린 항목이 있으면 종료 코드 1.
 """
 from __future__ import annotations
@@ -21,6 +21,9 @@ def live_blocks(doc: str) -> list[tuple[str, str]]:
     """점검할 (섹션, 범위) 목록. 생성기 페이지는 접힌 '이전 판·대안' 앞의 프롬프트 섹션 전부,
     옛 페이지는 첫 프롬프트 섹션과 그 앞의 프롬프트 없는 섹션(메모·입력 목록)."""
     chunks = re.split(r"(?=<h2\b)", doc)[1:]
+    if "data-status=" in doc:  # 컷별 페이지: 지금 돌릴 판(최신·생성 대기)만. 완료·실패 컷은 보지 않는다
+        return [(m.group(0), m.group(0)) for m in
+                re.finditer(r'<section\b[^>]*data-status="(?:최신|생성 대기)".*?</section>', doc, re.S)]
     if '<p class="meta">' in doc:
         live = re.split(r"<details><summary>이전 판·대안", doc)[0]
         return [(c, c) for c in re.split(r"(?=<h2\b)", live)[1:] if re.search(r"<pre\b", c)]
@@ -56,6 +59,8 @@ def _camera_problems(body: str, prompt: str) -> list[str]:
 def audit(doc: str) -> list[str]:
     blocks = live_blocks(doc)
     if not blocks:
+        if "data-status=" in doc:
+            return []  # 모든 컷이 완료·실패: 지금 돌릴 판이 없음
         return ["프롬프트 칸(<pre>)이 있는 섹션이 없음"]
     problems: list[str] = []
     if re.search(r"grid-template-columns:\s*(repeat\(|1fr\s+1fr)", doc):

@@ -109,6 +109,17 @@ def _check_beats(g: dict, where: str, need_camera: bool) -> list[str]:
     return errs
 
 
+def cut_groups(page: dict) -> dict[str, list[int]]:
+    """generations를 컷별로 묶는다(나온 순서 유지). 같은 컷의 판은 cut 칸이 같다.
+    cut 칸이 없으면 페이지 전체가 한 컷(옛 RS#02 페이지의 "layout": "cuts"는 id를 컷으로 본다)."""
+    by_id = page.get("layout") == "cuts"
+    groups: dict[str, list[int]] = {}
+    for n, g in enumerate(page.get("generations") or []):
+        key = str(g.get("cut") or (g.get("id") if by_id else "") or "")
+        groups.setdefault(key, []).append(n)
+    return groups
+
+
 def validate(page: dict, base: Path) -> list[str]:
     errs: list[str] = []
     for k in ("title", "cut"):
@@ -117,14 +128,21 @@ def validate(page: dict, base: Path) -> list[str]:
     gens = page.get("generations") or []
     if not gens:
         return errs + ["페이지: generations 없음"]
-    if gens[0].get("status") not in ("최신", "생성 대기"):
-        errs.append("페이지: 맨 위 생성의 status가 최신·생성 대기가 아님(지금 돌릴 판을 맨 위에)")
+    groups = cut_groups(page)
+    if len(groups) == 1:
+        if gens[0].get("status") not in ("최신", "생성 대기"):
+            errs.append("페이지: 맨 위 생성의 status가 최신·생성 대기가 아님(지금 돌릴 판을 맨 위에)")
+    else:  # 컷이 여럿: 컷마다 맨 앞 판이 그 컷의 지금 상태(끝난 컷은 완료·실패여도 된다)
+        for cut, idx in groups.items():
+            if gens[idx[0]].get("status") in ("옛 판", "대안"):
+                errs.append(f"[{cut}]: 컷의 맨 앞 판이 {gens[idx[0]].get('status')}. 지금 상태인 판을 그 컷 맨 앞에")
+    for cut, idx in groups.items():
+        if sum(gens[n].get("status") == "최신" for n in idx) > 1:
+            errs.append(f"[{cut or gens[idx[0]].get('id')}]: 최신이 둘 이상. 나머지 판은 대안·완료·옛 판으로")
     for n, g in enumerate(gens):
         where = f"[{g.get('id') or n + 1}]"
         if g.get("status") not in STATUSES:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
-        if n > 0 and g.get("status") == "최신":
-            errs.append(f"{where}: 최신이 둘 이상. 아래 판은 대안·완료·옛 판으로")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
             errs.append(f"{where}: kind는 {'/'.join(KINDS)} 중 하나")
@@ -269,7 +287,7 @@ def _render_gen(g: dict, base: Path, out: Path, n: int) -> str:
     meta.append(g["resolution"])
     if g.get("crons") is not None:
         meta.append(f"{g['crons']} Crons")
-    parts = [f'<section id="g{n}"><h2>{E(g["id"])} · {E(g["what"])} <span class="tag">[{E(g["status"])}]</span></h2>',
+    parts = [f'<section id="g{n}" data-status="{E(g["status"])}"><h2>{E(g["id"])} · {E(g["what"])} <span class="tag">[{E(g["status"])}]</span></h2>',
              f'<p class="meta">{E(kind.label)} · {E(" · ".join(meta))}</p>']
 
     parts.append("<h3>입력 그림</h3>")
@@ -338,7 +356,8 @@ figcaption{font-size:13.5px;color:var(--muted);margin-top:4px}code{font:12.5px u
 button.dl{font:600 12px system-ui;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:4px;padding:2px 8px;margin-left:2px;cursor:pointer}button.dl:disabled{opacity:.5;cursor:default}
 .ph button{font:600 12.5px system-ui;color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:5px 12px;cursor:pointer}
 pre{margin:0;padding:12px;font:12.5px/1.6 ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;max-height:480px;overflow:auto}
-.pre{white-space:pre-wrap}details>summary{cursor:pointer;color:var(--accent);font-weight:600}"""
+.pre{white-space:pre-wrap}details>summary{cursor:pointer;color:var(--accent);font-weight:600}
+details.cut{margin:28px 0;padding-top:8px;border-top:2px solid var(--muted)}details.cut>summary{font-size:20px}"""
 
 JS = """(async()=>{const dl=await window.claude?.use?.("downloads");document.querySelectorAll('button.dl').forEach(b=>{
 if(!dl){b.disabled=true;b.title='이 화면에서는 저장할 수 없음';return}
@@ -382,13 +401,21 @@ def render(page: dict, base: Path, out: Path) -> Path:
 def _render_into(page: dict, base: Path, out: Path) -> Path:
     (out / "img").mkdir(parents=True, exist_ok=True)
     gens = page["generations"]
-    # 지금 돌릴 판(최신·생성 대기)은 모두 펼치고, 대안·완료·옛 판·실패만 접는다(한 페이지에 컷 여러 개)
-    live = [n for n, g in enumerate(gens) if n == 0 or g.get("status") in ("최신", "생성 대기")]
-    rest = [n for n in range(len(gens)) if n not in live]
-    body = [_render_gen(gens[n], base, out, n) for n in live]
-    if rest:
-        old = "\n".join(_render_gen(gens[n], base, out, n) for n in rest)
-        body.append(f'<details><summary>이전 판·대안 {len(rest)}개</summary><div class="wrap">{old}</div></details>')
+    groups = cut_groups(page)
+    body = []
+    for cut, idx in groups.items():
+        # 그 컷의 지금 판(맨 앞 + 최신·생성 대기)은 펼치고, 같은 컷의 옛 판·대안만 "이전 판"으로 접는다
+        live = [n for n in idx if n == idx[0] or gens[n].get("status") in ("최신", "생성 대기")]
+        rest = [n for n in idx if n not in live]
+        html_ = "\n".join(_render_gen(gens[n], base, out, n) for n in live)
+        if rest:
+            old = "\n".join(_render_gen(gens[n], base, out, n) for n in rest)
+            html_ += f'<details><summary>이전 판·대안 {len(rest)}개</summary><div class="wrap">{old}</div></details>'
+        if len(groups) > 1:  # 컷이 여럿이면 컷마다 따로 여닫는 칸(처음엔 모두 열림)
+            first = gens[idx[0]]
+            html_ = (f'<details class="cut" open><summary>{E(cut)} · {E(first["what"])} [{E(first["status"])}]</summary>'
+                     f"{html_}</details>")
+        body.append(html_)
     sub = f'<p class="sub">{E(page["cut"])}' + (f' · 원본 <code>{E(page["source"])}</code>' if page.get("source") else "") + "</p>"
     doc = (f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
            f'<title>{E(page["title"])}</title><style>{CSS}</style></head><body><div class="wrap"><h1>{E(page["title"])}</h1>{sub}'
