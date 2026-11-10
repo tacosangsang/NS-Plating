@@ -2,7 +2,7 @@
 
     python3 audit_page.py index.html [index2.html ...]
 
-prompt-page로 만든 페이지는 펼쳐진 생성(최신·생성 대기) 섹션을 모두 본다.
+prompt-page로 만든 페이지는 최신·생성 대기 섹션을 모두 본다(완료·실패 컷은 보지 않는다).
 손으로 만든 옛 페이지는 맨 위 생성(첫 h2 섹션)만 본다. 걸린 항목이 있으면 종료 코드 1.
 """
 from __future__ import annotations
@@ -13,6 +13,9 @@ import sys
 from pathlib import Path
 
 TAG_RE = re.compile(r"@(image\d+|video\d*)")
+MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
+                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
+                       r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
 VAGUE_CAMERA = {"계속", "동일", "같음", "위와 같음", "유지", "-", "continue", "same"}
 SHOT_WORDS = ("샷 크기", "앵글", "렌즈", "mm", "카메라 위치", "눈높이", "화면 배치", "빛 방향")
 
@@ -21,6 +24,9 @@ def live_blocks(doc: str) -> list[tuple[str, str]]:
     """점검할 (섹션, 범위) 목록. 생성기 페이지는 접힌 '이전 판·대안' 앞의 프롬프트 섹션 전부,
     옛 페이지는 첫 프롬프트 섹션과 그 앞의 프롬프트 없는 섹션(메모·입력 목록)."""
     chunks = re.split(r"(?=<h2\b)", doc)[1:]
+    if "data-status=" in doc:  # 컷별 페이지: 지금 돌릴 판(최신·생성 대기)만. 완료·실패 컷은 보지 않는다
+        return [(m.group(0), m.group(0)) for m in
+                re.finditer(r'<section\b[^>]*data-status="(?:최신|생성 대기)".*?</section>', doc, re.S)]
     if '<p class="meta">' in doc:
         live = re.split(r"<details><summary>이전 판·대안", doc)[0]
         return [(c, c) for c in re.split(r"(?=<h2\b)", live)[1:] if re.search(r"<pre\b", c)]
@@ -56,6 +62,8 @@ def _camera_problems(body: str, prompt: str) -> list[str]:
 def audit(doc: str) -> list[str]:
     blocks = live_blocks(doc)
     if not blocks:
+        if "data-status=" in doc:
+            return []  # 모든 컷이 완료·실패: 지금 돌릴 판이 없음
         return ["프롬프트 칸(<pre>)이 있는 섹션이 없음"]
     problems: list[str] = []
     if re.search(r"grid-template-columns:\s*(repeat\(|1fr\s+1fr)", doc):
@@ -101,6 +109,8 @@ def audit_section(first: str, scope: str) -> list[str]:
               if re.search(r'class="[^"]*\bdl\b', attrs) or re.search(r"원본 (받기|다운로드)", inner))
     if dls < shown:
         problems.append(f"원본 다운로드가 빠짐: 그림·영상 {shown}개에 원본 받기 {dls}개")
+    if MASKED_RE.search(prompt) and not re.search(r"MASKS \(strict", prompt):
+        problems.append("가면 쓴 인물이 나오는데 프롬프트에 MASKS 조항이 없음(부리가 벌어짐, 사용자 11-10)")
     copies = [c for c in re.findall(r"<button\b([^>]*)>(.*?)</button>", first, re.S)
               if "복사" in c[1] or re.search(r"copy", c[0], re.I)]
     if not copies:
