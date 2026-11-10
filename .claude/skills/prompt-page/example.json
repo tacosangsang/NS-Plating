@@ -27,8 +27,8 @@
         "refs": [{"file": "img_src/ref.jpg", "caption": "구도 레퍼런스: 50mm 수평 MCU"}]
       },
       "beats": [
-        {"t": "0–2", "action": "백조가 잔을 내려놓는 소리를 듣고 → 홍학이 고개를 든다", "sound": "<잔 소리>", "end": "홍학 정면"},
-        {"t": "2–7", "action": "모두 자기를 보자 → \"배급을 줄이죠.\"", "sound": "대사", "end": "말을 마치고 입을 닫음"}
+        {"t": "0–2", "camera": "0초 = 시작 프레임 구도(50mm 수평 MCU, 홍학 화면 가운데). 카메라 고정, 홍학이 고개를 들며 머리가 화면 위 1/3선까지 올라옴", "action": "백조가 잔을 내려놓는 소리를 듣고 → 홍학이 고개를 든다", "sound": "<잔 소리>", "end": "홍학 정면"},
+        {"t": "2–7", "camera": "고정 그대로, 7초 끝 구도 = 홍학 MCU 정면, 눈이 위 1/3선, 배경 원탁은 흐림", "action": "모두 자기를 보자 → \"배급을 줄이죠.\"", "sound": "대사", "end": "말을 마치고 입을 닫음"}
       ],
       "check": [
         {"answer": "예", "note": "연기가 새로 생겨 새 생성"},
@@ -40,7 +40,7 @@
         {"answer": "예"},
         {"answer": "예"}
       ],
-      "prompt": "REFERENCE ROLES:\n@image1 (start frame) ...\n@image2 ...",
+      "prompt": "REFERENCE ROLES:\n@image1 (start frame) ...\n@image2 ...\n\nTIMELINE:\n0-2s: the swan sets her glass down; the flamingo lifts her head. Camera: locked on the @image1 framing (50mm eye-level MCU, flamingo centered); her head rises to the upper third line.\n2-7s: everyone turns to her; she says \"배급을 줄이죠.\" Camera: stays locked; ends on flamingo MCU facing camera, eyes on the upper third line, round table soft behind.",
       "result": {"media": [], "verdict": ""},
       "notes": ""
     }
