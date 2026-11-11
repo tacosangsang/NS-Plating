@@ -5,7 +5,7 @@ import io
 from collections import Counter, defaultdict
 
 from ..model import json_text
-from ..profile_plating import COLUMNS
+from ..profile_plating import COLOR_LEGEND_SOURCE, COLUMNS
 from .sections import parse_sections
 from .source import CutTableSource
 from .table import HtmlDocument
@@ -48,7 +48,7 @@ def cuts_md(result) -> str:
     lines += [f"- {c.role}: {c.row.cut_id if c.row else '없음'} — {c.note}" for c in result.context]
     lines += ["", "## 제외 후보", json_text(result.rejected), "## 소견"]
     lines += [f"- {f.code}: {f.message}" for f in result.findings]
-    lines += ["", "## 내가 정한 것", "씬 번호 ±1을 연결 문맥으로 사용. 원문 순서 유지.", "", "## 사용자 답이 필요한 것", "대상 범위와 연결 문맥 검수.", "", "## 근거", f"F SHA-256: {result.source.sha256}", f"F:{result.selected['where'].line_start}~{result.selected['where'].line_end}. 색은 사용자 확정 규칙(2026-11-07)."]
+    lines += ["", "## 내가 정한 것", "씬 번호 ±1을 연결 문맥으로 사용. 원문 순서 유지.", "", "## 사용자 답이 필요한 것", "대상 범위와 연결 문맥 검수.", "", "## 근거", f"F SHA-256: {result.source.sha256}", f"F:{result.selected['where'].line_start}~{result.selected['where'].line_end}. 색은 {COLOR_LEGEND_SOURCE} 및 사용자 확정 규칙(2026-11-07)."]
     return "\n".join(lines) + "\n"
 
 

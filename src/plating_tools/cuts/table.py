@@ -5,7 +5,7 @@ from html import unescape
 from html.parser import HTMLParser
 
 from ..errors import InputError
-from ..profile_plating import COLOR_STATES, COLUMNS, is_cut_table_header
+from ..profile_plating import COLOR_LEGEND_SOURCE, COLOR_NOTES, COLOR_STATES, COLUMNS, is_cut_table_header
 
 
 @dataclass(frozen=True, slots=True)
@@ -98,7 +98,10 @@ def color(node: Node) -> ColorMark:
     raw = dict(node.attrs)["color"] or ""
     element = {"tr": "row", "td": "cell", "span": "span"}.get(node.tag, "other")
     state = COLOR_STATES.get(raw, "unknown") if element != "other" else "unknown"
-    return ColorMark(element, raw, state, "사용자 확정 2026-11-07" if state != "unknown" else "미정의 색/요소", node.line, node.col)
+    rule = "사용자 확정 2026-11-07" if state != "unknown" else "미정의 색/요소"
+    if element != "other" and raw in {"purple_bg", "brown_bg", *COLOR_NOTES}:
+        rule = COLOR_LEGEND_SOURCE
+    return ColorMark(element, raw, state, rule, node.line, node.col)
 
 
 class InlineText(HTMLParser):

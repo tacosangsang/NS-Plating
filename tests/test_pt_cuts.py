@@ -164,6 +164,63 @@ class CutTests(NetworkBlockedCase):
             self.assertEqual(result.targets[0].row_state, state)
             self.assertEqual(result.targets[0].excluded_from_generation, state == "removed")
 
+    def test_legend_colors_keep_row_and_cell_states_independent(self):
+        # Given
+        for raw, state in (("purple_bg", "needs_fix"), ("brown_bg", "post_work"), ("yellow_bg", "revise")):
+            with self.subTest(raw=raw):
+                text = "### S#01\n" + table([row(attrs=f'color="{raw}"').replace(
+                    '<td>SYNTH</td>', '<td color="gray_bg">SYNTH</td>')])
+                # When
+                result = self.extract.extract_scene(self.source(text), "01")
+                # Then
+                cut = result.targets[0]
+                self.assertEqual(cut.row_state, state)
+                self.assertEqual(cut.fields["picture"].cell.colors[0].state, "removed")
+                self.assertFalse(cut.excluded_from_generation)
+                self.assertFalse(result.findings)
+                self.assertEqual(cut.row_color.rule, "사용자 확정 2026-11-07" if raw == "yellow_bg"
+                                 else "노션 컷표 범례 2026-11-11")
+
+    def test_blue_sound_cell_does_not_override_row_state(self):
+        # Given
+        text = "### S#01\n" + table([row(attrs='color="purple_bg"').replace(
+            '<td>SYNTH</td>', '<td color="blue_bg">SYNTH</td>')], ("컷", "TC", "길이", "사운드"))
+        # When
+        result = self.extract.extract_scene(self.source(text), "01")
+        # Then
+        self.assertEqual(result.targets[0].row_state, "needs_fix")
+        mark = result.targets[0].fields["sound"].cell.colors[0]
+        self.assertEqual((mark.raw, mark.state, mark.rule),
+                         ("blue_bg", "unknown", "노션 컷표 범례 2026-11-11"))
+        self.assertEqual([(f.code, f.severity, f.message) for f in result.findings],
+                         [("CT020", "info", "사운드 참고 표시: 사운드")])
+
+    def test_blue_row_keeps_other_cell_states_and_is_info_only(self):
+        # Given
+        text = "### S#01\n" + table([row(attrs='color="blue_bg"').replace(
+            '<td>SYNTH</td>', '<td color="red_bg">SYNTH</td>')])
+        # When
+        process, target = self.cli_extract(text)
+        # Then
+        self.assertEqual(process.returncode, 0, process.stderr)
+        data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
+        cut = data["targets"][0]
+        self.assertEqual(cut["row_state"], "unknown")
+        self.assertEqual(cut["fields"]["picture"]["cell"]["colors"][0]["state"], "todo")
+        self.assertEqual([(f["code"], f["severity"], f["message"]) for f in data["findings"]],
+                         [("CT020", "info", "사운드 참고 표시: 행")])
+
+    def test_orange_row_and_cell_remain_undefined(self):
+        # Given
+        text = "### S#01\n" + table([row(attrs='color="orange_bg"').replace(
+            '<td>SYNTH</td>', '<td color="orange_bg">SYNTH</td>')])
+        # When
+        result = self.extract.extract_scene(self.source(text), "01")
+        # Then
+        self.assertEqual(result.targets[0].row_state, "unknown")
+        self.assertEqual([f.code for f in result.findings], ["CT009", "CT009"])
+        self.assertTrue(all("범례에 없음, 사용자 확인 필요" in f.message for f in result.findings))
+
     def test_C22_encodings_keep_positions(self):
         text = "### S#01\n" + table([row()])
         results = [self.extract.extract_scene(self.source(text, newline, bom), "01") for newline, bom in (("\n", False), ("\r\n", False), ("\r\n", True))]

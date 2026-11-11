@@ -6,7 +6,7 @@ from decimal import Decimal
 
 from ..errors import InputError
 from ..model import DocFingerprint, Finding, Severity, SourceRef, Unknown
-from ..profile_plating import COLUMNS, COLOR_STATES, CUT_PATTERN
+from ..profile_plating import COLUMNS, COLOR_NOTES, COLOR_STATES, CUT_PATTERN
 from .sections import SceneSection, parse_sections
 from .source import CutTableSource
 from .table import Cell, ColorMark, HtmlDocument, ParsedTable, color
@@ -146,12 +146,21 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
         if len(cells) != len(table.header):
             finding("CT004", f"셀 수 {len(cells)} != 열 수 {len(table.header)}", where)
         fields = {field: FieldValue("absent", None) for field in COLUMNS.values()}
+        mark = color(node) if "color" in dict(node.attrs) else None
         for cell in cells:
             if cell.field != "extra":
                 fields[cell.field] = FieldValue("present" if cell.text else "empty", cell)
-            for mark in cell.colors:
-                if mark.raw not in COLOR_STATES:
-                    finding("CT009", f"미정의 색: {mark.raw}", where)
+        marks = [(cell.column_raw, c) for cell in cells for c in cell.colors]
+        if mark is not None:
+            marks.append(("행", mark))
+        for label, cell_mark in marks:
+            if cell_mark.raw in COLOR_NOTES:
+                if cell_mark.element in {"row", "cell"}:
+                    findings.append(Finding("CT020", Severity.INFO,
+                                            f"{COLOR_NOTES[cell_mark.raw]}: {label}", where))
+            elif cell_mark.raw not in COLOR_STATES:
+                note = "; 범례에 없음, 사용자 확인 필요" if cell_mark.raw == "orange_bg" else ""
+                finding("CT009", f"미정의 색: {cell_mark.raw}{note}", where)
         def value(field: str) -> str:
             cell = fields[field].cell
             return cell.text if cell is not None else ""
@@ -162,9 +171,6 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
             finding("CT011", f"컷 ID 형식 미확인: {cut}", where)
         if re.match(r"S#\d{2}", cut) and cut[:4] != section.scene_id:
             finding("CT017", f"씬 ID 불일치: {cut}", where)
-        mark = color(node) if "color" in dict(node.attrs) else None
-        if mark is not None and mark.raw not in COLOR_STATES:
-            finding("CT009", f"미정의 색: {mark.raw}", where)
         state = mark.state if mark is not None else "unknown"
         tc = parse_tc(value("tc"), previous_end)
         if tc.form is not None:
