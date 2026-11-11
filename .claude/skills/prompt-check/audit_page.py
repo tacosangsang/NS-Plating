@@ -12,10 +12,10 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "prompt-page"))
+from prompt_page import shows_masked_person  # noqa: E402  가면 인물 판정은 생성기와 같은 기준(부정문 제외)
+
 TAG_RE = re.compile(r"@(image\d+|video\d*)")
-MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
-                       r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
-                       r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
 VAGUE_CAMERA = {"계속", "동일", "같음", "위와 같음", "유지", "-", "continue", "same"}
 SHOT_WORDS = ("샷 크기", "앵글", "렌즈", "mm", "카메라 위치", "눈높이", "화면 배치", "빛 방향")
 
@@ -109,7 +109,7 @@ def audit_section(first: str, scope: str) -> list[str]:
               if re.search(r'class="[^"]*\bdl\b', attrs) or re.search(r"원본 (받기|다운로드)", inner))
     if dls < shown:
         problems.append(f"원본 다운로드가 빠짐: 그림·영상 {shown}개에 원본 받기 {dls}개")
-    if MASKED_RE.search(prompt) and not re.search(r"MASKS \(strict", prompt):
+    if shows_masked_person(prompt) and not re.search(r"MASKS \(strict", prompt):
         problems.append("가면 쓴 인물이 나오는데 프롬프트에 MASKS 조항이 없음(부리가 벌어짐, 사용자 11-10)")
     copies = [c for c in re.findall(r"<button\b([^>]*)>(.*?)</button>", first, re.S)
               if "복사" in c[1] or re.search(r"copy", c[0], re.I)]
