@@ -162,6 +162,16 @@ MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo
                        r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
 
 
+# 부정문 속 낱말은 가면 인물이 아니다. 최상층 고정 금지 줄의 "no owl", 맨얼굴 인물의 "NO MASK: ... wears no mask"를
+# 가면 인물로 잡아 MASKS 조항을 요구하던 오탐(RS06·1부, 11-11)을 막는다. 긍정문의 낱말은 그대로 잡힌다.
+_NEGATED_MASKED_RE = re.compile(
+    r"\b(?:no|not an?|without an?|without|wears? no|wearing no)\s+(?:\w+\s+)?(?:masks?|owls?)\b", re.I)
+
+
+def shows_masked_person(prompt: str) -> bool:
+    return bool(MASKED_RE.search(_NEGATED_MASKED_RE.sub(" ", prompt)))
+
+
 def cut_groups(page: dict) -> dict[str, list[int]]:
     """generations를 컷별로 묶는다(나온 순서 유지). 같은 컷의 판은 cut 칸이 같다.
     cut 칸이 없으면 페이지 전체가 한 컷(옛 RS#02 페이지의 "layout": "cuts"는 id를 컷으로 본다)."""
@@ -198,7 +208,7 @@ def validate(page: dict, base: Path) -> list[str]:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
         prompt = str(g.get("prompt") or "")
         # 지금 돌릴 판에만. 이미 돌린 옛 판·완료·실패는 실제 쓴 프롬프트 그대로 둔다
-        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and not has_masks_clause(prompt):
+        if g.get("status") in ("최신", "생성 대기") and shows_masked_person(prompt) and not has_masks_clause(prompt):
             errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항 원문(prompt_page.MASKS_BLOCK, 대사 없는 부리 컷은 MASKS_SILENT_BLOCK, 맨얼굴 인물이 함께 나오면 masks_only(가면 인물))이 프롬프트에 없음")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
