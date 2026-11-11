@@ -120,6 +120,17 @@ MASKS_BLOCK = (
     "the mask, move when they speak, smile or laugh. If a beak hides the mouth, the mouth is simply not seen. A mask is "
     "never taken off and never turns into a real bird's head."
 )
+# 부리가 입을 가린 인물(홍학 등)의 컷은 대사 없이 몸짓·고갯짓·손짓·눈으로만 연기시킨다. 입 낱말이 하나라도 있으면
+# 부리가 벌어졌다(A3 v9·v17 실패, 입 낱말을 모두 뺀 v19 성공, 11-10). 이런 컷은 아래 판을 MASKS_BLOCK 대신 쓴다.
+MASKS_SILENT_BLOCK = (
+    "MASKS (strict, applies to every person in every frame): every mask (the bird masks and the white rabbit mask) "
+    "is a rigid, hard object worn over a human face, like carved and painted wood or metal. A mask is a still object: "
+    "it never moves on its own, never bends, stretches or changes shape. A beak is one carved solid wedge of the mask "
+    "and keeps exactly the shape and outline it has in the start frame or sheet in every frame. A mask shows no "
+    "expression of its own. All acting is done only with the eyes and eyelids seen through the eye holes, the head and "
+    "chin, the shoulders, and the hands and fingers. A mask is never taken off and never turns into a real bird's head."
+)
+MASKS_BLOCKS = (MASKS_BLOCK, MASKS_SILENT_BLOCK)
 MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
                        r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
                        r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
@@ -161,8 +172,8 @@ def validate(page: dict, base: Path) -> list[str]:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
         prompt = str(g.get("prompt") or "")
         # 지금 돌릴 판에만. 이미 돌린 옛 판·완료·실패는 실제 쓴 프롬프트 그대로 둔다
-        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and MASKS_BLOCK not in prompt:
-            errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항(prompt_page.MASKS_BLOCK) 원문이 프롬프트에 없음")
+        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and not any(b in prompt for b in MASKS_BLOCKS):
+            errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항 원문(prompt_page.MASKS_BLOCK, 대사 없는 부리 컷은 MASKS_SILENT_BLOCK)이 프롬프트에 없음")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
             errs.append(f"{where}: kind는 {'/'.join(KINDS)} 중 하나")
