@@ -35,6 +35,22 @@ class CutTests(NetworkBlockedCase):
         path.write_bytes((b"\xef\xbb\xbf" if bom else b"") + text.replace("\n", newline).encode("utf-8"))
         return self.source_module.NotionMdFile(path)
 
+    def cli_extract(self, text: str, scene: str = "01"):
+        inputs = self.root / uuid4().hex / "inputs"
+        inputs.mkdir(parents=True)
+        source = inputs / "SYNTH.md"
+        source.write_text(text, encoding="utf-8")
+        config = inputs.parent / "plating.toml"
+        config.write_text("[paths]\nwrite_root='.'\noutput_root='out'\n", encoding="utf-8")
+        target = inputs.parent / "out" / "extract"
+        process = subprocess.run(
+            [sys.executable, "-m", "plating_tools", "--config", str(config), "cuts", "extract",
+             "--input", str(source), "--scene", scene, "--out", str(target)],
+            env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
+            capture_output=True, text=True, encoding="utf-8", timeout=30, check=False,
+        )
+        return process, target
+
     def actual(self):
         path = Path(os.environ.get("PLATING_TOOLS_F", r"C:\Users\uicus\Dev\dot-handoff\notion_컷표_fetch_2026-11-07T0706Z.md"))
         if not path.is_file():
@@ -235,24 +251,26 @@ class CutTests(NetworkBlockedCase):
         self.assertEqual(result.targets[0].tc.raw, "02.0–03.5")
         self.assertIn("CT006", [f.code for f in result.findings])
 
-    def test_invalid_previous_row_clears_minute_context(self):
+    def test_invalid_previous_row_keeps_last_successful_minute_context(self):
         text = "### S#01\n" + table([
             row(tc="01:00–01:04"), row(cut="S#01-C002", tc="SYNTH invalid"),
             row(cut="S#01-C003", tc="04–06", length="2s"),
         ])
         result = self.extract.extract_scene(self.source(text), "01")
-        self.assertIsNone(result.targets[-1].tc.form)
+        self.assertEqual((result.targets[-1].tc.start_s, result.targets[-1].tc.end_s),
+                         (Decimal("64"), Decimal("66")))
         self.assertEqual(result.targets[-1].tc.raw, "04–06")
-        self.assertEqual([f.code for f in result.findings].count("CT006"), 2)
+        self.assertEqual([f.code for f in result.findings].count("CT006"), 1)
 
     def test_seconds_tc_before_previous_end_is_not_rolled_forward(self):
         for tc in ("00–02", "58–59"):
             with self.subTest(tc=tc):
                 text = "### S#01\n" + table([row(tc="01:55–01:59"), row(cut="S#01-C002", tc=tc, length="2s")])
                 result = self.extract.extract_scene(self.source(text), "01")
-                self.assertIsNone(result.targets[-1].tc.form)
+                self.assertEqual(result.targets[-1].tc.start_s, Decimal("60") + Decimal(tc.split("–")[0]))
                 self.assertEqual(result.targets[-1].tc.raw, tc)
-                self.assertIn("CT006", [f.code for f in result.findings])
+                self.assertNotIn("CT006", [f.code for f in result.findings])
+                self.assertIn("CT019", [f.code for f in result.findings])
 
     def test_seconds_tc_reversed_range_is_preserved(self):
         text = "### S#01\n" + table([row(tc="01:00–01:04"), row(cut="S#01-C002", tc="06–05", length="1s")])
@@ -277,11 +295,56 @@ class CutTests(NetworkBlockedCase):
                 self.assertEqual(result.targets[0].tc.raw, tc)
                 self.assertFalse(result.findings)
 
-    def test_partial_tc_before_previous_end_is_preserved(self):
+    def test_partial_tc_overlap_is_parsed_with_warning(self):
         text = "### S#01\n" + table([row(tc="01:06–01:10"), row(cut="S#01-C002", tc="01:09–11", length="2s")])
         result = self.extract.extract_scene(self.source(text), "01")
-        self.assertIsNone(result.targets[-1].tc.form)
-        self.assertIn("CT006", [f.code for f in result.findings])
+        self.assertEqual((result.targets[-1].tc.start_s, result.targets[-1].tc.end_s),
+                         (Decimal("69"), Decimal("71")))
+        self.assertEqual([(f.code, f.severity) for f in result.findings], [("CT019", "warn")])
+
+    def test_out_of_order_rows_keep_order_and_update_successful_minute(self):
+        # Given: 표 순서가 시간 순서와 다르고 중간 행은 해석할 수 없다.
+        text = "### S#01\n" + table([
+            row(tc="02:10–02:14"),
+            row(cut="S#01-C007", tc="01:05–01:09"),
+            row(cut="S#01-C002", tc="SYNTH invalid"),
+            row(cut="S#01-C003", tc="09–11", length="2s"),
+        ])
+        # When
+        result = self.extract.extract_scene(self.source(text), "01")
+        # Then: 실패 행은 기준을 지우지 않고, 역행 성공 행은 새 기준이 된다.
+        self.assertEqual([r.cut_id for r in result.targets],
+                         ["S#01-C001", "S#01-C007", "S#01-C002", "S#01-C003"])
+        self.assertEqual(result.targets[-1].tc.end_s, Decimal("71"))
+        self.assertEqual([f.code for f in result.findings], ["CT019", "CT006"])
+        self.assertEqual(result.findings[0].message, "TC 순서 역행: 01:05–01:09 < 직전 끝 134")
+        self.assertEqual(result.findings[0].where, result.targets[1].where)
+
+    def test_cli_tc_overlap_publishes_parsed_rows_with_warning_exit(self):
+        # Given
+        text = "### S#01\n" + table([
+            row(tc="01:06–01:10"), row(cut="S#01-C002", tc="09–11", length="2s"),
+        ])
+        # When
+        process, target = self.cli_extract(text)
+        # Then
+        self.assertEqual(process.returncode, 1, process.stderr)
+        data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
+        self.assertEqual([(f["code"], f["severity"]) for f in data["findings"]], [("CT019", "warn")])
+        self.assertEqual(data["targets"][1]["tc"]["end_s"], "71")
+
+    def test_implicit_minute_boundary_remains_ambiguous(self):
+        # Given: 분을 넘겨야만 성립하는 초 단위 구간.
+        text = "### S#01\n" + table([
+            row(tc="01:50–01:54"), row(cut="S#01-C002", tc="58–02", length="4s"),
+            row(cut="S#01-C003", tc="54–56", length="2s"),
+        ])
+        # When
+        result = self.extract.extract_scene(self.source(text), "01")
+        # Then: 분 넘김은 추측하지 않고 마지막 성공 기준을 유지한다.
+        self.assertIsNone(result.targets[1].tc.form)
+        self.assertEqual(result.targets[2].tc.end_s, Decimal("116"))
+        self.assertEqual([f.code for f in result.findings], ["CT006"])
 
     def test_cut_selection_still_parses_previous_row_for_minutes(self):
         text = "### S#01\n" + table([row(tc="01:00–01:04"), row(cut="S#01-C002", tc="04–06", length="2s")])

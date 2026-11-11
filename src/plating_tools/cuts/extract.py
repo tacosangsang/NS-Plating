@@ -98,7 +98,7 @@ def choose_table(section: SceneSection, line: int | None) -> ParsedTable:
 
 
 def parse_tc(raw: str, previous_end: Decimal | None = None) -> TcValue:
-    """생략한 분은 명시된 시작 분 또는 같은 표의 직전 행 끝에서만 얻는다."""
+    """생략한 분은 명시된 시작 분 또는 같은 표의 마지막 성공 TC 끝에서 얻는다."""
     match = re.fullmatch(r"(?:(\d+):)?([0-5]\d(?:\.\d+)?)–(?:(\d+):)?([0-5]\d(?:\.\d+)?)", raw)
     if match:
         if match[1] is not None:
@@ -110,7 +110,7 @@ def parse_tc(raw: str, previous_end: Decimal | None = None) -> TcValue:
         start = minute * 60 + Decimal(match[2])
         end = (Decimal(match[3]) if match[3] is not None else minute) * 60 + Decimal(match[4])
         inherited = match[3] is None
-        if end >= start and (not inherited or previous_end is None or start >= previous_end):
+        if end >= start:
             form = "mm:ss–mm:ss"
             if inherited:
                 form = "mm:ss.f–ss.f" if match[1] is not None else "ss.f–ss.f"
@@ -167,7 +167,10 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
             finding("CT009", f"미정의 색: {mark.raw}", where)
         state = mark.state if mark is not None else "unknown"
         tc = parse_tc(value("tc"), previous_end)
-        previous_end = tc.end_s if isinstance(tc.end_s, Decimal) else None
+        if tc.form is not None:
+            if previous_end is not None and tc.start_s < previous_end:
+                finding("CT019", f"TC 순서 역행: {tc.raw} < 직전 끝 {previous_end}", where)
+            previous_end = tc.end_s
         raw_length = value("length")
         seconds = Decimal(raw_length[:-1]) if re.fullmatch(r"\d+(?:\.\d+)?s", raw_length) else Unknown("길이 해석 실패")
         length = LengthValue(raw_length, seconds)
