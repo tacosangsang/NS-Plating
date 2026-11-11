@@ -39,12 +39,12 @@ def inventory_md(result) -> str:
 def cuts_md(result) -> str:
     def escape(text: str) -> str:
         return text.replace("|", "\\|").replace("\n", "<br>")
-    lines = [f"# [검수 대기] {result.scene_id} 컷표 추출", "", "| 순서 | 컷 | 행 상태 | 행 색 | 셀·span 색 | TC | 길이 | 원문 필드 | 비고 |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    lines = [f"# [검수 대기] {result.scene_id} 컷표 추출", "", "| 순서 | 컷 | 행 상태 | 행 색 | 셀·span 색 | TC | 길이 | 원문 필드 | 비고 | 원본 컷 |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for row in result.targets:
         marks = "; ".join(f"{name}: {c.raw} → {c.state}" for name, value in row.fields.items() if value.cell for c in value.cell.colors)
         fields = "; ".join(f"{name}: {value.cell.text}" for name, value in row.fields.items() if value.cell)
         remarks = row.fields["remarks"].cell
-        lines.append(f"| {row.order} | {row.cut_id} | {row.row_state} | {row.row_color.raw if row.row_color else ''} | {escape(marks)} | {row.tc.raw} | {row.length.raw} | {escape(fields)} | {escape(remarks.text) if remarks else ''} |")
+        lines.append(f"| {row.order} | {row.cut_id} | {row.row_state} | {row.row_color.raw if row.row_color else ''} | {escape(marks)} | {row.tc.raw} | {row.length.raw} | {escape(fields)} | {escape(remarks.text) if remarks else ''} | {row.original_cut_id} |")
     lines += ["", "## 연결 문맥(생성 대상 아님)"]
     lines += [f"- {c.role}: {c.row.cut_id if c.row else '없음'} — {c.note}" for c in result.context]
     lines += ["", "## 제외 후보", json_text(result.rejected), "## 소견"]
@@ -56,7 +56,7 @@ def cuts_md(result) -> str:
 def cuts_csv(result) -> str:
     stream = io.StringIO(newline="")
     writer = csv.writer(stream, lineterminator="\n")
-    writer.writerow(["order", "cut", "row_state", *COLUMNS.values()])
+    writer.writerow(["order", "cut", "row_state", *COLUMNS.values(), "original_cut_id"])
     for row in result.targets:
-        writer.writerow([row.order, row.cut_id, row.row_state, *(v.cell.text if v.cell else "" for v in row.fields.values())])
+        writer.writerow([row.order, row.cut_id, row.row_state, *(v.cell.text if v.cell else "" for v in row.fields.values()), row.original_cut_id])
     return stream.getvalue()

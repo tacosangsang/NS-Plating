@@ -9,8 +9,8 @@ COLOR_STATES: Final = {"red_bg": "todo", "green_bg": "done", "gray_bg": "removed
                        "purple_bg": "needs_fix", "brown_bg": "post_work"}
 COLOR_NOTES: Final = {"blue_bg": "사운드 참고 표시"}
 COLOR_LEGEND_SOURCE: Final = "노션 컷표 범례 2026-11-11"
-SCENE_PATTERN: Final = r"^(S#\d{2})(?=\s|\(|-|$)"
-CUT_PATTERN: Final = r"^S#\d{2}-C\d{3}(-\d+[A-Z]?)?$"
+SCENE_PATTERN: Final = r"^((?:S|RS)#\d{2})(?=\s|\(|-|$)"
+CUT_PATTERN: Final = r"^(?:S#\d{2}-C\d{3}(?:-\d+[A-Z]?)?|RS#?\d{2}-C\d{3})$"
 
 
 def is_cut_table_header(header: tuple[str, ...], *, in_scene: bool) -> bool:

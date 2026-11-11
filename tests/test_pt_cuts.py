@@ -167,11 +167,79 @@ class CutTests(NetworkBlockedCase):
         self.assertEqual(data["header_map"][-1], ["비고", "remarks"])
         self.assertEqual(data["targets"][0]["extra"], [])
         exported = list(csv.reader(io.StringIO((target / "cuts.csv").read_text(encoding="utf-8-sig"))))
-        self.assertEqual(exported[0][-2:], ["dialogue_sound", "remarks"])
-        self.assertEqual(exported[1][-1], "메모 | a\nb")
+        self.assertEqual(exported[0][-3:], ["dialogue_sound", "remarks", "original_cut_id"])
+        self.assertEqual(exported[1][-2:], ["메모 | a\nb", ""])
         md_lines = (target / "cuts.md").read_text(encoding="utf-8").splitlines()
-        self.assertTrue(md_lines[2].endswith("| 원문 필드 | 비고 |"))
-        self.assertTrue(md_lines[4].endswith(r"| 메모 \| a<br>b |"))
+        self.assertTrue(md_lines[2].endswith("| 원문 필드 | 비고 | 원본 컷 |"))
+        self.assertTrue(md_lines[4].endswith(r"| 메모 \| a<br>b |  |"))
+
+    def test_cli_rs_ids_and_original_cut_ids_are_preserved_in_exports(self):
+        # Given: 실제 컷표와 무관한 합성 RS 표.
+        text = '<toggle heading="h3">\nRS#42(SYNTH 수정)\n' + table([
+            row(cut="RS42-C007<br />(S#98-C123)"),
+            row(cut="RS#42-C009", tc="04–06", length="2s"),
+        ]) + '</toggle>\n'
+        # When
+        process, target = self.cli_extract(text, "RS#42")
+        # Then
+        self.assertEqual(process.returncode, 0, process.stderr)
+        data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["scene_id"], "RS#42")
+        self.assertEqual([(r["cut_id"], r["original_cut_id"]) for r in data["targets"]],
+                         [("RS42-C007", "S#98-C123"), ("RS#42-C009", "")])
+        self.assertEqual(data["targets"][0]["fields"]["cut_id"]["cell"]["text"], "RS42-C007\n(S#98-C123)")
+        self.assertFalse(data["findings"])
+        exported = list(csv.reader(io.StringIO((target / "cuts.csv").read_text(encoding="utf-8-sig"))))
+        self.assertEqual(exported[0][-2:], ["remarks", "original_cut_id"])
+        self.assertEqual([r[-1] for r in exported[1:]], ["S#98-C123", ""])
+        lines = (target / "cuts.md").read_text(encoding="utf-8").splitlines()
+        self.assertTrue(lines[2].endswith("| 비고 | 원본 컷 |"))
+        self.assertTrue(lines[4].endswith("|  | S#98-C123 |"))
+
+    def test_rs_cut_selection_uses_exact_primary_id(self):
+        # Given
+        source = self.source("### RS#42\n" + table([
+            row(cut="RS42-C007 (S#98-C123)"), row(cut="RS#42-C009", tc="04–06", length="2s"),
+        ]))
+        # When
+        result = self.extract.extract_scene(source, "RS#42", cut_ids=("RS42-C007",))
+        # Then
+        self.assertEqual([r.cut_id for r in result.targets], ["RS42-C007"])
+        self.assertEqual(result.targets[0].original_cut_id, "S#98-C123")
+        self.assertFalse(result.findings)
+
+    def test_rs_scene_mismatches_still_warn(self):
+        # Given
+        for cut in ("RS41-C001", "RS#43-C001", "S#42-C001"):
+            with self.subTest(cut=cut):
+                source = self.source("### RS#42\n" + table([row(cut=cut)]))
+                # When
+                result = self.extract.extract_scene(source, "RS#42")
+                # Then
+                self.assertEqual([f.code for f in result.findings], ["CT017"])
+
+    def test_rs_neighbor_context_stays_in_rs_family(self):
+        # Given
+        text = "".join("### " + scene + "\n" + table([row(cut=cut)]) for scene, cut in (
+            ("RS#41", "RS41-C001"), ("S#41", "S#41-C001"), ("RS#42", "RS42-C001"),
+            ("S#43", "S#43-C001"), ("RS#43", "RS#43-C001"),
+        ))
+        # When
+        result = self.extract.extract_scene(self.source(text), "RS#42")
+        # Then
+        self.assertEqual([c.row.cut_id for c in result.context], ["RS41-C001", "RS#43-C001"])
+
+    def test_only_terminal_original_id_is_separated(self):
+        # Given
+        for cut in ("RS42-C007 (S#98-C123) SYNTH", "RS42-C007 (S#98-C123-1)", "RS42-C007 (SYNTH)"):
+            with self.subTest(cut=cut):
+                source = self.source("### RS#42\n" + table([row(cut=cut)]))
+                # When
+                result = self.extract.extract_scene(source, "RS#42")
+                # Then
+                self.assertEqual(result.targets[0].cut_id, cut)
+                self.assertEqual(result.targets[0].original_cut_id, "")
+                self.assertEqual([f.code for f in result.findings], ["CT011"])
 
     def test_remarks_keep_absent_and_empty_distinct(self):
         # Given

@@ -45,6 +45,7 @@ class CutRow:
     length: LengthValue
     excluded_from_generation: bool
     where: SourceRef
+    original_cut_id: str = ""
 
 
 FIRST_SCENE_NO_PREV = "첫 씬이라 없음"
@@ -163,11 +164,16 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
             cell = fields[field].cell
             return cell.text if cell is not None else ""
         cut = value("cut_id")
+        original_cut_id = ""
+        if original := re.search(r"\s*\((S#\d{2}-C\d{3})\)$", cut):
+            original_cut_id = original[1]
+            cut = cut[:original.start()]
         if "~" in cut:
             finding("CT013", f"요약 표기 ID: {cut}", where)
         elif not re.fullmatch(CUT_PATTERN, cut):
             finding("CT011", f"컷 ID 형식 미확인: {cut}", where)
-        if re.match(r"S#\d{2}", cut) and cut[:4] != section.scene_id:
+        cut_scene = re.match(r"(S#|RS#?)(\d{2})", cut)
+        if cut_scene and f"{cut_scene[1].removesuffix('#')}#{cut_scene[2]}" != section.scene_id:
             finding("CT017", f"씬 ID 불일치: {cut}", where)
         state = mark.state if mark is not None else "unknown"
         tc = parse_tc(value("tc"), previous_end)
@@ -185,7 +191,8 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
         elif tc.form is not None and tc.end_s - tc.start_s != seconds:
             finding("CT014", f"TC·길이 불일치: {tc.raw} / {raw_length}", where)
         rows.append(CutRow(order, cut or Unknown("컷 ID 빈 값"), mark, state, fields,
-                           tuple(c for c in cells if c.field == "extra"), tc, length, state == "removed", where))
+                           tuple(c for c in cells if c.field == "extra"), tc, length, state == "removed", where,
+                           original_cut_id=original_cut_id))
     for cut, count in Counter(r.cut_id for r in rows if isinstance(r.cut_id, str)).items():
         if count > 1:
             finding("CT005", f"중복 컷 ID: {cut} ({count})")
@@ -194,9 +201,9 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
 
 def extract_scene(src: CutTableSource, scene_id: str, *, cut_ids: tuple[str, ...] | None = None,
                   section_line: int | None = None, table_line: int | None = None) -> SceneExtract:
-    if not re.fullmatch(r"(?:S#)?\d{2}", scene_id):
+    if not re.fullmatch(r"(?:(?:S|RS)#)?\d{2}", scene_id):
         raise InputError(f"씬 ID 형식 오류: {scene_id}")
-    scene = "S#" + scene_id.removeprefix("S#")
+    scene = scene_id if "#" in scene_id else "S#" + scene_id
     if cut_ids and any("~" in cut for cut in cut_ids):
         raise InputError("CT013 요약 ID는 단일 컷으로 지정할 수 없음")
     sections = parse_sections(src)
@@ -207,9 +214,10 @@ def extract_scene(src: CutTableSource, scene_id: str, *, cut_ids: tuple[str, ...
     if cut_ids and set(cut_ids) - {r.cut_id for r in targets if isinstance(r.cut_id, str)}:
         raise InputError(f"지정 컷 ID 없음: {cut_ids}")
     context: list[ContextCut] = []
-    number = int(scene[2:])
+    prefix, digits = scene.split("#")
+    number = int(digits)
     for delta, role in zip((-1, 1), SCENE_NEIGHBOR_ROLES):
-        neighbor = f"S#{number + delta:02d}"
+        neighbor = f"{prefix}#{number + delta:02d}"
         try:
             neighbor_section = choose_section(sections, neighbor, None)
             neighbor_table = choose_table(neighbor_section, None)
