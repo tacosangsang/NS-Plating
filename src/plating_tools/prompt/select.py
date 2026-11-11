@@ -24,6 +24,8 @@ def select_blocks(clip: ClipPlan | None, rules: RuleBook) -> list[BlockDecision]
             decision, reason = "포함", "공통 고정 블록"
         elif key == "WORLD":
             decision, reason = ("포함", "이미지 공통") if clip is not None and clip.kind == "image" else ("제외", "영상 골격")
+        elif key.startswith("SCENE_") and clip is not None and clip.kind == "video":
+            decision, reason = "제외", "이미지 전용 모듈(W10 7행)"
         elif key == "UPPER_AVOID" and clip is not None and clip.scene_module in UPPER_SCENES:
             decision, reason = "포함", "최상층 전용 금지"
         elif key == "UPPER_AVOID" or key.startswith("SCENE_") or key == "LAYOUT_TRUCK":

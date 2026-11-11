@@ -1,6 +1,8 @@
 """SYNTH/T2: 문서 앵커, 골격과 완성본 검사 P1~P12."""
 import importlib
+import json
 import os
+import subprocess
 import sys
 import unittest
 from tests._pt_support import NetworkBlockedCase
@@ -87,10 +89,10 @@ class PromptTests(NetworkBlockedCase):
             result = select.select_blocks(plan, rules)
             self.assertEqual(next(d.decision for d in result if d.block_key == "FACE_RULE"), "제외")
 
-    def test_P7_conflicting_scene_stays_unresolved(self):
+    def test_P7_image_scene_conflict_is_not_applied_to_video_skeleton(self):
         from dataclasses import replace
         skeleton = self.assemble.build_skeleton(self.cuts(), replace(self.plan(), scene_module="SCENE_D"), self.rules())
-        self.assertTrue(skeleton.conflicts)
+        self.assertNotIn("PR_CONFLICT", [f.code for f in skeleton.conflicts])
         self.assertNotIn("SCENE_D", [k for s in skeleton.slots for k in s.block_keys])
 
     def test_P8_image_limits_and_unicode_counts(self):
@@ -126,11 +128,79 @@ class PromptTests(NetworkBlockedCase):
         skeleton = self.assemble.build_skeleton(self.cuts(True), self.plan(), self.rules())
         self.assertTrue(any(f.severity.value == "error" for f in skeleton.conflicts))
 
-    def test_scene_blocks_use_space_slot_and_upper_avoid_uses_avoid_slot(self):
+    def test_video_excludes_scene_slot_and_keeps_upper_avoid_slot(self):
         from dataclasses import replace
         skeleton = self.assemble.build_skeleton(self.cuts(), replace(self.plan(), scene_module="SCENE_A"), self.rules())
-        self.assertIn("SCENE_A", skeleton.slots[3].block_keys)
+        self.assertNotIn("SCENE_A", skeleton.slots[3].block_keys)
         self.assertIn("UPPER_AVOID", skeleton.slots[7].block_keys)
+
+    def test_video_scene_modules_are_excluded_from_selection_and_check(self):
+        from dataclasses import replace
+        select = importlib.import_module("plating_tools.prompt.select")
+        rules = self.rules()
+        text = "\n\n".join(rules.catalog[key].text for key in ("STYLE", "AVOID", "UPPER_AVOID"))
+        for module in importlib.import_module("plating_tools.profile_plating").SCENE_BLOCKS:
+            with self.subTest(module=module):
+                # Given
+                plan = replace(self.plan(), scene_module=module)
+                # When
+                decisions = select.select_blocks(plan, rules)
+                checked = self.check.check_prompt(text, plan, rules, "video")
+                # Then
+                scenes = [d for d in decisions if d.block_key.startswith("SCENE_")]
+                self.assertTrue(all(d.decision == "제외" and d.reason == "이미지 전용 모듈(W10 7행)" for d in scenes))
+                self.assertNotIn("PR001", [f.code for f in checked.findings])
+                self.assertNotIn("PR_CONFLICT", [f.code for f in checked.findings])
+                self.assertFalse(set(checked.blocks) & {d.block_key for d in scenes})
+
+    def test_image_scene_module_still_requires_original_block(self):
+        from dataclasses import replace
+        # Given
+        rules = self.rules()
+        plan = replace(self.plan(), kind="image", scene_module="SCENE_LOW")
+        text = "\n\n".join(rules.catalog[key].text for key in ("STYLE", "WORLD", "AVOID"))
+        # When
+        checked = self.check.check_prompt(text, plan, rules, "image")
+        # Then
+        self.assertIn("SCENE_LOW", checked.blocks)
+        self.assertEqual([f.code for f in checked.findings if f.code.startswith("PR")], ["PR001"])
+
+    def test_video_layout_module_is_still_selected(self):
+        from dataclasses import replace
+        # Given
+        rules = self.rules()
+        plan = replace(self.plan(), scene_module="LAYOUT_TRUCK")
+        # When
+        skeleton = self.assemble.build_skeleton(self.cuts(), plan, rules)
+        # Then
+        self.assertIn("LAYOUT_TRUCK", skeleton.slots[3].block_keys)
+
+    def test_cli_checks_scene_block_only_for_images(self):
+        # Given
+        rules = self.rules()
+        inputs = self.root / "inputs"
+        inputs.mkdir()
+        config = self.root / "plating.toml"
+        config.write_text(f"[paths]\nworkflow_dir='{rules.documents['W10'].parent}'\n", encoding="utf-8")
+        for kind in ("video", "image"):
+            with self.subTest(kind=kind):
+                prompt = inputs / f"{kind}.txt"
+                prompt.write_text("\n\n".join(rules.catalog[key].text for key in ("STYLE", "WORLD", "AVOID")), encoding="utf-8")
+                plan = inputs / f"{kind}.toml"
+                plan.write_text(f'[[clip]]\nid="A"\nkind="{kind}"\npeople="없음"\nscene_module="SCENE_LOW"\n', encoding="utf-8")
+                target = self.root / "out" / kind
+                # When
+                process = subprocess.run(
+                    [sys.executable, "-m", "plating_tools", "--config", str(config), "prompt", "check",
+                     "--prompt", str(prompt), "--plan", str(plan), "--kind", kind, "--out", str(target)],
+                    env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
+                    capture_output=True, text=True, encoding="utf-8", timeout=30, check=False,
+                )
+                # Then
+                self.assertEqual(process.returncode, int(kind == "image" or bool(rules.findings)), process.stderr)
+                result = json.loads((target / "check.json").read_text(encoding="utf-8"))["result"]
+                self.assertEqual([f["code"] for f in result["findings"] if f["code"] == "PR001"],
+                                 ["PR001"] if kind == "image" else [])
 
     def test_image_check_always_checks_world_block(self):
         rules = self.rules()
