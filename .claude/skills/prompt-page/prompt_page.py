@@ -131,6 +131,32 @@ MASKS_SILENT_BLOCK = (
     "chin, the shoulders, and the hands and fingers. A mask is never taken off and never turns into a real bird's head."
 )
 MASKS_BLOCKS = (MASKS_BLOCK, MASKS_SILENT_BLOCK)
+# 가면 인물과 맨얼굴 인물(진우·하층민·도둑·요리사 등)이 한 화면이면 "every person"이 맨얼굴 인물에게도 가면을 씌운다
+# (RS06, 11-11). 그런 컷은 masks_only("the white rabbit")처럼 조항을 가면 인물에게만 한정하고, 맨얼굴 인물마다
+# NO MASK 줄과 얼굴을 따로 적는다. 본문은 원문 그대로라 검사는 머리만 바뀐 판도 원문으로 인정한다.
+_MASKS_HEAD = "MASKS (strict, applies to every person in every frame):"
+_MASKS_ONLY_HEAD = "MASKS (strict, applies only to {who}; nobody else in this shot wears a mask):"
+
+
+def masks_only(who: str, block: str = MASKS_BLOCK) -> str:
+    """block(MASKS_BLOCK·MASKS_SILENT_BLOCK)을 who에게만 거는 판. who에 ; ( ) 는 쓰지 않는다."""
+    if block not in MASKS_BLOCKS:
+        raise ValueError("block은 MASKS_BLOCK 또는 MASKS_SILENT_BLOCK")
+    if not who.strip() or any(c in who for c in ";()"):
+        raise ValueError("who는 비어 있지 않고 ; ( ) 가 없어야 함")
+    return block.replace(_MASKS_HEAD, _MASKS_ONLY_HEAD.format(who=who.strip()), 1)
+
+
+_MASKS_ONLY_RES = tuple(
+    re.compile(re.escape(_MASKS_ONLY_HEAD).replace(re.escape("{who}"), r"[^;()]+") + re.escape(b[len(_MASKS_HEAD):]))
+    for b in MASKS_BLOCKS
+)
+
+
+def has_masks_clause(prompt: str) -> bool:
+    return any(b in prompt for b in MASKS_BLOCKS) or any(r.search(prompt) for r in _MASKS_ONLY_RES)
+
+
 MASKED_RE = re.compile(r"\bmask|peacock|pheasant|pigeon|\bdove|flamingo|cockatoo|parrot|swan|eagle|condor|\bcrows?\b|"
                        r"\bhawk|\bowl|vulture|rabbit|상류층|가면|"
                        r"\bcranes?\b(?!\s*(?:shot|move|moves|up|down|arm|jib|camera))", re.I)  # 두루미(카메라 크레인 제외)
@@ -172,8 +198,8 @@ def validate(page: dict, base: Path) -> list[str]:
             errs.append(f"{where}: status는 {'/'.join(STATUSES)} 중 하나")
         prompt = str(g.get("prompt") or "")
         # 지금 돌릴 판에만. 이미 돌린 옛 판·완료·실패는 실제 쓴 프롬프트 그대로 둔다
-        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and not any(b in prompt for b in MASKS_BLOCKS):
-            errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항 원문(prompt_page.MASKS_BLOCK, 대사 없는 부리 컷은 MASKS_SILENT_BLOCK)이 프롬프트에 없음")
+        if g.get("status") in ("최신", "생성 대기") and MASKED_RE.search(prompt) and not has_masks_clause(prompt):
+            errs.append(f"{where}: 가면 쓴 인물이 나오는데 MASKS 조항 원문(prompt_page.MASKS_BLOCK, 대사 없는 부리 컷은 MASKS_SILENT_BLOCK, 맨얼굴 인물이 함께 나오면 masks_only(가면 인물))이 프롬프트에 없음")
         kind = KINDS.get(g.get("kind", ""))
         if kind is None:
             errs.append(f"{where}: kind는 {'/'.join(KINDS)} 중 하나")
