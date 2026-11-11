@@ -20,7 +20,7 @@ python -m plating_tools gate cost --model 'Seedance 2.5' --mode new --resolution
 python -m plating_tools gate check --gate 'inputs/gate.toml' --prompt 'inputs/prompt.txt' --require-approval
 ```
 
-골격·검사·게이트에는 `--plan inputs/plan.toml --clip A`를 추가할 수 있다. 계획 형식은 `design/plating-tools.draft.md` 3.3절을 따른다. 빈 값은 미결이다. 인물 분류·클립 분할·생성 길이·승인 증거는 사람이 적는다. `scene_module`에는 `SCENE_LOW`, `SCENE_A`~`SCENE_G`, `LAYOUT_TRUCK` 등 문서 블록 키를 지정한다. `SCENE_D`는 원문 충돌 때문에 미결로 남는다.
+골격·검사·게이트에는 `--plan inputs/plan.toml --clip A`를 추가할 수 있다. 계획 형식은 `design/plating-tools.draft.md` 3.3절을 따른다. 빈 값은 미결이다. 인물 분류·클립 분할·생성 길이·승인 증거는 사람이 적는다. `scene_module`에는 `SCENE_LOW`, `SCENE_A`~`SCENE_G`, `LAYOUT_TRUCK` 등 문서 블록 키를 지정한다. `SCENE_*`는 이미지 전용이다(W10 7행·6장). 영상 계획에서는 이유 `이미지 전용 모듈(W10 7행)`으로 제외하므로 골격에 삽입하지 않고 누락에 PR001도 내지 않는다. 이미지는 지정 모듈의 원문 일치를 계속 검사하며 `SCENE_D`의 수치 충돌도 유지한다. `UPPER_AVOID`와 `LAYOUT_TRUCK`의 영상 선택 규칙은 유지한다.
 
 모든 파일 출력은 새 실행 폴더에 저장한다. `--out`으로 기존 폴더를 주면 종료 3이다. 입력 파일의 부모 폴더에도 출력할 수 없으므로 입력은 `inputs/`처럼 출력과 별도 폴더에 둔다. `gate cost`는 `--out`이 없으면 stdout만 출력한다.
 
@@ -29,7 +29,13 @@ python -m plating_tools gate check --gate 'inputs/gate.toml' --prompt 'inputs/pr
 - 종료 2/3/4/5: 입력 불량/출력 충돌/실행 파일·모듈 없음/I/O 실패.
 - P1 패키지가 없는 사본에서도 P0는 동작하며, 해당 P1 명령만 종료 4다.
 
-컷표는 씬 안 첫 두 머리 칸 `컷`, `TC`로 선택한다. `header-row`가 없으면 정보 소견만 남긴다. 초 단위 TC는 같은 표의 바로 앞 행에서 해석한 끝 분을 이어받는다. 앞 행 해석 실패·역행·역전에서는 원문과 CT006을 유지한다.
+컷표는 씬 안 첫 두 머리 칸 `컷`, `TC`로 선택한다. `header-row`가 없으면 CT018 정보 소견만 남긴다. 초 단위 TC는 같은 표에서 마지막으로 해석에 성공한 행의 끝 분을 이어받는다. 실패 행은 이 기준을 바꾸지 않는다. 순서가 어긋나거나 겹쳐도 해석 가능한 구간은 보존하고 CT019 경고 `TC 순서 역행: <raw> < 직전 끝 <값>`을 남긴다. 구간 끝이 시작보다 이르거나 분 경계를 추측해야 하는 형식은 CT006으로 남긴다. 행을 재정렬하거나 다음 분으로 자동 넘기지 않는다.
+
+씬 제목은 `S#NN`·`RS#NN` 자체 또는 그 뒤에 공백·`(`·`-`가 오는 형식이다. 뒤의 요약은 `title_annotations`의 `title_suffix` 주석에 보존하고, 요약의 "수정"에는 CT016을 내지 않는다. 섹션이 하나면 그것을 선택하고, 옛 형식의 원본과 정확한 `<씬 ID> 수정` 섹션이 함께 있으면 수정본을 우선한다. `비고`는 `fields.remarks`로 보존하며, CSV·MD의 기존 열 뒤에 붙인다.
+
+`--scene 'RS#42'`는 `RS42-C007`·`RS#42-C007` 두 컷 표기를 같은 씬으로 인식한다. `cut_id`의 주 ID 표기는 바꾸지 않으며 셀 끝 `(S#98-C123)`은 `original_cut_id`로 분리한다. 원문 셀은 그대로 남기고, 참조가 없으면 빈 값이다. CSV·MD 끝에는 비고 다음 원본 컷 열을 추가한다. 앞뒤 씬 문맥은 같은 S 또는 RS 계열의 번호 ±1이다.
+
+색 근거는 `노션 컷표 범례 2026-11-11`이다. `purple_bg`는 `needs_fix`, `brown_bg`는 `post_work`이며 기존 `yellow_bg`의 `revise`는 사용자 결정(2026-11-07)을 유지한다. `blue_bg`는 사운드 참고 주석으로, 칸 또는 행에 CT020 정보 `사운드 참고 표시: <열 또는 행>`을 남긴다. CT020만 있으면 종료 0이다. 주황은 뜻을 정하지 않고 CT009에 `범례에 없음, 사용자 확인 필요`를 덧붙인다. 행 상태는 `<tr>` 색만으로 정하고 셀·span 색과 합치지 않는다. 회색 행만 생성 대상에서 제외한다.
 
 ```powershell
 python -m plating_tools refs check --list 'inputs/refs.toml'

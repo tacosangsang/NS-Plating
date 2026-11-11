@@ -38,6 +38,12 @@ PYTHONPATH=src python -m plating_qc --log "실행로그.json" probe "씬/raw/원
 
 다섯 명령의 임시 합성 영상 재현과 실제 실행 예는 [samples/README.md](samples/README.md)를 확인하세요.
 
+## 컷표·프롬프트 도구
+
+별도 CLI `python -m plating_tools`는 컷표 추출과 프롬프트 검사를 제공합니다. [실행 안내](tools/plating/README.md)를 따릅니다. 씬 제목의 요약, `비고`(`remarks`), RS 씬과 컷의 원본 번호(`original_cut_id`)를 보존합니다. TC는 마지막으로 해석에 성공한 행의 끝 분을 이어받고, 순서 역행은 `CT019` 경고로 남깁니다.
+
+2026-11-11 범례의 보라는 `needs_fix`, 갈색은 `post_work`입니다. 파랑은 행 상태에 합치지 않고 `CT020` 정보로 기록합니다. 범례에 없는 주황은 `CT009`와 사용자 확인 문구를 유지합니다. 영상 계획의 `SCENE_*`는 이미지 전용이므로 제외하며, 이미지의 원문 일치 검사는 유지합니다.
+
 ## 테스트
 
 ```bash
