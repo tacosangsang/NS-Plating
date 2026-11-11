@@ -1,5 +1,7 @@
 """SYNTH/T2: C1~C22 컷표 계약. 실제 원문 fixture는 저장하지 않는다."""
 import importlib
+import csv
+import io
 import json
 import os
 import subprocess
@@ -126,6 +128,61 @@ class CutTests(NetworkBlockedCase):
         with self.assertRaisesRegex(self.errors.InputError, "CT002"):
             self.extract.extract_scene(duplicate, "01")
         self.assertEqual(len(self.extract.extract_scene(duplicate, "01", section_line=1).targets), 1)
+
+    def test_scene_title_summaries_are_annotations_not_revision_errors(self):
+        # Given: 공백, 괄호, 하이픈 경계의 합성 제목.
+        for suffix in (" SYNTH (수정 2건)", "(SYNTH 수정 2건)", "-SYNTH 수정"):
+            for toggle in (False, True):
+                with self.subTest(suffix=suffix, toggle=toggle):
+                    title = "S#01" + suffix
+                    text = ('<toggle heading="h3">\n' + title + '\n' if toggle else "### " + title + "\n")
+                    text += table([row()]) + ('</toggle>\n' if toggle else '')
+                    # When
+                    result = self.extract.extract_scene(self.source(text), "01")
+                    # Then
+                    self.assertFalse(result.findings)
+                    self.assertFalse(result.selected["is_revision"])
+                    self.assertEqual(result.selected["title_annotations"][-1].text, suffix.strip())
+
+    def test_scene_title_without_boundary_is_not_a_scene(self):
+        # Given
+        for title in ("S#010", "S#01SYNTH", "S#01_C001"):
+            with self.subTest(title=title):
+                source = self.source("### " + title + "\n" + table([row()]))
+                # When / Then
+                with self.assertRaisesRegex(self.errors.InputError, "CT001"):
+                    self.extract.extract_scene(source, "01")
+
+    def test_remarks_are_known_fields_appended_to_cli_exports(self):
+        # Given
+        text = "### S#01(SYNTH 수정)\n" + table([
+            row(picture="SYNTH 화면").replace('</tr>', '<td>메모 | a<br />b</td></tr>')
+        ], ("컷", "TC", "길이", "화면", "비고"))
+        # When
+        process, target = self.cli_extract(text)
+        # Then
+        self.assertEqual(process.returncode, 0, process.stderr)
+        data = json.loads((target / "cuts.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["targets"][0]["fields"]["remarks"]["cell"]["text"], "메모 | a\nb")
+        self.assertEqual(data["header_map"][-1], ["비고", "remarks"])
+        self.assertEqual(data["targets"][0]["extra"], [])
+        exported = list(csv.reader(io.StringIO((target / "cuts.csv").read_text(encoding="utf-8-sig"))))
+        self.assertEqual(exported[0][-2:], ["dialogue_sound", "remarks"])
+        self.assertEqual(exported[1][-1], "메모 | a\nb")
+        md_lines = (target / "cuts.md").read_text(encoding="utf-8").splitlines()
+        self.assertTrue(md_lines[2].endswith("| 원문 필드 | 비고 |"))
+        self.assertTrue(md_lines[4].endswith(r"| 메모 \| a<br>b |"))
+
+    def test_remarks_keep_absent_and_empty_distinct(self):
+        # Given
+        for present in (False, True):
+            with self.subTest(present=present):
+                headers = ("컷", "TC", "길이", "비고" if present else "화면")
+                source = self.source("### S#01\n" + table([row(picture="")], headers))
+                # When
+                result = self.extract.extract_scene(source, "01")
+                # Then
+                self.assertEqual(result.targets[0].fields["remarks"].kind, "empty" if present else "absent")
 
     def test_C15_nested_table_is_reported(self):
         src = self.source("### S#01\n" + table([row()]) + '<toggle>\nSYNTH\n' + table([row()]) + '</toggle>\n')

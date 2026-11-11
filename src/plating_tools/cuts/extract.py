@@ -132,8 +132,6 @@ def parse_rows(src: CutTableSource, section: SceneSection, table: ParsedTable):
     for name in table.header:
         if name not in COLUMNS:
             finding("CT010", f"모르는 열: {name}")
-    if "수정" in section.title_text and not section.is_revision:
-        finding("CT016", f"수정 표기 변형: {section.title_text}")
     for nested in section.tables:
         if nested.nested:
             finding("CT015", f"중첩 표 제외: F:{nested.line_start}")

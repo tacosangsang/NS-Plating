@@ -39,11 +39,12 @@ def inventory_md(result) -> str:
 def cuts_md(result) -> str:
     def escape(text: str) -> str:
         return text.replace("|", "\\|").replace("\n", "<br>")
-    lines = [f"# [검수 대기] {result.scene_id} 컷표 추출", "", "| 순서 | 컷 | 행 상태 | 행 색 | 셀·span 색 | TC | 길이 | 원문 필드 |", "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+    lines = [f"# [검수 대기] {result.scene_id} 컷표 추출", "", "| 순서 | 컷 | 행 상태 | 행 색 | 셀·span 색 | TC | 길이 | 원문 필드 | 비고 |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for row in result.targets:
         marks = "; ".join(f"{name}: {c.raw} → {c.state}" for name, value in row.fields.items() if value.cell for c in value.cell.colors)
         fields = "; ".join(f"{name}: {value.cell.text}" for name, value in row.fields.items() if value.cell)
-        lines.append(f"| {row.order} | {row.cut_id} | {row.row_state} | {row.row_color.raw if row.row_color else ''} | {escape(marks)} | {row.tc.raw} | {row.length.raw} | {escape(fields)} |")
+        remarks = row.fields["remarks"].cell
+        lines.append(f"| {row.order} | {row.cut_id} | {row.row_state} | {row.row_color.raw if row.row_color else ''} | {escape(marks)} | {row.tc.raw} | {row.length.raw} | {escape(fields)} | {escape(remarks.text) if remarks else ''} |")
     lines += ["", "## 연결 문맥(생성 대상 아님)"]
     lines += [f"- {c.role}: {c.row.cut_id if c.row else '없음'} — {c.note}" for c in result.context]
     lines += ["", "## 제외 후보", json_text(result.rejected), "## 소견"]

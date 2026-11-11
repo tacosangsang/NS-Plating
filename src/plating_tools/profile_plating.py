@@ -3,13 +3,13 @@ from typing import Final
 
 COLUMNS: Final = {
     "컷": "cut_id", "TC": "tc", "길이": "length", "샷 / 앵글": "shot_angle",
-    "화면": "picture", "사운드": "sound", "대사": "dialogue", "대사 / 사운드": "dialogue_sound",
+    "화면": "picture", "사운드": "sound", "대사": "dialogue", "대사 / 사운드": "dialogue_sound", "비고": "remarks",
 }
 COLOR_STATES: Final = {"red_bg": "todo", "green_bg": "done", "gray_bg": "removed", "yellow_bg": "revise",
                        "purple_bg": "needs_fix", "brown_bg": "post_work"}
 COLOR_NOTES: Final = {"blue_bg": "사운드 참고 표시"}
 COLOR_LEGEND_SOURCE: Final = "노션 컷표 범례 2026-11-11"
-SCENE_PATTERN: Final = r"^S#(\d{2})(\s|$)"
+SCENE_PATTERN: Final = r"^(S#\d{2})(?=\s|\(|-|$)"
 CUT_PATTERN: Final = r"^S#\d{2}-C\d{3}(-\d+[A-Z]?)?$"
 
 

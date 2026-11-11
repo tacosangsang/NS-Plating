@@ -48,7 +48,7 @@ def parse_sections(src: CutTableSource) -> list[SceneSection]:
     for start, end, title_line, raw, container, toggle in sorted(candidates, key=lambda c: c[0]):
         title = unicodedata.normalize("NFC", comparison(raw))
         match = re.match(SCENE_PATTERN, title)
-        scene = f"S#{match[1]}" if match else None
+        scene = match[1] if match else None
         tables = []
         for node in html.nodes:
             if node.tag != "table" or not start <= node.line <= end:
@@ -59,6 +59,8 @@ def parse_sections(src: CutTableSource) -> list[SceneSection]:
         title_nodes = [n for n in html.nodes if n.line == title_line]
         title_colors = tuple(c for c in html.colors() if c.line == title_line)
         annotations = tuple(Annotation(n.tag, n.attrs, plain(html.raw(n)), n.line, n.col) for n in title_nodes if any(k != "color" for k, _ in n.attrs))
+        if scene is not None and (suffix := comparison(raw)[len(scene):].strip()):
+            annotations += (Annotation("title_suffix", (), suffix, title_line, 0),)
         notes = tuple(doc.ref(i, i) for i in range(title_line + 1, end + 1) if doc.lines[i - 1].strip() and not doc.lines[i - 1].strip().startswith("<") and not any(t.line_start <= i <= t.line_end for t in tables))
         result.append(SceneSection(scene, raw, comparison(raw), container, title == f"{scene} 수정", title_colors, annotations, tuple(tables), notes, doc.ref(start, end, (comparison(raw),))))
     return result
