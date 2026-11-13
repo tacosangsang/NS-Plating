@@ -11,10 +11,17 @@ description: 프롬프트 페이지(아티팩트 링크)나 prompt-page JSON이 
 
 - **JSON 경로**(`*.json`)
   - `python3 .claude/skills/prompt-page/prompt_page.py <json> --check`
+  - `python3 assets/check_assets.py --prompt-json <json>` (입력 그림이 현재본 목록 `assets/current.toml`과 맞는지. 입력 항목마다 `asset` 키가 필요하다)
 - **아티팩트 링크**(claude.ai/artifact/…)
   1. Artifact 도구를 `action: "read"`, `path: "index.html"`, `out_dir: <스크래치>/check/<id>`로 불러 저장한다.
   2. `python3 .claude/skills/prompt-check/audit_page.py <저장된 index.html>`
 - **여러 개**: 링크마다 1번을 하고, `audit_page.py`에 파일을 한꺼번에 넘긴다.
+
+## 입력 그림 대조 (assets/current.toml)
+
+- 입력 그림은 목록의 `asset` 키로 가리킨다. 목록에 없는 그림, 폐기본, temp(확정 아님), 읽기 금지 출처(`sheets/`, `/mnt/project-files/`, 클라우드 미디어 사본 폴더), `media_id`·`md5`가 목록과 다른 그림이면 실패한다. 소스는 드라이브에서만 가져온다.
+- 목록에 없는 자산이 필요하면 생성하지 말고 사용자에게 묻는다. 확정 문장이 있으면 같은 턴에 목록 PR을 올린다.
+- 아티팩트 링크 점검(audit_page.py)은 이 대조를 하지 않는다. 링크의 JSON 원본이 있으면 그 JSON으로 돌린다.
 
 ## 보는 것 (맨 위 생성 기준)
 

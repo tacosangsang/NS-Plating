@@ -1,0 +1,45 @@
+schema = 1
+
+# 자산 현재본 목록. 소스(시트·소품·블록아웃·배경)는 여기 적힌 드라이브 파일만 쓴다.
+# 항목은 사용자가 "확정본"이라고 한 문장(quote)이 있을 때만 confirmed로 올린다.
+# 형식 설명은 assets/README.md, 검사는 python3 assets/check_assets.py
+
+# [[asset]]
+# key = "prop.ritual_tweezers_gold"   # kind.이름
+# kind = "prop"                       # character / prop / bg / blockout_render / style_ref
+# name = "드라이브 파일 이름"
+# drive_id = ""
+# md5 = ""                            # 드라이브가 주는 값. 이름이 아니라 이것으로 같은 파일을 판정
+# hf_media_id = ""                    # Higgsfield에 한 번 올린 id 재사용
+# status = "confirmed"                # confirmed / temp
+# confirmed_by = "ts"
+# confirmed_at = "2026-11-11"
+# quote = "사용자 확정 문장"
+# blockout = ""                       # blockout_render일 때 기준 블록아웃 판
+# use = "시트 그대로 넣기, 흰 배경·배치만 무시"
+
+# 폐기된 자료. 이름 또는 md5로 막는다.
+[[retired]]
+name = "offering_napkin_aicron82_nx3_userpick"
+reason = "AICRON 후보 중 고른 판, 확정 아님. RS04 C002·C003에서 오용 (사용자 11-11)"
+
+[[retired]]
+name = "child_napkin_turnaround_balanced_v1"
+reason = "확정 아님, RS04 C006 첫 판 폐기"
+
+[[retired]]
+name = "upper_guard.png"
+reason = "하층 경비와 같은 파일. 연회장 경비는 드라이브 상층-경비 사용"
+
+# 읽기 금지 출처 (사용자 11-13: 소스는 드라이브에서만)
+[[banned_source]]
+path_prefix = "sheets/"
+reason = "클라우드 사본 폴더. 옛 판이 섞여 있다"
+
+[[banned_source]]
+path_prefix = "/mnt/project-files/"
+reason = "클라우드 프로젝트 파일은 소스가 아니다"
+
+[[banned_source]]
+drive_id = "17j5ZRhRQV0o3R3zppojtEOTi9p6ZjC6B"
+reason = "00 클라우드 프로젝트파일 미디어_2026-11-13: 옛 사본 보관용, 소스 아님"
