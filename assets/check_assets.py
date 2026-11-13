@@ -147,12 +147,14 @@ def check_prompt_inputs(cat: Catalog, data: dict) -> list[str]:
             continue
         for i in g.get("inputs", []):
             tag = f"{g.get('id', '?')} {i.get('tag', '?')}"
-            names = {Path(str(i.get(f, ""))).name for f in ("path", "file") if i.get(f)}
+            locations = [str(i[f]) for f in ("path", "file") if i.get(f)]
+            # 확장자 있는 이름과 없는 이름을 모두 비교한다
+            names = {n for loc in locations for n in (Path(loc).name, Path(loc).stem)}
             for r in cat.retired:
                 if (r.get("name") and r["name"] in names) or (r.get("md5") and r["md5"] == i.get("md5")):
                     errs.append(f"{tag}: 폐기된 자료 {r.get('name') or r.get('md5')} ({r.get('reason', '')})")
             for b in cat.banned:
-                if b.get("path_prefix") and str(i.get("path", "")).startswith(b["path_prefix"]):
+                if b.get("path_prefix") and any(loc.startswith(b["path_prefix"]) for loc in locations):
                     errs.append(f"{tag}: 읽기 금지 출처 {b['path_prefix']} ({b['reason']})")
             key = i.get("asset")
             if not key:

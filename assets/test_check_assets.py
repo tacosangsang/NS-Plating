@@ -68,6 +68,17 @@ class PromptInputs(unittest.TestCase):
         errs = ca.check_prompt_inputs(c, self.page(asset="prop.tweezers", path="sheets/a.png"))
         self.assertTrue(any("읽기 금지" in e for e in errs))
 
+    def test_retired_stem_matches_png_file(self):
+        c = cat([GOOD], [{"name": "old_sheet", "reason": "r"}])
+        errs = ca.check_prompt_inputs(c, self.page(asset="prop.tweezers", file="a/old_sheet.png"))
+        self.assertTrue(any("폐기된 자료" in e for e in errs))
+
+    def test_banned_prefix_checked_on_file_too(self):
+        c = cat([GOOD], banned=[{"path_prefix": "/mnt/project-files/", "reason": "r"}])
+        errs = ca.check_prompt_inputs(
+            c, self.page(asset="prop.tweezers", path="drive/ok.png", file="/mnt/project-files/t.png"))
+        self.assertTrue(any("읽기 금지" in e for e in errs))
+
     def test_mismatched_md5_fails(self):
         errs = ca.check_prompt_inputs(cat([GOOD]), self.page(asset="prop.tweezers", md5="c" * 32))
         self.assertTrue(any("다르다" in e for e in errs))
