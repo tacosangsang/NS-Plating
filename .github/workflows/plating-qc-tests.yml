@@ -1,0 +1,36 @@
+name: plating-qc tests
+
+on:
+  push:
+    branches: [main]
+    paths: ["plating-qc/**", "workflow/**", ".github/workflows/plating-qc-tests.yml"]
+  pull_request:
+    paths: ["plating-qc/**", "workflow/**", ".github/workflows/plating-qc-tests.yml"]
+
+jobs:
+  unittest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: plating-qc
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ffmpeg (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install ffmpeg (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg -y --no-progress
+      - name: Run tests
+        env:
+          PYTHONPATH: src
+          # workflow 문서가 같은 저장소에 있으므로 별도 checkout·토큰이 필요 없다.
+          PLATING_TOOLS_WORKFLOW_DIR: ${{ github.workspace }}/workflow
+        run: python -m unittest discover -s tests -v
