@@ -1,0 +1,131 @@
+command=python -m unittest tests.test_pt_cuts -v
+head=d8297c9 (항목 1 구현 전 회귀 테스트)
+test_C10_summary_id_cannot_be_expanded (tests.test_pt_cuts.CutTests.test_C10_summary_id_cannot_be_expanded) ... ok
+test_C11_recording_section_is_excluded (tests.test_pt_cuts.CutTests.test_C11_recording_section_is_excluded) ... ok
+test_C13_revision_wins_and_C14_ambiguity_needs_line (tests.test_pt_cuts.CutTests.test_C13_revision_wins_and_C14_ambiguity_needs_line) ... ok
+test_C15_nested_table_is_reported (tests.test_pt_cuts.CutTests.test_C15_nested_table_is_reported) ... ok
+test_C16_duplicate_ids_preserve_order (tests.test_pt_cuts.CutTests.test_C16_duplicate_ids_preserve_order) ... ok
+test_C17_duplicate_columns_and_cell_count (tests.test_pt_cuts.CutTests.test_C17_duplicate_columns_and_cell_count) ... ok
+test_C18_unknown_column_empty_and_br (tests.test_pt_cuts.CutTests.test_C18_unknown_column_empty_and_br) ... ok
+test_C19_unsupported_times_are_preserved (tests.test_pt_cuts.CutTests.test_C19_unsupported_times_are_preserved) ... ok
+test_C1_C2_mixed_sections_and_span_titles (tests.test_pt_cuts.CutTests.test_C1_C2_mixed_sections_and_span_titles) ... ok
+test_C20_C21_unknown_color_and_removed (tests.test_pt_cuts.CutTests.test_C20_C21_unknown_color_and_removed) ... ok
+test_C22_encodings_keep_positions (tests.test_pt_cuts.CutTests.test_C22_encodings_keep_positions) ... ok
+test_C3_C4_split_id_annotations_and_headers (tests.test_pt_cuts.CutTests.test_C3_C4_split_id_annotations_and_headers) ... ok
+test_C5_C6_row_and_field_states_are_independent (tests.test_pt_cuts.CutTests.test_C5_C6_row_and_field_states_are_independent) ... ok
+test_C7_C12_tc_and_context (tests.test_pt_cuts.CutTests.test_C7_C12_tc_and_context) ... ok
+test_C9_title_color_does_not_change_rows (tests.test_pt_cuts.CutTests.test_C9_title_color_does_not_change_rows) ... ok
+test_cli_info_only_header_finding_keeps_exit_zero (tests.test_pt_cuts.CutTests.test_cli_info_only_header_finding_keeps_exit_zero) ... FAIL
+test_cut_table_requires_first_two_header_cells (tests.test_pt_cuts.CutTests.test_cut_table_requires_first_two_header_cells) ... 
+  test_cut_table_requires_first_two_header_cells (tests.test_pt_cuts.CutTests.test_cut_table_requires_first_two_header_cells) (headers=('��', '����', 'TC', 'ȭ��')) ... FAIL
+test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) ... 
+  test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) (heading='### S#01\n') ... ERROR
+  test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) (heading='<toggle heading="h3">\nS#01\n') ... ERROR
+test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) ... 
+  test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) (attribute='header-row="false"') ... ERROR
+  test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) (attribute='header-row="other"') ... ERROR
+test_multiple_content_matched_tables_remain_ambiguous (tests.test_pt_cuts.CutTests.test_multiple_content_matched_tables_remain_ambiguous) ... FAIL
+test_recording_table_is_outside_scene_and_not_a_cut_table (tests.test_pt_cuts.CutTests.test_recording_table_is_outside_scene_and_not_a_cut_table) ... ERROR
+
+======================================================================
+ERROR: test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) (heading='### S#01\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 162, in test_header_content_selects_table_without_header_row
+    result = self.extract.extract_scene(self.source(text), "01")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 176, in extract_scene
+    table = choose_table(selected, table_line)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 91, in choose_table
+    raise InputError(f"CT003 ��ǥ ���� �Ұ�: {section.title_text}, �ĺ� {[(t.line_start, t.header) for t in section.tables]}")
+plating_tools.errors.InputError: CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(2, ('��', 'TC', '����', 'ȭ��'))]
+
+======================================================================
+ERROR: test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) (heading='<toggle heading="h3">\nS#01\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 162, in test_header_content_selects_table_without_header_row
+    result = self.extract.extract_scene(self.source(text), "01")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 176, in extract_scene
+    table = choose_table(selected, table_line)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 91, in choose_table
+    raise InputError(f"CT003 ��ǥ ���� �Ұ�: {section.title_text}, �ĺ� {[(t.line_start, t.header) for t in section.tables]}")
+plating_tools.errors.InputError: CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(3, ('��', 'TC', '����', 'ȭ��'))]
+
+======================================================================
+ERROR: test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) (attribute='header-row="false"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 171, in test_header_row_value_does_not_select_table
+    result = self.extract.extract_scene(self.source(text), "01")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 176, in extract_scene
+    table = choose_table(selected, table_line)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 91, in choose_table
+    raise InputError(f"CT003 ��ǥ ���� �Ұ�: {section.title_text}, �ĺ� {[(t.line_start, t.header) for t in section.tables]}")
+plating_tools.errors.InputError: CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(2, ('��', 'TC', '����', 'ȭ��'))]
+
+======================================================================
+ERROR: test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) (attribute='header-row="other"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 171, in test_header_row_value_does_not_select_table
+    result = self.extract.extract_scene(self.source(text), "01")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 176, in extract_scene
+    table = choose_table(selected, table_line)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 91, in choose_table
+    raise InputError(f"CT003 ��ǥ ���� �Ұ�: {section.title_text}, �ĺ� {[(t.line_start, t.header) for t in section.tables]}")
+plating_tools.errors.InputError: CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(2, ('��', 'TC', '����', 'ȭ��'))]
+
+======================================================================
+ERROR: test_recording_table_is_outside_scene_and_not_a_cut_table (tests.test_pt_cuts.CutTests.test_recording_table_is_outside_scene_and_not_a_cut_table)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 187, in test_recording_table_is_outside_scene_and_not_a_cut_table
+    result = self.extract.extract_scene(source, "01")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 176, in extract_scene
+    table = choose_table(selected, table_line)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uicus\Dev\plating-qc-workflows\src\plating_tools\cuts\extract.py", line 91, in choose_table
+    raise InputError(f"CT003 ��ǥ ���� �Ұ�: {section.title_text}, �ĺ� {[(t.line_start, t.header) for t in section.tables]}")
+plating_tools.errors.InputError: CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(2, ('��', 'TC', '����', 'ȭ��'))]
+
+======================================================================
+FAIL: test_cli_info_only_header_finding_keeps_exit_zero (tests.test_pt_cuts.CutTests.test_cli_info_only_header_finding_keeps_exit_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 211, in test_cli_info_only_header_finding_keeps_exit_zero
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 2 != 0 : CT003 ��ǥ ���� �Ұ�: S#01, �ĺ� [(2, ('��', 'TC', '����', 'ȭ��'))]
+
+
+======================================================================
+FAIL: test_cut_table_requires_first_two_header_cells (tests.test_pt_cuts.CutTests.test_cut_table_requires_first_two_header_cells) (headers=('��', '����', 'TC', 'ȭ��'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 179, in test_cut_table_requires_first_two_header_cells
+    with self.assertRaisesRegex(self.errors.InputError, "CT003"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InputError not raised
+
+======================================================================
+FAIL: test_multiple_content_matched_tables_remain_ambiguous (tests.test_pt_cuts.CutTests.test_multiple_content_matched_tables_remain_ambiguous)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\uicus\Dev\plating-qc-workflows\tests\test_pt_cuts.py", line 194, in test_multiple_content_matched_tables_remain_ambiguous
+    with self.assertRaisesRegex(self.errors.InputError, "CT003"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InputError not raised
+
+----------------------------------------------------------------------
+Ran 21 tests in 1.562s
+
+FAILED (failures=3, errors=5)
+exit=1

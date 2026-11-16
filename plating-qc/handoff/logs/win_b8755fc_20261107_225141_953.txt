@@ -1,0 +1,16 @@
+test_Q1_array_shell_false_absolute_inputs_and_no_import (tests.test_pt_qc.QcTests.test_Q1_array_shell_false_absolute_inputs_and_no_import) ... ok
+test_Q2_logs_cwd_and_only_two_environment_overrides (tests.test_pt_qc.QcTests.test_Q2_logs_cwd_and_only_two_environment_overrides) ... ok
+test_Q3_exit_one_bytes_and_artifacts_are_preserved (tests.test_pt_qc.QcTests.test_Q3_exit_one_bytes_and_artifacts_are_preserved) ... ok
+test_Q4_exit_four_and_five_meanings (tests.test_pt_qc.QcTests.test_Q4_exit_four_and_five_meanings) ... ok
+test_Q4_timeout_keeps_partial_bytes_and_maps_to_five (tests.test_pt_qc.QcTests.test_Q4_timeout_keeps_partial_bytes_and_maps_to_five) ... ok
+test_Q5_convert_with_dry_run_has_no_output_argument (tests.test_pt_qc.QcTests.test_Q5_convert_with_dry_run_has_no_output_argument) ... ok
+test_Q5_convert_without_dry_run_is_rejected_before_spawn (tests.test_pt_qc.QcTests.test_Q5_convert_without_dry_run_is_rejected_before_spawn) ... ok
+test_Q6_child_output_config_and_log_options_are_rejected (tests.test_pt_qc.QcTests.test_Q6_child_output_config_and_log_options_are_rejected) ... ok
+test_cli_exit_four_five_and_timeout_are_quarantined (tests.test_pt_qc.QcTests.test_cli_exit_four_five_and_timeout_are_quarantined) ... ok
+test_cli_exit_one_publishes_child_result_unchanged (tests.test_pt_qc.QcTests.test_cli_exit_one_publishes_child_result_unchanged) ... ok
+test_input_directory_change_is_reported (tests.test_pt_qc.QcTests.test_input_directory_change_is_reported) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.203s
+
+OK

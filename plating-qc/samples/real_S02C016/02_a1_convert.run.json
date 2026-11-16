@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "plating_qc",
+    "--log",
+    "samples/real_S02C016/logs/02_a1_convert.json",
+    "convert",
+    "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "--scene",
+    "samples/real_S02C016"
+  ],
+  "elapsed_seconds": 12.8077059,
+  "exit_code": 0
+}

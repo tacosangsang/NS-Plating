@@ -1,0 +1,100 @@
+{
+  "original": {
+    "path": "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045210399171e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "hevc",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv420p10le",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 241,
+      "nb_frames_decoded": 241,
+      "nb_read_packets": 241,
+      "decode_errors": 0,
+      "duration_s": "10.041667",
+      "start_time_s": "0.000000",
+      "profile": "Main 10",
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "space": "bt709"
+      }
+    },
+    "audio": {
+      "codec": "aac",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "10.080000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  "candidate": {
+    "path": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\samples\\real_S02C016\\prores\\S02C016-A1-1080p-v1_prores422hq.mov",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045210399171e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "prores",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv422p10le",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 241,
+      "nb_frames_decoded": 241,
+      "nb_read_packets": 241,
+      "decode_errors": 0,
+      "duration_s": "10.041667",
+      "start_time_s": "0.000000",
+      "profile": "HQ",
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "space": "bt709"
+      }
+    },
+    "audio": {
+      "codec": "pcm_s16le",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "10.080000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  "alignment": {
+    "offset_candidate_to_original": 0,
+    "score": 0.0014001430712485875,
+    "second_score": 0.006322251997921737,
+    "uncertain": false,
+    "estimated_missing_head": 0,
+    "estimated_missing_tail": 0
+  },
+  "difference_ranges_candidate_frames": [],
+  "mixed_frame_suspects": [],
+  "threshold": 0.02,
+  "warnings": [],
+  "notice": "축소 회색 프레임 기반의 검수 힌트입니다. 손상·누락·혼합 프레임의 확정 판정이 아닙니다.",
+  "comparison_images": [
+    {
+      "file": "pair_original_000000_candidate_000000.png",
+      "original_frame": 0,
+      "candidate_frame": 0
+    }
+  ],
+  "comparison_images_truncated": false,
+  "comparison_image_note": "왼쪽 원본, 오른쪽 원본 해상도로 맞춘 후보. 번호는 0부터 시작합니다."
+}

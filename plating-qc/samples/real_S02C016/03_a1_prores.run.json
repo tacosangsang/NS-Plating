@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "plating_qc",
+    "--log",
+    "samples/real_S02C016/logs/03_a1_prores.json",
+    "compare",
+    "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "samples/real_S02C016/prores/S02C016-A1-1080p-v1_prores422hq.mov",
+    "--out",
+    "samples/real_S02C016/a1_vs_prores"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 9.9843317
+}

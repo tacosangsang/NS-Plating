@@ -1,0 +1,19 @@
+# 상대 경로는 이 설정 파일의 폴더 기준. 외부 입력은 읽기 전용.
+[paths]
+write_root = '.'
+output_root = 'out'
+workflow_dir = '../workflow'
+readme = '../README.md'
+handbook = ''
+# NS-Plating에 합친 뒤로 write_root(plating-qc/)가 저장소 안에 있으므로, 저장소 전체 대신 문서·자료 경로만 읽기 전용으로 둔다.
+read_only = ['../.git', '../workflow', '../README.md', '../00 resources', '../01 docs', '../.claude', '../.codex', 'C:\Users\uicus\Dev\dot-handoff', 'D:\', 'G:\']
+
+[docs]
+declared_commit = '93f0252593e27f03657c727fba749265889bf1bd'
+
+[cuts]
+input = 'C:\Users\uicus\Dev\dot-handoff\notion_컷표_fetch_2026-11-07T0706Z.md'
+expected_sha256 = 'cae22e2f0637d29ebfe1f6e5a7daa973ee8ea72a397373246ecdddf9cfe6dc37'
+
+[tools]
+ffmpeg_path = 'D:\Plating\tools\ffmpeg\bin'

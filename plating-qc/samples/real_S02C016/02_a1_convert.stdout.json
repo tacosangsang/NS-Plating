@@ -1,0 +1,79 @@
+{
+  "input": {
+    "path": "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045210399171e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "hevc",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv420p10le",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 241,
+      "nb_frames_decoded": 241,
+      "nb_read_packets": 241,
+      "decode_errors": 0,
+      "duration_s": "10.041667",
+      "start_time_s": "0.000000",
+      "profile": "Main 10",
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "space": "bt709"
+      }
+    },
+    "audio": {
+      "codec": "aac",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "10.080000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  "output": {
+    "path": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\samples\\real_S02C016\\prores\\S02C016-A1-1080p-v1_prores422hq.mov",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045210399171e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "prores",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv422p10le",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 241,
+      "nb_frames_decoded": 241,
+      "nb_read_packets": 241,
+      "decode_errors": 0,
+      "duration_s": "10.041667",
+      "start_time_s": "0.000000",
+      "profile": "HQ",
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "space": "bt709"
+      }
+    },
+    "audio": {
+      "codec": "pcm_s16le",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "10.080000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  "warnings": []
+}

@@ -1,0 +1,61 @@
+test_budget_limits (test_claude_design.UsageTests.test_budget_limits) ... ok
+test_cost_includes_cache_read (test_claude_design.UsageTests.test_cost_includes_cache_read) ... ok
+test_error_is_recorded_with_partial_path (test_claude_design.UsageTests.test_error_is_recorded_with_partial_path) ... 호출 실패: ConnectionError. 비용을 Console에서 확인하세요.
+ok
+test_incomplete_response_gets_warning (test_claude_design.UsageTests.test_incomplete_response_gets_warning) ... ok
+test_truncated_result_is_warning_and_exit_one (test_claude_design.UsageTests.test_truncated_result_is_warning_and_exit_one) ... ok
+test_existing_target_is_not_replaced (test_convert.PublishTests.test_existing_target_is_not_replaced) ... ok
+test_windows_fallback_keeps_existing_target (test_convert.PublishTests.test_windows_fallback_keeps_existing_target) ... ok
+test_windows_falls_back_when_hardlink_fails (test_convert.PublishTests.test_windows_falls_back_when_hardlink_fails) ... ok
+test_default_names (test_layout.LayoutTests.test_default_names) ... ok
+test_long_path_is_usage_error (test_layout.LayoutTests.test_long_path_is_usage_error) ... ok
+test_rejects_same_raw_and_prores (test_layout.LayoutTests.test_rejects_same_raw_and_prores) ... ok
+test_unsupported_backend_method_is_exit_four (test_layout.LayoutTests.test_unsupported_backend_method_is_exit_four) ... ok
+test_backend_returns_media_info (test_probe.ProbeTests.test_backend_returns_media_info) ... ok
+test_decode_error_is_exit_five (test_probe.ProbeTests.test_decode_error_is_exit_five) ... ok
+test_reports_packet_count (test_probe.ProbeTests.test_reports_packet_count) ... ok
+test_command_log_records_error_without_changing_input (test_qc.QCIntegration.test_command_log_records_error_without_changing_input) ... ok
+test_command_log_records_versions_result_and_argv (test_qc.QCIntegration.test_command_log_records_versions_result_and_argv) ... ok
+test_command_log_rejects_existing_raw_and_new_output_folder (test_qc.QCIntegration.test_command_log_rejects_existing_raw_and_new_output_folder) ... ok
+test_compare_detects_head_and_tail_loss (test_qc.QCIntegration.test_compare_detects_head_and_tail_loss) ... ok
+test_compare_identical_and_missing_input (test_qc.QCIntegration.test_compare_identical_and_missing_input) ... ok
+test_compare_repeated_frames_is_uncertain (test_qc.QCIntegration.test_compare_repeated_frames_is_uncertain) ... ok
+test_compare_report_and_aligned_images (test_qc.QCIntegration.test_compare_report_and_aligned_images) ... ok
+test_comparison_image_failure_cleans_output (test_qc.QCIntegration.test_comparison_image_failure_cleans_output) ... ok
+test_convert_checks_relative_pts_and_cleans_mismatch (test_qc.QCIntegration.test_convert_checks_relative_pts_and_cleans_mismatch) ... ok
+test_convert_reports_absolute_start_shift (test_qc.QCIntegration.test_convert_reports_absolute_start_shift) ... ok
+test_convert_warns_on_audio_start_offset_change (test_qc.QCIntegration.test_convert_warns_on_audio_start_offset_change) ... ok
+test_corrupt_file_fails_without_output (test_qc.QCIntegration.test_corrupt_file_fails_without_output) ... ok
+test_detects_synthetic_mixed_frame_as_suspicion (test_qc.QCIntegration.test_detects_synthetic_mixed_frame_as_suspicion) ... ok
+test_generated_pts_convert_uses_genpts_option (test_qc.QCIntegration.test_generated_pts_convert_uses_genpts_option) ... ok
+test_layout_must_be_table (test_qc.QCIntegration.test_layout_must_be_table) ... ok
+test_missing_input_and_dry_run (test_qc.QCIntegration.test_missing_input_and_dry_run) ... ok
+test_probe_and_convert_without_audio_and_collision (test_qc.QCIntegration.test_probe_and_convert_without_audio_and_collision) ... ok
+test_prores_path_is_file_returns_storage_error (test_qc.QCIntegration.test_prores_path_is_file_returns_storage_error) ... ok
+test_raw_output_and_invalid_suffix_rejected (test_qc.QCIntegration.test_raw_output_and_invalid_suffix_rejected) ... ok
+test_scene_detection_failure_cleans_all_temporary_output (test_qc.QCIntegration.test_scene_detection_failure_cleans_all_temporary_output) ... ok
+test_short_audio_is_padded (test_qc.QCIntegration.test_short_audio_is_padded) ... ok
+test_split_cli_warns_if_audio_boundary_unverified (test_qc.QCIntegration.test_split_cli_warns_if_audio_boundary_unverified) ... ok
+test_split_frame_mismatch_removes_partial_output (test_qc.QCIntegration.test_split_frame_mismatch_removes_partial_output) ... ok
+test_split_prores_verifies_all_frames_and_preserves_existing (test_qc.QCIntegration.test_split_prores_verifies_all_frames_and_preserves_existing) ... ok
+test_split_rejects_non_prores_and_raw_output (test_qc.QCIntegration.test_split_rejects_non_prores_and_raw_output) ... ok
+test_tiles_create_cut_and_do_not_overwrite (test_qc.QCIntegration.test_tiles_create_cut_and_do_not_overwrite) ... ok
+test_tiles_encoder_failure_cleans_partial_output (test_qc.QCIntegration.test_tiles_encoder_failure_cleans_partial_output) ... ok
+test_tiles_invalid_frame_does_not_create_folder (test_qc.QCIntegration.test_tiles_invalid_frame_does_not_create_folder) ... ok
+test_tiles_missing_timestamps_do_not_publish (test_qc.QCIntegration.test_tiles_missing_timestamps_do_not_publish) ... ok
+test_tiles_percent_sign_in_output_path (test_qc.QCIntegration.test_tiles_percent_sign_in_output_path) ... ok
+test_tiles_rejects_invalid_raw_config (test_qc.QCIntegration.test_tiles_rejects_invalid_raw_config) ... ok
+test_tiles_report_original_frame_indices_and_pts (test_qc.QCIntegration.test_tiles_report_original_frame_indices_and_pts) ... ok
+test_tiles_scene_candidate_with_exact_frame_and_timestamp (test_qc.QCIntegration.test_tiles_scene_candidate_with_exact_frame_and_timestamp) ... ok
+test_tiles_variable_timestamps_match_source_frames (test_qc.QCIntegration.test_tiles_variable_timestamps_match_source_frames) ... ok
+test_timestamp_absent_h264_refuses_unsafe_convert (test_qc.QCIntegration.test_timestamp_absent_h264_refuses_unsafe_convert) ... ok
+test_timestamp_analysis_detects_vfr_even_if_rates_match (test_qc.QCIntegration.test_timestamp_analysis_detects_vfr_even_if_rates_match) ... ok
+test_timestamp_missing_recovery_is_never_claimed_original (test_qc.QCIntegration.test_timestamp_missing_recovery_is_never_claimed_original) ... ok
+test_uncertain_comparison_saves_no_misleading_images (test_qc.QCIntegration.test_uncertain_comparison_saves_no_misleading_images) ... ok
+test_vfr_probe_and_compare_do_not_claim_alignment (test_qc.QCIntegration.test_vfr_probe_and_compare_do_not_claim_alignment) ... ok
+
+----------------------------------------------------------------------
+Ran 54 tests in 8.586s
+
+OK
+exit=0

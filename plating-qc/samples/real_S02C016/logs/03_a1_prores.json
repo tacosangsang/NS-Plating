@@ -1,0 +1,135 @@
+{
+  "started_utc": "2026-11-07T08:05:42.552465+00:00",
+  "duration_s": 9.844,
+  "cwd": "C:\\Users\\uicus\\Dev\\plating-qc-workflows",
+  "argv": [
+    "--log",
+    "samples/real_S02C016/logs/03_a1_prores.json",
+    "compare",
+    "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+    "samples/real_S02C016/prores/S02C016-A1-1080p-v1_prores422hq.mov",
+    "--out",
+    "samples/real_S02C016/a1_vs_prores"
+  ],
+  "tools": {
+    "ffmpeg": "ffmpeg version N-128532-g5d85b7bfb2-20261106 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version N-128532-g5d85b7bfb2-20261106 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "source_sha256": {
+    "__init__.py": "c6a418443b02b01c6ed3b3c79d3a43925161087dd49197c06a4acd28611a446d",
+    "__main__.py": "8134dc71036ab6fef7cb605ec59b400b2864890fc00526f9763c447e2937e295",
+    "cli.py": "11f4f4c6b6864579961cca0bb3193ced6481df24621a75566fe2117e303674bc",
+    "compare.py": "06d7e55b01d68c3c043029e7d0b1ba617c7fa18e7743bff2fc6bd23d3dba75a9",
+    "config.py": "8d6d1eda0e58306625b2ccab7267a90710de40eb6473ed6b1c8a0bbfafacd308",
+    "core.py": "ac8490b824341e12e65305142b71e6b6ecf5cfb3ea84ef60c7dc1e9e2b1f0684",
+    "errors.py": "d042fa3dcafee8e969bb78f823e96484f5e872bcead42d5d3f29750bee1abe86",
+    "layout.py": "0813be26624d0e85eb500a5541eea247e3698fab77b80c120b62b8fbd9952c8a",
+    "model.py": "808407428fe06725f2e28975bae09b1a8fd6a7ae109253227f86e028dbfcf974",
+    "publish.py": "2a3912cd232c65e26cd93fb1a96c7c06bcb28d1d9ac8bbaabf7e7aaf72e6c919",
+    "review.py": "dc8becf37e6b34cd4a12e1bbc1636e0740b7880b7285fe505ed94457f2981ad2",
+    "runlog.py": "2b2fb72054a273f074eaea3d8ea2d7d0c1b3d9f2e36702e0aab1ebd783b43120",
+    "split.py": "d2b1613b2f975b2ee88dd8c4dca796695376388c875b9744affa25bd1bbdef9e"
+  },
+  "exit_code": 0,
+  "result": {
+    "original": {
+      "path": "D:\\Plating\\video\\S02C016-A1-1080p-v1.mp4",
+      "timestamp_analysis": {
+        "status": "observed",
+        "missing_count": 0,
+        "vfr_suspect": false,
+        "interval_stddev_s": 4.714045210399171e-07,
+        "rates_differ": false
+      },
+      "video": {
+        "codec": "hevc",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv420p10le",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "nb_frames_meta": 241,
+        "nb_frames_decoded": 241,
+        "nb_read_packets": 241,
+        "decode_errors": 0,
+        "duration_s": "10.041667",
+        "start_time_s": "0.000000",
+        "profile": "Main 10",
+        "color": {
+          "primaries": "bt709",
+          "transfer": "bt709",
+          "space": "bt709"
+        }
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "32000",
+        "channels": 2,
+        "duration_s": "10.080000",
+        "start_time_s": "0.000000"
+      },
+      "warnings": []
+    },
+    "candidate": {
+      "path": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\samples\\real_S02C016\\prores\\S02C016-A1-1080p-v1_prores422hq.mov",
+      "timestamp_analysis": {
+        "status": "observed",
+        "missing_count": 0,
+        "vfr_suspect": false,
+        "interval_stddev_s": 4.714045210399171e-07,
+        "rates_differ": false
+      },
+      "video": {
+        "codec": "prores",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv422p10le",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "nb_frames_meta": 241,
+        "nb_frames_decoded": 241,
+        "nb_read_packets": 241,
+        "decode_errors": 0,
+        "duration_s": "10.041667",
+        "start_time_s": "0.000000",
+        "profile": "HQ",
+        "color": {
+          "primaries": "bt709",
+          "transfer": "bt709",
+          "space": "bt709"
+        }
+      },
+      "audio": {
+        "codec": "pcm_s16le",
+        "sample_rate": "32000",
+        "channels": 2,
+        "duration_s": "10.080000",
+        "start_time_s": "0.000000"
+      },
+      "warnings": []
+    },
+    "alignment": {
+      "offset_candidate_to_original": 0,
+      "score": 0.0014001430712485875,
+      "second_score": 0.006322251997921737,
+      "uncertain": false,
+      "estimated_missing_head": 0,
+      "estimated_missing_tail": 0
+    },
+    "difference_ranges_candidate_frames": [],
+    "mixed_frame_suspects": [],
+    "threshold": 0.02,
+    "warnings": [],
+    "notice": "축소 회색 프레임 기반의 검수 힌트입니다. 손상·누락·혼합 프레임의 확정 판정이 아닙니다.",
+    "comparison_images": [
+      {
+        "file": "pair_original_000000_candidate_000000.png",
+        "original_frame": 0,
+        "candidate_frame": 0
+      }
+    ],
+    "comparison_images_truncated": false,
+    "comparison_image_note": "왼쪽 원본, 오른쪽 원본 해상도로 맞춘 후보. 번호는 0부터 시작합니다."
+  },
+  "error": null
+}

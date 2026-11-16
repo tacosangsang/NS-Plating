@@ -1,0 +1,39 @@
+command=python -m unittest tests.test_pt_cuts -v
+base_head=9b5981a; tested_tree=15번 항목 2 커밋 전 작업 트리
+test_C10_summary_id_cannot_be_expanded (tests.test_pt_cuts.CutTests.test_C10_summary_id_cannot_be_expanded) ... ok
+test_C11_recording_section_is_excluded (tests.test_pt_cuts.CutTests.test_C11_recording_section_is_excluded) ... ok
+test_C13_revision_wins_and_C14_ambiguity_needs_line (tests.test_pt_cuts.CutTests.test_C13_revision_wins_and_C14_ambiguity_needs_line) ... ok
+test_C15_nested_table_is_reported (tests.test_pt_cuts.CutTests.test_C15_nested_table_is_reported) ... ok
+test_C16_duplicate_ids_preserve_order (tests.test_pt_cuts.CutTests.test_C16_duplicate_ids_preserve_order) ... ok
+test_C17_duplicate_columns_and_cell_count (tests.test_pt_cuts.CutTests.test_C17_duplicate_columns_and_cell_count) ... ok
+test_C18_unknown_column_empty_and_br (tests.test_pt_cuts.CutTests.test_C18_unknown_column_empty_and_br) ... ok
+test_C19_unsupported_times_are_preserved (tests.test_pt_cuts.CutTests.test_C19_unsupported_times_are_preserved) ... ok
+test_C1_C2_mixed_sections_and_span_titles (tests.test_pt_cuts.CutTests.test_C1_C2_mixed_sections_and_span_titles) ... ok
+test_C20_C21_unknown_color_and_removed (tests.test_pt_cuts.CutTests.test_C20_C21_unknown_color_and_removed) ... ok
+test_C22_encodings_keep_positions (tests.test_pt_cuts.CutTests.test_C22_encodings_keep_positions) ... ok
+test_C3_C4_split_id_annotations_and_headers (tests.test_pt_cuts.CutTests.test_C3_C4_split_id_annotations_and_headers) ... ok
+test_C5_C6_row_and_field_states_are_independent (tests.test_pt_cuts.CutTests.test_C5_C6_row_and_field_states_are_independent) ... ok
+test_C7_C12_tc_and_context (tests.test_pt_cuts.CutTests.test_C7_C12_tc_and_context) ... ok
+test_C9_title_color_does_not_change_rows (tests.test_pt_cuts.CutTests.test_C9_title_color_does_not_change_rows) ... ok
+test_cli_info_only_header_finding_keeps_exit_zero (tests.test_pt_cuts.CutTests.test_cli_info_only_header_finding_keeps_exit_zero) ... ok
+test_cut_selection_still_parses_previous_row_for_minutes (tests.test_pt_cuts.CutTests.test_cut_selection_still_parses_previous_row_for_minutes) ... ok
+test_cut_table_requires_first_two_header_cells (tests.test_pt_cuts.CutTests.test_cut_table_requires_first_two_header_cells) ... ok
+test_header_content_selects_table_without_header_row (tests.test_pt_cuts.CutTests.test_header_content_selects_table_without_header_row) ... ok
+test_header_row_value_does_not_select_table (tests.test_pt_cuts.CutTests.test_header_row_value_does_not_select_table) ... ok
+test_invalid_previous_row_clears_minute_context (tests.test_pt_cuts.CutTests.test_invalid_previous_row_clears_minute_context) ... ok
+test_invalid_seconds_tc_syntax_is_not_guessed (tests.test_pt_cuts.CutTests.test_invalid_seconds_tc_syntax_is_not_guessed) ... ok
+test_multiple_content_matched_tables_remain_ambiguous (tests.test_pt_cuts.CutTests.test_multiple_content_matched_tables_remain_ambiguous) ... ok
+test_partial_tc_before_previous_end_is_preserved (tests.test_pt_cuts.CutTests.test_partial_tc_before_previous_end_is_preserved) ... ok
+test_partial_tc_uses_explicit_start_minute_and_marks_inheritance (tests.test_pt_cuts.CutTests.test_partial_tc_uses_explicit_start_minute_and_marks_inheritance) ... ok
+test_recording_table_is_outside_scene_and_not_a_cut_table (tests.test_pt_cuts.CutTests.test_recording_table_is_outside_scene_and_not_a_cut_table) ... ok
+test_seconds_tc_before_previous_end_is_not_rolled_forward (tests.test_pt_cuts.CutTests.test_seconds_tc_before_previous_end_is_not_rolled_forward) ... ok
+test_seconds_tc_inherits_immediate_previous_end_minute (tests.test_pt_cuts.CutTests.test_seconds_tc_inherits_immediate_previous_end_minute) ... ok
+test_seconds_tc_reversed_range_is_preserved (tests.test_pt_cuts.CutTests.test_seconds_tc_reversed_range_is_preserved) ... ok
+test_seconds_tc_without_previous_is_preserved (tests.test_pt_cuts.CutTests.test_seconds_tc_without_previous_is_preserved) ... ok
+test_tc_minutes_do_not_cross_tables (tests.test_pt_cuts.CutTests.test_tc_minutes_do_not_cross_tables) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 1.588s
+
+OK
+exit=0

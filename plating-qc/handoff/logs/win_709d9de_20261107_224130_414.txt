@@ -1,0 +1,11 @@
+test_R1_jpeg_header (tests.test_pt_refs_fetch.FetchTests.test_R1_jpeg_header) ... ok
+test_R2_R3_R6_response_failures (tests.test_pt_refs_fetch.FetchTests.test_R2_R3_R6_response_failures) ... ok
+test_R4_timeout (tests.test_pt_refs_fetch.FetchTests.test_R4_timeout) ... ok
+test_R5_redirect_limit_and_https_at_every_hop (tests.test_pt_refs_fetch.FetchTests.test_R5_redirect_limit_and_https_at_every_hop) ... ok
+test_R7_reads_only_limit_plus_one (tests.test_pt_refs_fetch.FetchTests.test_R7_reads_only_limit_plus_one) ... ok
+test_webp_header_variants (tests.test_pt_refs_fetch.FetchTests.test_webp_header_variants) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.054s
+
+OK
