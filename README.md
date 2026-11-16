@@ -3,9 +3,6 @@
 미디어아카데미 나뭇잎스콘팀, 3D 애니메이션 스타일 AI 하이브리드 영상 제작 프로젝트.
 벌레식량 디스토피아 계급물 — 최하층/최상층 대비.
 
-### 참여자 명단
-(팀원)-**박서연**, 박한별, 정예서
-(외부인원)- 문영길, 배민혁, 박상우, 김동현, 조석주
 
 
 
@@ -14,7 +11,7 @@
 ```
 NS-Plating/
 ├── workflow/                 # 작업 규칙·도구 함정·프롬프트 블록·검수 절차·실패 사례 정리 (재사용용)
-├── .claude/skills/           # 프로젝트 스킬 (caveman, ponytail, i-have-adhd)
+├── .claude/skills/           # 프로젝트 스킬 (caveman, ponytail, i-have-adhd, prompt-page·prompt-check 등)
 ├── 00 resources/             # 리소스 파일 (미디어, 커밋 안 됨 → Drive)
 │   ├── 00 reference/
 │   ├── 00 image/

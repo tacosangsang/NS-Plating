@@ -1,0 +1,21 @@
+name: assets
+
+on:
+  push:
+    branches: [main]
+    paths: ["assets/**", ".claude/skills/**", "workflow/**"]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 목록 형식과 폐기 파일 이름 검사
+        run: python3 assets/check_assets.py
+      - name: 테스트
+        working-directory: assets
+        run: python3 -m unittest discover -s . -p "test_*.py" -v
