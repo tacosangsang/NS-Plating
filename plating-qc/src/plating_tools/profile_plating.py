@@ -24,14 +24,14 @@ DOC_FILES: Final = {
     "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",
     "W10": "10_고정_프롬프트_블록.md", "W11": "11_설정_고정값.md",
 }
-# 작성 기준 본문 지문(줄바꿈 무관, NS-Plating 93f0252, 11-08 감사 답변 Q01~Q12 반영판). textio.read_document의 content_sha256과 비교한다.
+# 작성 기준 본문 지문(줄바꿈 무관, NS-Plating 93f0252, 11-08 감사 답변 Q01~Q12 반영판. W11만 11-16 경비 체격 줄 추가판). textio.read_document의 content_sha256과 비교한다.
 AUTHORED_SHA256: Final = {
     "W02": "89f86cf3d811b873848e19a5e430e65e813df793d5fda69776a2c5910ab5c4e1",
     "W05": "7a4d7072988fc2db7dcf4d65d3a0096adcfe601d94a5cd5f7bc4dbf0c1a46d0a",
     "W06": "b7eb5502e196cef090467442d8f8565678bc40b9ff2c499a85ded13c04853296",
     "W07": "baf4fab5bcc91a08b3bb044f2cbeb7c8204f2e39bbd14cd15864f06ee33bd337",
     "W10": "1f4066e6556e7b5cb517f706c308c737656788c366521856af6449553bc55875",
-    "W11": "0b5b1c54419c8b6d98d9c0fb0ecb80d161929438c768fa3a91e5df97e8f4374c",
+    "W11": "e1d594a672b47e479e543b3a25dc37497031d80ffea8a31d5a3d76eea6e14861",
 }
 DOC_TITLES: Final = {
     "W02": "02. 작업 규칙과 의사결정", "W05": "05. 영상 생성 워크플로우 (Seedance 2.5, 레퍼런스 투 비디오)",
