@@ -1,0 +1,12 @@
+test_budget_limits (test_claude_design.UsageTests.test_budget_limits) ... ok
+test_cost_includes_cache_read (test_claude_design.UsageTests.test_cost_includes_cache_read) ... ok
+test_error_is_recorded_with_partial_path (test_claude_design.UsageTests.test_error_is_recorded_with_partial_path) ... 호출 실패: ConnectionError. 비용을 Console에서 확인하세요.
+ok
+test_incomplete_response_gets_warning (test_claude_design.UsageTests.test_incomplete_response_gets_warning) ... ok
+test_truncated_result_is_warning_and_exit_one (test_claude_design.UsageTests.test_truncated_result_is_warning_and_exit_one) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+OK
+exit=0

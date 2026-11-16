@@ -1,0 +1,23 @@
+base_head=d8297c9; 15번 항목 1 실제 F 추출; 결과 본문은 out/에만 보존
+
+command=python -c "import sys; sys.path.insert(0, 'src'); from plating_tools.cli import main; raise SystemExit(main(['cuts', 'extract', '--scene', 'S#02']))"
+{
+  "command": "cuts extract",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T124645-179fb3_cuts-extract_S02",
+  "targets": 25,
+  "findings": 25
+}
+exit=1
+
+command=python -c "import sys; sys.path.insert(0, 'src'); from plating_tools.cli import main; raise SystemExit(main(['cuts', 'extract', '--scene', 'S#04']))"
+{
+  "command": "cuts extract",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T124646-d9730a_cuts-extract_S04",
+  "targets": 12,
+  "findings": 11
+}
+exit=1

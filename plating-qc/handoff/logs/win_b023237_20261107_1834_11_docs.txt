@@ -1,0 +1,24 @@
+11번 요청서 문서 검증
+실행: Python 3.12 표준 라이브러리 인라인 검사(Path/HTMLParser/re/hashlib/subprocess), git diff --check
+기준 HEAD: b023237, 수정 요청서 커밋 전 작업 트리 검사
+PASS 원문: 5085행 / 121954 bytes / SHA-256 cae22e2f0637d29ebfe1f6e5a7daa973ee8ea72a397373246ecdddf9cfe6dc37
+PASS 전체 색 속성: green_bg=160 red_bg=88 gray_bg=10 yellow_bg=1
+PASS tr 색 속성: green_bg=5 red_bg=79 gray_bg=2; yellow_bg는 제목 span
+PASS 실제 제목·분할 ID·TC·길이의 원문 행 인용 대조
+PASS 노션 발췌: 47행, 60행 이내, 7열/6열 표 머리와 첫 행 및 span 제목의 내용·태그·속성 일치
+PASS 필수 제약·행 색 네 상태·P0/P1·배치·QC 하위 프로세스·미결 fixture 규칙
+PASS UTF-8·코드 펜스·오자·기존 미확인 전제 제거
+PASS 보호 파일 32개 크기·SHA-256 일치
+PASS git diff --check / 변경 tracked 파일은 요청서만
+요청서 글자 수: 19429 (Python len, CRLF→LF 정규화, 공백·개행 포함)
+요청서 SHA-256(작업 파일 bytes): cbb688b8543b12bb04844aaa1b7eeb72caf69f0746e52ac9beb62ba09395ea1d
+네트워크 / push / API 호출 / 설치 / 코드 테스트 실행: 없음
+exit=0
+
+요청서 커밋 bb4a99a 이후 후속 문서 검사
+PASS 요청서 커밋 본문 일치 / 최종 19429자 / 노션 발췌 47행
+PASS REPLY A3 지정 문구 / 요청서 커밋 해시 / 원문 차이 / 글자 수 기록
+PASS REPLY·STATE·usage·문서 로그 UTF-8·표 열·코드 펜스
+PASS 보호 파일 32개 크기·SHA-256 유지
+PASS git diff --check / 후속 tracked 변경은 STATE·usage만
+exit=0

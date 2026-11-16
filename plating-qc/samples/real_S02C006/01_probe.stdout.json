@@ -1,0 +1,116 @@
+[
+  {
+    "path": "D:\\Plating\\video\\S02C006-v1.mp4",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045206863703e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "h264",
+      "width": 854,
+      "height": 480,
+      "pix_fmt": "yuv420p",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 97,
+      "nb_frames_decoded": 97,
+      "nb_read_packets": 97,
+      "decode_errors": 0,
+      "duration_s": "4.041667",
+      "start_time_s": "0.000000",
+      "profile": "High",
+      "color": {
+        "primaries": "unknown",
+        "transfer": "unknown",
+        "space": "unknown"
+      }
+    },
+    "audio": {
+      "codec": "aac",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "4.064000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  {
+    "path": "D:\\Plating\\video\\S02C006-2k-v1.mp4",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045206863703e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "hevc",
+      "width": 2048,
+      "height": 1152,
+      "pix_fmt": "yuv420p",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 97,
+      "nb_frames_decoded": 97,
+      "nb_read_packets": 97,
+      "decode_errors": 0,
+      "duration_s": "4.041667",
+      "start_time_s": "0.000000",
+      "profile": "Main",
+      "color": {
+        "primaries": "unknown",
+        "transfer": "unknown",
+        "space": "unknown"
+      }
+    },
+    "audio": {
+      "codec": "aac",
+      "sample_rate": "32000",
+      "channels": 2,
+      "duration_s": "4.064000",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  },
+  {
+    "path": "D:\\Plating\\video\\S02C006-2k-v1_prores422hq.mov",
+    "timestamp_analysis": {
+      "status": "observed",
+      "missing_count": 0,
+      "vfr_suspect": false,
+      "interval_stddev_s": 4.714045206863703e-07,
+      "rates_differ": false
+    },
+    "video": {
+      "codec": "prores",
+      "width": 2048,
+      "height": 1152,
+      "pix_fmt": "yuv422p10le",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "nb_frames_meta": 97,
+      "nb_frames_decoded": 97,
+      "nb_read_packets": 97,
+      "decode_errors": 0,
+      "duration_s": "4.041667",
+      "start_time_s": "0.000000",
+      "profile": "HQ",
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "space": "bt709"
+      }
+    },
+    "audio": {
+      "codec": "pcm_s16le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "duration_s": "4.053312",
+      "start_time_s": "0.000000"
+    },
+    "warnings": []
+  }
+]

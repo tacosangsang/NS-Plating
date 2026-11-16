@@ -1,0 +1,31 @@
+명령: git add -- src/plating_tools/blockout tests/test_pt_blockout_model.py handoff/logs/win_3ea3022_20261107145840547.txt handoff/logs/win_3ea3022_20261107145843438.txt handoff/logs/win_3ea3022_20261107145929235.txt handoff/logs/win_3ea3022_20261108_082314_077.txt
+도구 반환 exit=1
+fatal: Unable to create 'C:/Users/uicus/Dev/plating-qc-workflows/.git/worktrees/pqw-blockout/index.lock': Permission denied
+
+1회 읽기 전용 확인: Get-Item / Get-Acl / Test-Path index.lock
+
+FullName                                                            Attributes
+--------                                                            ----------
+C:\Users\uicus\Dev\plating-qc-workflows\.git\worktrees\pqw-blockout  Directory
+
+
+
+
+Owner          : MUSANGSANG\uicus
+AccessToString : S-1-5-21-746771629-1452457085-729751192-1764211327 Deny  DeleteSubdirectoriesAndFiles, Write, Delete, 
+                 ReadPermissions, Synchronize
+                 S-1-5-21-746771629-1452457085-729751192-1764211327 Deny  1074987350
+                 S-1-5-21-746771629-1452457085-729751192-1764211327 Allow  Modify, Synchronize
+                 MUSANGSANG\CodexSandboxUsers Allow  Modify, Synchronize
+                 S-1-5-21-640109668-2776534425-1668729459-2489124961 Allow  Modify, Synchronize
+                 S-1-5-21-2355224070-3375688395-3715486277-3445782085 Allow  Modify, Synchronize
+                 NT AUTHORITY\SYSTEM Allow  FullControl
+                 BUILTIN\Administrators Allow  FullControl
+                 MUSANGSANG\uicus Allow  FullControl
+
+
+
+False
+20261108_082338_046
+
+exit=0

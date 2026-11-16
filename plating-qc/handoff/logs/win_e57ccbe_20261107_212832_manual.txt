@@ -1,0 +1,349 @@
+python -m plating_tools --help
+usage: plating [-h] [--config CONFIG] {cuts,prompt,gate,refs,versions,qc} ...
+
+positional arguments:
+  {cuts,prompt,gate,refs,versions,qc}
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+
+exit_code=0
+
+python -m plating_tools cuts inventory
+{
+  "command": "cuts inventory",
+  "exit_code": 0,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122655-a38fad_cuts-inventory_F",
+  "sections": 15,
+  "color_loss": 0
+}
+
+exit_code=0
+
+python -m plating_tools cuts extract --scene 'S#01'
+{
+  "command": "cuts extract",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122656-8cf373_cuts-extract_S01",
+  "targets": 15,
+  "findings": 7
+}
+
+exit_code=1
+
+python -m plating_tools cuts extract --scene 'S#04'
+{
+  "command": "cuts extract",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122657-634bc7_cuts-extract_S04",
+  "targets": 12,
+  "findings": 11
+}
+
+exit_code=1
+
+python -m plating_tools prompt skeleton --cuts-json 'C:/Users/uicus/Dev/plating-qc-workflows/out/20261107T122657-634bc7_cuts-extract_S04/cuts.json' --kind video
+{
+  "command": "prompt skeleton",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122658-4fa32b_prompt-skeleton_unplanned"
+}
+
+exit_code=1
+
+python -m plating_tools gate cost --model 'Seedance 2.5' --mode new --resolution 480p --seconds 4
+{
+  "command": "gate cost",
+  "exit_code": 0,
+  "status": "검수 대기",
+  "output": null,
+  "cost": {
+    "lines": [
+      {
+        "label": "요청안",
+        "amount": "80",
+        "unit": "Crons",
+        "formula": "4 × 20 = 80",
+        "inputs": {
+          "model": "Seedance 2.5",
+          "mode": "new",
+          "resolution": "480p",
+          "seconds": "4"
+        },
+        "where": {
+          "doc": "W07",
+          "line_start": 14,
+          "line_end": 14,
+          "heading_path": [
+            "07. 도구·환경 제약",
+            "1. 비용표 (Crons / 크레딧)"
+          ],
+          "mark": "파일 단위 예외",
+          "mark_reason": "`[예외: 이 문서 전체는 2026-10~11 PLATING 계정·환경 기준]` 숫자와 차단 여부는 바뀐다. 가져갈 것은 \"확인하는 방법\"과 \"실패 시 회수 절차\"다.",
+          "excerpt_sha256": "e277525b41440278c6d3873db962d60d90da0ffefbf7ba12835f4487470af39a"
+        }
+      }
+    ],
+    "totals": {
+      "Crons": "80"
+    },
+    "doc_versions": [
+      {
+        "key": "W07",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\07_도구_환경_제약.md",
+        "size": 9346,
+        "sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "authored_sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      },
+      {
+        "key": "W06",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\06_영상_edit_업스케일_변환.md",
+        "size": 11091,
+        "sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "authored_sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      }
+    ],
+    "not_checked": [
+      "실제 잔여 Crons",
+      "결제 가능 여부",
+      "현재 서비스 요금",
+      "Topaz 적용 단위"
+    ],
+    "findings": []
+  }
+}
+
+exit_code=0
+
+python -m plating_tools gate cost --model 'Seedance 2.5' --mode edit --resolution 1080p --seconds 1.5
+{
+  "command": "gate cost",
+  "exit_code": 0,
+  "status": "검수 대기",
+  "output": null,
+  "cost": {
+    "lines": [
+      {
+        "label": "요청안",
+        "amount": "220",
+        "unit": "Crons",
+        "formula": "ceil(1.5) × 110 = 220",
+        "inputs": {
+          "model": "Seedance 2.5",
+          "mode": "edit",
+          "resolution": "1080p",
+          "seconds": "1.5"
+        },
+        "where": {
+          "doc": "W07",
+          "line_start": 15,
+          "line_end": 15,
+          "heading_path": [
+            "07. 도구·환경 제약",
+            "1. 비용표 (Crons / 크레딧)"
+          ],
+          "mark": "파일 단위 예외",
+          "mark_reason": "`[예외: 이 문서 전체는 2026-10~11 PLATING 계정·환경 기준]` 숫자와 차단 여부는 바뀐다. 가져갈 것은 \"확인하는 방법\"과 \"실패 시 회수 절차\"다.",
+          "excerpt_sha256": "929e79d7476e02e27e8f1e226c65099beb3f0742d1a69d07a1e1a877bdcf862d"
+        }
+      }
+    ],
+    "totals": {
+      "Crons": "220"
+    },
+    "doc_versions": [
+      {
+        "key": "W07",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\07_도구_환경_제약.md",
+        "size": 9346,
+        "sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "authored_sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      },
+      {
+        "key": "W06",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\06_영상_edit_업스케일_변환.md",
+        "size": 11091,
+        "sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "authored_sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      }
+    ],
+    "not_checked": [
+      "실제 잔여 Crons",
+      "결제 가능 여부",
+      "현재 서비스 요금",
+      "Topaz 적용 단위"
+    ],
+    "findings": []
+  }
+}
+
+exit_code=0
+
+python -m plating_tools gate cost --model 'Seedance 2.5' --mode new --resolution 1080p --seconds 4
+{
+  "command": "gate cost",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": null,
+  "cost": {
+    "lines": [
+      {
+        "label": "요청안",
+        "amount": "324",
+        "unit": "Crons",
+        "formula": "4 × 81 = 324",
+        "inputs": {
+          "model": "Seedance 2.5",
+          "mode": "new",
+          "resolution": "1080p",
+          "seconds": "4"
+        },
+        "where": {
+          "doc": "W07",
+          "line_start": 14,
+          "line_end": 14,
+          "heading_path": [
+            "07. 도구·환경 제약",
+            "1. 비용표 (Crons / 크레딧)"
+          ],
+          "mark": "파일 단위 예외",
+          "mark_reason": "`[예외: 이 문서 전체는 2026-10~11 PLATING 계정·환경 기준]` 숫자와 차단 여부는 바뀐다. 가져갈 것은 \"확인하는 방법\"과 \"실패 시 회수 절차\"다.",
+          "excerpt_sha256": "e277525b41440278c6d3873db962d60d90da0ffefbf7ba12835f4487470af39a"
+        }
+      },
+      {
+        "label": "대안: 480p 새 생성",
+        "amount": "80",
+        "unit": "Crons",
+        "formula": "4 × 20 = 80",
+        "inputs": {
+          "model": "Seedance 2.5",
+          "resolution": "480p"
+        },
+        "where": {
+          "doc": "W07",
+          "line_start": 14,
+          "line_end": 14,
+          "heading_path": [
+            "07. 도구·환경 제약",
+            "1. 비용표 (Crons / 크레딧)"
+          ],
+          "mark": "파일 단위 예외",
+          "mark_reason": "`[예외: 이 문서 전체는 2026-10~11 PLATING 계정·환경 기준]` 숫자와 차단 여부는 바뀐다. 가져갈 것은 \"확인하는 방법\"과 \"실패 시 회수 절차\"다.",
+          "excerpt_sha256": "e277525b41440278c6d3873db962d60d90da0ffefbf7ba12835f4487470af39a"
+        }
+      },
+      {
+        "label": "대안: Topaz 업스케일",
+        "amount": {
+          "unknown": "Topaz 적용 단위 미확인"
+        },
+        "unit": "Higgsfield 크레딧",
+        "formula": "문서 단가 5, 적용 단위 미확인",
+        "inputs": {},
+        "where": {
+          "doc": "W06",
+          "line_start": 73,
+          "line_end": 78,
+          "heading_path": [
+            "06. 영상 edit, 업스케일, 편집용 변환",
+            "4. 업스케일",
+            "설정 (Higgsfield 웹앱 Topaz Video, 11-04 확정) `[예외: 사용 서비스]`"
+          ],
+          "mark": "무표기",
+          "mark_reason": null,
+          "excerpt_sha256": "c5332b8b102e2cc89d64241aaf48563515be481503a61b39d4be11f6672cf046"
+        }
+      }
+    ],
+    "totals": {
+      "Crons": "324"
+    },
+    "doc_versions": [
+      {
+        "key": "W07",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\07_도구_환경_제약.md",
+        "size": 9346,
+        "sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "authored_sha256": "4b3ae259f43f09a0afddefbd3fc321a4445ff3d291c044ead40ed9af15544d9f",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      },
+      {
+        "key": "W06",
+        "path": "C:\\Users\\uicus\\Dev\\NS-Plating\\workflow\\06_영상_edit_업스케일_변환.md",
+        "size": 11091,
+        "sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "authored_sha256": "96308bd869185e29acfb2d41922a570d6002137561f97cb9a407cfd2df259492",
+        "declared_commit": "577c3d4cc607c823603fe1aa0e78fa02773a8e33",
+        "newline": "CRLF"
+      }
+    ],
+    "not_checked": [
+      "실제 잔여 Crons",
+      "결제 가능 여부",
+      "현재 서비스 요금",
+      "Topaz 적용 단위"
+    ],
+    "findings": [
+      {
+        "code": "COST_TOPAZ_UNIT",
+        "severity": "warn",
+        "message": "Topaz 단위 미확인. Crons와 합산하지 않음",
+        "where": {
+          "doc": "W06",
+          "line_start": 73,
+          "line_end": 78,
+          "heading_path": [
+            "06. 영상 edit, 업스케일, 편집용 변환",
+            "4. 업스케일",
+            "설정 (Higgsfield 웹앱 Topaz Video, 11-04 확정) `[예외: 사용 서비스]`"
+          ],
+          "mark": "무표기",
+          "mark_reason": null,
+          "excerpt_sha256": "c5332b8b102e2cc89d64241aaf48563515be481503a61b39d4be11f6672cf046"
+        }
+      }
+    ]
+  }
+}
+
+exit_code=1
+
+python -m plating_tools refs check --list 'plating.toml'
+P1 모듈 없음: plating_tools.refs
+
+exit_code=4
+
+python -m plating_tools prompt check --prompt 'out/manual-inputs-20261107_212722/prompt.txt' --kind video
+{
+  "command": "prompt check",
+  "exit_code": 1,
+  "status": "검수 대기",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122724-d4f7a6_prompt-check_unplanned"
+}
+
+exit_code=1
+
+python -m plating_tools gate check --gate 'C:/Users/uicus/Dev/plating-qc-workflows/out/20261107T122658-4fa32b_prompt-skeleton_unplanned/gate.toml' --prompt 'out/manual-inputs-20261107_212722/prompt.txt' --cuts-json 'C:/Users/uicus/Dev/plating-qc-workflows/out/20261107T122657-634bc7_cuts-extract_S04/cuts.json' --check-json 'C:/Users/uicus/Dev/plating-qc-workflows/out/20261107T122724-d4f7a6_prompt-check_unplanned/check.json' --require-approval
+{
+  "command": "gate check",
+  "exit_code": 1,
+  "status": "[점검 미완료]",
+  "output": "C:\\Users\\uicus\\Dev\\plating-qc-workflows\\out\\20261107T122728-ec709b_gate-check_unplanned"
+}
+
+exit_code=1

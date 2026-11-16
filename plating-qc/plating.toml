@@ -1,0 +1,18 @@
+# 상대 경로는 이 설정 파일의 폴더 기준. 외부 입력은 읽기 전용.
+[paths]
+write_root = '.'
+output_root = 'out'
+workflow_dir = 'C:\Users\uicus\Dev\NS-Plating\workflow'
+readme = 'C:\Users\uicus\Dev\NS-Plating\README.md'
+handbook = ''
+read_only = ['C:\Users\uicus\Dev\NS-Plating', 'C:\Users\uicus\Dev\dot-handoff', 'D:\', 'G:\']
+
+[docs]
+declared_commit = '577c3d4cc607c823603fe1aa0e78fa02773a8e33'
+
+[cuts]
+input = 'C:\Users\uicus\Dev\dot-handoff\notion_컷표_fetch_2026-11-07T0706Z.md'
+expected_sha256 = 'cae22e2f0637d29ebfe1f6e5a7daa973ee8ea72a397373246ecdddf9cfe6dc37'
+
+[tools]
+ffmpeg_path = 'D:\Plating\tools\ffmpeg\bin'

@@ -1,0 +1,8 @@
+test_low_balance_stops_before_request (test_claude_design.ClaudeDesignTests.test_low_balance_stops_before_request) ... ok
+test_missing_request_stops_before_request (test_claude_design.ClaudeDesignTests.test_missing_request_stops_before_request) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.096s
+
+OK
+exit=0

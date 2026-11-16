@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "plating_qc",
+    "--log",
+    "samples/real_S02C006/logs/01_probe.json",
+    "probe",
+    "D:\\Plating\\video\\S02C006-v1.mp4",
+    "D:\\Plating\\video\\S02C006-2k-v1.mp4",
+    "D:\\Plating\\video\\S02C006-2k-v1_prores422hq.mov"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 6.6736925
+}

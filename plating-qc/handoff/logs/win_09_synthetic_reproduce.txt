@@ -1,0 +1,9 @@
+임시 결과 폴더: C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw
+probe: 종료 0; 로그 C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw\probe.json
+convert: 종료 0; 로그 C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw\convert.json
+compare: 종료 0; 로그 C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw\compare.json
+tiles: 종료 0; 로그 C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw\tiles.json
+split: 종료 0; 로그 C:\Users\uicus\AppData\Local\Temp\plating-qc-sample-e0vcnguw\split.json
+원본 48프레임, 변환 48프레임, 비교 이미지 1장
+타일 프레임 [0, 24], 분할 [23, 22, 3]프레임, 검증 48프레임
+exit=0; elapsed_seconds=1.6826863
