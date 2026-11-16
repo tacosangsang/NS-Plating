@@ -47,7 +47,11 @@ def read_rules(store: DocStore) -> RuleBook:
     catalog = {}
     def add(key: str, extracted: Extract) -> None:
         catalog[key] = Block(key, extracted.text, sha256(extracted.text.encode("utf-8")).hexdigest(), extracted.where)
-    add("STYLE", extracts("style")[0])
+    style, underclass = extracts("style")
+    if not underclass.text.startswith("UNDERCLASS PROPORTIONS:"):
+        raise InputError("W10 2-1 하층민 비율 블록 구조 변경: UNDERCLASS PROPORTIONS 필요")
+    add("STYLE", style)
+    add("UNDERCLASS_PROPORTIONS", underclass)
     add("WORLD", extracts("world")[0])
     for key, ext in zip(("AVOID", "UPPER_AVOID"), extracts("avoid"), strict=True):
         add(key, ext)

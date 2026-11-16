@@ -191,8 +191,13 @@ def machine_findings(plan, cuts, check, refs, current_f_sha: str | None, prompt_
             add(2, "GATE_SPLIT", Severity.WARN, "레퍼런스 6장 이상: 분할 검토")
         if max_seconds is not None and isinstance(plan.gen_seconds, Decimal) and plan.mode == "new" and plan.gen_seconds > max_seconds:
             add(2, "GATE_DURATION", Severity.ERROR, f"문서의 한 클립 상한 {max_seconds}초 초과. 분할 필요")
+        # W02 점검 3(11-08 Q05): 중요 소품 시트 누락만 보류(GATE_PROP), 그 밖은 글 대체 + "시트 없음(경고)".
+        # 중요 소품 목록이 미입력이면 누락이 중요 소품인지 알 수 없으므로 보류로 둔다.
         if any(r.sheet != "있음" for r in plan.references):
-            add(3, "GATE_SHEET", Severity.ERROR, "시트 없음/만들어야 함")
+            if isinstance(plan.props, Unknown):
+                add(3, "GATE_SHEET", Severity.ERROR, "시트 없음/만들어야 함. 중요 소품 미입력이라 경고로 낮추지 않음")
+            else:
+                add(3, "GATE_SHEET", Severity.WARN, "시트 없음(경고): 중요 소품 외 누락은 글 대체 허용, 프롬프트 파일에 표시")
         if not isinstance(plan.props, Unknown) and any(not any(prop in r.role and r.sheet == "있음" for r in plan.references) for prop in plan.props):
             add(3, "GATE_PROP", Severity.ERROR, "중요 소품 시트 역할 대응 없음")
         if cuts is not None:

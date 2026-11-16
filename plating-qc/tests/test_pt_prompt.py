@@ -89,6 +89,21 @@ class PromptTests(NetworkBlockedCase):
             result = select.select_blocks(plan, rules)
             self.assertEqual(next(d.decision for d in result if d.block_key == "FACE_RULE"), "제외")
 
+    def test_underclass_proportions_follow_style_only_for_underclass(self):
+        from dataclasses import replace
+        select = importlib.import_module("plating_tools.prompt.select")
+        rules = self.rules()
+        self.assertTrue(rules.catalog["UNDERCLASS_PROPORTIONS"].text.startswith("UNDERCLASS PROPORTIONS:"))
+        for group, expected in (("하층민", "포함"), ("요리사", "제외")):
+            person = self.plan_module.CharacterMeta("SYNTH", group, "far", "SYNTH")
+            plan = replace(self.plan(), people="있음", characters=(person,))
+            decision = next(d.decision for d in select.select_blocks(plan, rules) if d.block_key == "UNDERCLASS_PROPORTIONS")
+            self.assertEqual(decision, expected, group)
+        person = self.plan_module.CharacterMeta("SYNTH", "하층민", "far", "SYNTH")
+        skeleton = self.assemble.build_skeleton(self.cuts(), replace(self.plan(), people="있음", characters=(person,)), rules)
+        style_slot = next(s for s in skeleton.slots if "STYLE" in s.block_keys)
+        self.assertEqual(style_slot.block_keys[:2], ("STYLE", "UNDERCLASS_PROPORTIONS"))
+
     def test_P7_image_scene_conflict_is_not_applied_to_video_skeleton(self):
         from dataclasses import replace
         skeleton = self.assemble.build_skeleton(self.cuts(), replace(self.plan(), scene_module="SCENE_D"), self.rules())

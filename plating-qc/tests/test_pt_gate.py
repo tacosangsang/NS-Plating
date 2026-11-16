@@ -111,6 +111,19 @@ class GateTests(NetworkBlockedCase):
         self.assertFalse(fresh)
         self.assertTrue(any(f.severity.value == "error" for f in machine[4]))
 
+    def test_missing_sheet_blocks_only_important_props(self):
+        RefEntry = self.model.RefEntry
+        missing = RefEntry(1, "SYNTH 배경")
+        prop = RefEntry(2, "SYNTH 접시", sheet="있음")
+        def sheet_findings(**changes):
+            machine, _ = self.gate.machine_findings(self.clip(**changes), None, None, None, None, "a" * 64)
+            return {(f.code, f.severity.value) for f in machine[3]}
+        self.assertIn(("GATE_SHEET", "warn"), sheet_findings(props=("SYNTH 접시",), references=(missing, prop)))
+        self.assertNotIn(("GATE_PROP", "error"), sheet_findings(props=("SYNTH 접시",), references=(missing, prop)))
+        self.assertIn(("GATE_SHEET", "warn"), sheet_findings(props=(), references=(missing,)))
+        self.assertIn(("GATE_SHEET", "error"), sheet_findings(props=self.model.Unknown("SYNTH 미입력"), references=(missing,)))
+        self.assertIn(("GATE_PROP", "error"), sheet_findings(props=("SYNTH 접시",), references=(missing,)))
+
     def test_generation_above_document_limit_requires_split(self):
         machine, _ = self.gate.machine_findings(self.clip(gen_seconds=self.rules.max_seconds + 1), None, None, None, None, "a" * 64, max_seconds=self.rules.max_seconds)
         self.assertTrue(any(f.code == "GATE_DURATION" and f.severity.value == "error" for f in machine[2]))

@@ -24,14 +24,14 @@ DOC_FILES: Final = {
     "W06": "06_영상_edit_업스케일_변환.md", "W07": "07_도구_환경_제약.md",
     "W10": "10_고정_프롬프트_블록.md", "W11": "11_설정_고정값.md",
 }
-# 작성 기준 본문 지문(줄바꿈 무관, NS-Plating 25f38dc). textio.read_document의 content_sha256과 비교한다.
+# 작성 기준 본문 지문(줄바꿈 무관, NS-Plating 93f0252, 11-08 감사 답변 Q01~Q12 반영판). textio.read_document의 content_sha256과 비교한다.
 AUTHORED_SHA256: Final = {
-    "W02": "4c2489018653380fd33a3626896bdfb105f67248f5a416af0b237c562d13ea77",
-    "W05": "42927794bf5089af68ce0d580bf4497906b0d12d004a55589b47dbf92c55923b",
-    "W06": "cbd2e1035e2a0e5d2378bd8d53b5e794f72d75e343fa77b7d964faf25f639767",
-    "W07": "669ff1ef6c6f3fa268c22aec9e74166d0a2700ec9fe793a19e3a05723de6e762",
-    "W10": "f1c9b16a8f690be9ea769936682bfee7b7459082247b9d2481df7d983b5c72cb",
-    "W11": "fe4d21a52857bf56fe9da13fc1ea6a70fa161b48f91c07d3a4c91d14dd0f5178",
+    "W02": "89f86cf3d811b873848e19a5e430e65e813df793d5fda69776a2c5910ab5c4e1",
+    "W05": "7a4d7072988fc2db7dcf4d65d3a0096adcfe601d94a5cd5f7bc4dbf0c1a46d0a",
+    "W06": "b7eb5502e196cef090467442d8f8565678bc40b9ff2c499a85ded13c04853296",
+    "W07": "baf4fab5bcc91a08b3bb044f2cbeb7c8204f2e39bbd14cd15864f06ee33bd337",
+    "W10": "1f4066e6556e7b5cb517f706c308c737656788c366521856af6449553bc55875",
+    "W11": "0b5b1c54419c8b6d98d9c0fb0ecb80d161929438c768fa3a91e5df97e8f4374c",
 }
 DOC_TITLES: Final = {
     "W02": "02. 작업 규칙과 의사결정", "W05": "05. 영상 생성 워크플로우 (Seedance 2.5, 레퍼런스 투 비디오)",
@@ -42,16 +42,18 @@ ORDER_PREFIXES: Final = ("REFERENCE ROLES", "STYLE", "SUMMARY", "SPACE AND LIGHT
 PEOPLE_BLOCKS: Final = ("FACE_EYES_HANDS", "EYES_CHILD", "FACE_REFLECTION", "IDENTICAL", "STAGING", "OUTFIT_CROWD", "OUTFIT_OFFERING", "BASE_OUTFIT", "COOK_APRON", "THIEF_APRON", "LAYOUT_TRUCK")
 SCENE_BLOCKS: Final = ("SCENE_LOW", "SCENE_JINWOO", "SCENE_RABBIT", "SCENE_A", "SCENE_B", "SCENE_C", "SCENE_D", "SCENE_E", "SCENE_F", "SCENE_G", "SCENE_PLATING")
 UPPER_SCENES: Final = ("SCENE_A", "SCENE_B", "SCENE_C", "SCENE_D", "SCENE_E", "SCENE_F", "SCENE_G")
-BLOCK_SLOTS: Final = {"STYLE": 1, "AVOID": 7, "UPPER_AVOID": 7, "WORLD": 3,
+BLOCK_SLOTS: Final = {"STYLE": 1, "UNDERCLASS_PROPORTIONS": 1, "AVOID": 7, "UPPER_AVOID": 7, "WORLD": 3,
                       **{key: 3 for key in SCENE_BLOCKS}, **{key: 5 for key in PEOPLE_BLOCKS},
                       "FACE_RULE": 5, "EYES": 5, "HANDS": 5, "LAYOUT_TRUCK": 3}
 FORBID_NAMES: Final = ("진우", "최진우", "흰토끼", "흰토끼 가면남")
 FORBID_GROUPS: Final = ("상류층", "흰토끼", "진우")
 CHILD_GROUP: Final = "아이"
-GROUP_BLOCKS: Final = {"OUTFIT_CROWD": {"하층민", "아이"}, "OUTFIT_OFFERING": {"공물"}, "BASE_OUTFIT": {"요리사", "도둑"}, "COOK_APRON": {"요리사"}, "THIEF_APRON": {"도둑"}, "HANDS": {"하층민", "아이", "요리사", "도둑"}}
+# W10 2-1(11-08 Q02): 하층민 비율 블록은 하층민이 나오는 컷에만 STYLE 바로 뒤에 붙인다.
+GROUP_BLOCKS: Final = {"UNDERCLASS_PROPORTIONS": {"하층민"}, "OUTFIT_CROWD": {"하층민", "아이"}, "OUTFIT_OFFERING": {"공물"}, "BASE_OUTFIT": {"요리사", "도둑"}, "COOK_APRON": {"요리사"}, "THIEF_APRON": {"도둑"}, "HANDS": {"하층민", "아이", "요리사", "도둑"}}
 FILE_EXCEPTION_KEYS: Final = ("W07", "W10", "W11")
 ANCHOR_SPECS: Final = {
-    "style": ("W10", ("2. STYLE (10-31판, 사용자 지시)",), "fences", 1),
+    # 2절 아래 2-1 하층민 비율 블록 펜스까지 함께 잡힌다(STYLE, UNDERCLASS_PROPORTIONS 순).
+    "style": ("W10", ("2. STYLE (10-31판, 사용자 지시)",), "fences", 2),
     "world": ("W10", ("3. WORLD & TONE (이미지 공통)",), "fences", 1),
     "avoid": ("W10", ("4. AVOID (공통, 10-31)",), "fences", 2),
     "people": ("W10", ("5. 사람 블록 (하층민·요리사·도둑·공물. 진우·흰토끼·상류층 제외)",), "fences", len(PEOPLE_BLOCKS)),
